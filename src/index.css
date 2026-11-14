@@ -857,7 +857,7 @@ button:disabled {
   color: var(--color-fg-2);
   transition: background 200ms, color 200ms;
 }
-.mode-toggle__opt[aria-checked='true'] {
+.mode-toggle__opt[aria-pressed='true'] {
   background: var(--accent);
   color: #1b1209;
   font-weight: 600;
@@ -1668,4 +1668,378 @@ a.image-label:hover {
     font-size: 8.5px;
     letter-spacing: 0.14em;
   }
+}
+
+/* ═════════════════════════ Book reader (State II) ═════════════════════════ */
+
+.book-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.book {
+  --page-h: min(64vh, 660px);
+  --page-w: calc(var(--page-h) * 0.74);
+  position: relative;
+  perspective: 2400px;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  outline: none;
+  cursor: grab;
+}
+.book.is-turning {
+  cursor: grabbing;
+}
+.book:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 8px;
+}
+.book--spread {
+  width: calc(var(--page-w) * 2);
+  height: var(--page-h);
+}
+.book--single {
+  width: min(100%, 440px);
+  aspect-ratio: 0.74;
+}
+.book::before {
+  content: '';
+  position: absolute;
+  inset: 3% -1% -3%;
+  border-radius: 6px;
+  background: rgb(0 0 0 / 0.55);
+  filter: blur(22px);
+  pointer-events: none;
+}
+.book__pages {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  transform-style: preserve-3d;
+}
+.book__half {
+  position: relative;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+}
+.book--single .book__half--right {
+  width: 100%;
+}
+.book__half--left .page {
+  border-radius: 4px 0 0 4px;
+}
+.book__half--right .page {
+  border-radius: 0 4px 4px 0;
+}
+.book__leaf {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  z-index: 5;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.book__leaf--right {
+  left: 50%;
+  transform-origin: left center;
+}
+.book__leaf--left {
+  left: 0;
+  transform-origin: right center;
+}
+.book__leaf--single {
+  left: 0;
+  width: 100%;
+  transform-origin: left center;
+}
+.book__face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.book__face--back {
+  transform: rotateY(180deg);
+}
+/* Bend shading: darkest along the fold (spine side), a lift highlight across the paper. */
+.book__fold {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgb(0 0 0 / 0.55), rgb(0 0 0 / 0.08) 35%, rgb(255 255 255 / 0.1) 70%, rgb(0 0 0 / 0.3));
+}
+.book__leaf--left .book__face--front .book__fold,
+.book__fold--back {
+  background: linear-gradient(270deg, rgb(0 0 0 / 0.55), rgb(0 0 0 / 0.08) 35%, rgb(255 255 255 / 0.1) 70%, rgb(0 0 0 / 0.3));
+}
+.book__sheen {
+  --sheen: 50%;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+  background: linear-gradient(100deg, transparent calc(var(--sheen) - 14%), rgb(255 255 255 / 0.9) var(--sheen), transparent calc(var(--sheen) + 14%));
+}
+.book__shadow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+}
+.book__shadow--from-spine {
+  background: linear-gradient(90deg, rgb(0 0 0 / 0.85), rgb(0 0 0 / 0.25) 30%, transparent 70%);
+}
+.book__shadow--from-spine-l {
+  background: linear-gradient(270deg, rgb(0 0 0 / 0.85), rgb(0 0 0 / 0.25) 30%, transparent 70%);
+}
+.book__spine {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 46px;
+  translate: -50% 0;
+  z-index: 4;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgb(0 0 0 / 0.22) 38%, rgb(0 0 0 / 0.42) 50%, rgb(0 0 0 / 0.22) 62%, transparent);
+}
+
+/* Pages */
+.page {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 22px 22px 34px;
+  overflow: hidden;
+}
+.page--paper {
+  color: #1c1712;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgb(255 255 255 / 0.35), transparent 60%),
+    linear-gradient(180deg, #f3ead7, #eadfc8);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.06), inset 0 0 40px rgb(120 90 50 / 0.12);
+}
+.page--endpaper {
+  background: repeating-linear-gradient(45deg, #17130f 0 6px, #1b1612 6px 12px);
+}
+.page__folio {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: rgb(28 23 18 / 0.55);
+}
+.page__kicker {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #8a5a2b;
+}
+.page__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(20px, calc(var(--page-h, 600px) * 0.042), 30px);
+  line-height: 1.1;
+}
+.page__lede {
+  font-size: 15px;
+  line-height: 1.5;
+  color: #3a3027;
+}
+.page__file {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid rgb(28 23 18 / 0.18);
+}
+.page__file > div {
+  display: grid;
+  grid-template-columns: 34% 1fr;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgb(28 23 18 / 0.12);
+}
+.page__file dt {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(28 23 18 / 0.6);
+}
+.page__file dd {
+  font-size: 13px;
+  color: #1c1712;
+}
+.page__note {
+  margin-top: auto;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.5;
+  color: rgb(28 23 18 / 0.55);
+}
+.page--panel {
+  justify-content: center;
+}
+.page .comic-panel__frame {
+  outline-color: #1c1712;
+}
+.page .comic-panel__frame::after {
+  border-color: #1c1712;
+}
+.page .comic-credit {
+  color: rgb(28 23 18 / 0.7);
+}
+
+/* Cover + back cover */
+.page--cover,
+.page--back {
+  color: #f3efe7;
+  background: linear-gradient(160deg, var(--scene-tint), #0b0a0d 70%);
+  justify-content: flex-end;
+}
+.page-cover__art {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.55;
+  mask-image: linear-gradient(180deg, #000 30%, transparent 85%);
+  -webkit-mask-image: linear-gradient(180deg, #000 30%, transparent 85%);
+}
+.page-cover__body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.page-cover__issue {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+}
+.page-cover__issue b {
+  font-family: var(--font-display);
+  font-size: 44px;
+  letter-spacing: 0;
+  margin-left: 6px;
+  vertical-align: -6px;
+}
+.page-cover__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(30px, calc(var(--page-h, 600px) * 0.065), 48px);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+}
+.page-cover__hw {
+  font-size: 14px;
+  color: var(--color-fg-2);
+}
+.page-cover__loc {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--color-fg-2);
+}
+.page-cover__loc span {
+  color: var(--accent);
+}
+.page-cover__mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-fg-3);
+}
+.page--back {
+  justify-content: center;
+  align-items: flex-start;
+  gap: 18px;
+}
+.page-back__lede {
+  font-family: var(--font-display);
+  font-size: clamp(20px, calc(var(--page-h, 600px) * 0.04), 28px);
+  line-height: 1.2;
+  max-width: 16ch;
+}
+.page-back__cta {
+  pointer-events: auto;
+}
+
+/* Controls */
+.book-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.book-scrubber {
+  display: flex;
+  gap: 4px;
+}
+.book-scrubber button {
+  min-width: 44px;
+  min-height: 36px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid var(--color-line-2);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  color: var(--color-fg-2);
+}
+.book-scrubber button[aria-current='page'] {
+  border-color: var(--accent);
+  background: rgb(var(--accent-rgb) / 0.14);
+  color: var(--accent);
+}
+.book-scrubber button:disabled {
+  opacity: 0.6;
+}
+.story-reader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.story-reader__bar {
+  display: flex;
+  width: 100%;
+  max-width: 980px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.book-gl-wrap {
+  position: absolute;
+  z-index: 6;
+  pointer-events: none;
+}
+/* Offscreen DOM copies used to texture the WebGL leaf (never visible, never focusable). */
+.book-snaps {
+  position: fixed;
+  left: -20000px;
+  top: 0;
+  pointer-events: none;
+}
+.book-snap {
+  position: relative;
+  container-type: normal;
 }

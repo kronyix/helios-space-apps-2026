@@ -8,12 +8,20 @@ export const dur = {
   base: 0.42,
   slow: 0.7,
   cinematic: 1.4,
+  /** One animated page turn. */
+  pageTurn: 0.9,
+  /** Whole multi-page riffle from the scrubber (split across the turns). */
+  riffle: 0.6,
+  /** Reduced-motion page change (crossfade + slight slide). */
+  pageFade: 0.2,
 } as const;
 
 export const ease = {
   out: [0.22, 1, 0.36, 1] as [number, number, number, number],
   inOut: [0.65, 0, 0.35, 1] as [number, number, number, number],
   in: [0.55, 0, 1, 0.45] as [number, number, number, number],
+  /** Paper: fast lift off the spine, slow settle onto the other side. */
+  pageTurn: [0.3, 0.75, 0.2, 1] as [number, number, number, number],
 };
 
 /** Total budget for staggered reveals, so a list never drags past ~600ms. */

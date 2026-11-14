@@ -1,13 +1,11 @@
-import { motion } from 'motion/react';
 import type { MissionData } from '../data/types';
-import { panelsForStage, pad2 } from '../lib/missions';
+import { pad2 } from '../lib/missions';
 import { useAppStore } from '../store/useAppStore';
-import { dur, ease } from '../lib/motion';
-import { useReducedMotion } from '../lib/useReducedMotion';
 import { AccentTitle, ScreenFrame } from '../components/ui/Layout';
-import { ComicPanel, ModeToggle } from '../components/comic/ComicPage';
-import { IconArrowRight, IconCalendar, IconClock, IconPin, IconSignal, IconWeight } from '../components/ui/Icons';
+import { ModeToggle } from '../components/comic/ComicPage';
+import { IconCalendar, IconClock, IconPin, IconSignal, IconWeight } from '../components/ui/Icons';
 import { ChapterNav } from './ChapterNav';
+import Book from '../components/book/Book';
 import { FieldArchive } from '../components/comic/FieldArchive';
 import { hasWebGL } from '../lib/device';
 
@@ -48,9 +46,6 @@ export function MissionFile({ mission }: { mission: MissionData }) {
 
 export default function StoryScreen({ mission }: { mission: MissionData }) {
   const go = useAppStore((s) => s.go);
-  const reduced = useReducedMotion();
-  const panels = panelsForStage(mission, 'story');
-  const total = mission.comicPanels.length;
 
   return (
     <ScreenFrame
@@ -72,43 +67,18 @@ export default function StoryScreen({ mission }: { mission: MissionData }) {
         />
       }
     >
-      <div className="story-grid">
-        <div className="story-panels">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-            <ModeToggle />
-            <p className="font-mono text-[11px] tracking-[0.12em] text-fg-3">{mission.fictionNotice}</p>
-          </div>
-          <div className="flex flex-col gap-5">
-            {panels.map((p, i) => (
-              <motion.div
-                key={p.panelNumber}
-                initial={{ opacity: 0, y: reduced ? 0 : 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 + i * 0.12, duration: dur.slow, ease: ease.out }}
-              >
-                <ComicPanel panel={p} mission={mission} total={total} priority size="lg" />
-              </motion.div>
-            ))}
-          </div>
+      <div className="story-reader">
+        <div className="story-reader__bar">
+          <ModeToggle />
+          <p className="font-mono text-[11px] tracking-[0.12em] text-fg-3">{mission.fictionNotice}</p>
         </div>
-
-        <div className="story-side">
-          <p className="kicker">Mission {pad2(mission.issueNumber)}</p>
-          <h2 className="story-hardware">{mission.hardwareName}</h2>
-          <p className="mt-4 max-w-[46ch] text-[17px] leading-relaxed text-fg-2">{mission.logline}</p>
-          <button
-            type="button"
-            className="btn-ghost mt-7 h-14 px-7 text-[17px]"
-            onPointerEnter={() => prefetch(mission.modelPath)}
-            onFocus={() => prefetch(mission.modelPath)}
-            onClick={() => go('hardware')}
-          >
-            Explore the hardware in 3D <IconArrowRight size={18} className="text-[var(--accent)]" />
-          </button>
-          <div className="mt-10">
-            <MissionFile mission={mission} />
-          </div>
-        </div>
+        <Book
+          mission={mission}
+          onInspect={() => {
+            prefetch(mission.modelPath);
+            go('hardware');
+          }}
+        />
       </div>
       {mission.fieldArchive && <FieldArchive archive={mission.fieldArchive} />}
     </ScreenFrame>

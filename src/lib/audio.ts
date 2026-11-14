@@ -80,3 +80,35 @@ export function blip(kind: 'tick' | 'ok' | 'bad' | 'lock' = 'tick') {
   o.start();
   o.stop(ctx.currentTime + 0.5);
 }
+
+/** Quiet paper-turn rustle (filtered noise). Three variants so it never repeats exactly. */
+let noise: AudioBuffer | null = null;
+export function pageTurnSound() {
+  if (!ctx || !master || master.gain.value < 0.01) return;
+  if (!noise) {
+    noise = ctx.createBuffer(1, ctx.sampleRate * 0.6, ctx.sampleRate);
+    const d = noise.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  }
+  const v = [
+    { f: 2400, q: 0.7, len: 0.42 },
+    { f: 3200, q: 0.9, len: 0.36 },
+    { f: 1800, q: 0.6, len: 0.5 },
+  ][Math.floor(Math.random() * 3)];
+  const src = ctx.createBufferSource();
+  src.buffer = noise;
+  const bp = ctx.createBiquadFilter();
+  bp.type = 'bandpass';
+  bp.frequency.value = v.f;
+  bp.Q.value = v.q;
+  const g = ctx.createGain();
+  const t = ctx.currentTime;
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(0.09, t + 0.05);
+  g.gain.exponentialRampToValueAtTime(0.03, t + v.len * 0.6);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + v.len);
+  bp.frequency.exponentialRampToValueAtTime(v.f * 0.55, t + v.len);
+  src.connect(bp).connect(g).connect(master);
+  src.start(t, Math.random() * 0.1);
+  src.stop(t + v.len + 0.05);
+}

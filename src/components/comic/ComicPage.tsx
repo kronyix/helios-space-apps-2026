@@ -52,16 +52,9 @@ export function ModeToggle() {
     { id: 'archival', label: 'Archival photo' },
   ];
   return (
-    <div role="radiogroup" aria-label="Panel view" className="mode-toggle">
+    <div role="group" aria-label="Panel view" className="mode-toggle">
       {opts.map((o) => (
-        <button
-          key={o.id}
-          type="button"
-          role="radio"
-          aria-checked={mode === o.id}
-          onClick={() => set(o.id)}
-          className="mode-toggle__opt"
-        >
+        <button key={o.id} type="button" aria-pressed={mode === o.id} onClick={() => set(o.id)} className="mode-toggle__opt">
           {o.label}
         </button>
       ))}

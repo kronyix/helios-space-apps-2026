@@ -25,6 +25,8 @@ interface AppState extends Progress {
   stage: Stage;
   missionId: string | null;
   storyMode: StoryMode;
+  /** Comic book reader: `page` is the first visible page (0 = cover); layout-independent. */
+  narrative: { page: number; turning: boolean };
   activeHotspot: string | null;
   gamePhase: GamePhase;
   lastScore: number | null;
@@ -37,6 +39,7 @@ interface AppState extends Progress {
   go: (stage: Stage, missionId?: string | null) => void;
   openMission: (missionId: string) => void;
   setStoryMode: (m: StoryMode) => void;
+  setNarrative: (n: Partial<{ page: number; turning: boolean }>) => void;
   setHotspot: (id: string | null) => void;
   setGamePhase: (p: GamePhase) => void;
   recordGame: (missionId: string, score: number, passed: boolean) => void;
@@ -51,10 +54,10 @@ interface AppState extends Progress {
  * Deep links: ?stage=hardware&mission=apollo11&hotspot=lrrr&game=intro&mode=archival
  * Read once at startup (sharing a chapter, review captures). Invalid values are ignored.
  */
-function initialFromUrl(): Partial<Pick<AppState, 'stage' | 'missionId' | 'activeHotspot' | 'gamePhase' | 'storyMode'>> {
+function initialFromUrl(): Partial<Pick<AppState, 'stage' | 'missionId' | 'activeHotspot' | 'gamePhase' | 'storyMode' | 'narrative'>> {
   try {
     const q = new URLSearchParams(window.location.search);
-    const out: Partial<Pick<AppState, 'stage' | 'missionId' | 'activeHotspot' | 'gamePhase' | 'storyMode'>> = {};
+    const out: Partial<Pick<AppState, 'stage' | 'missionId' | 'activeHotspot' | 'gamePhase' | 'storyMode' | 'narrative'>> = {};
     const stage = q.get('stage') as Stage | null;
     if (stage && ['archive', 'story', 'hardware', 'reward', 'badges'].includes(stage)) out.stage = stage;
     const m = missions.find((x) => x.id === q.get('mission'));
@@ -65,6 +68,14 @@ function initialFromUrl(): Partial<Pick<AppState, 'stage' | 'missionId' | 'activ
       const h = q.get('hotspot');
       if (h && mm.hotspots.some((x) => x.id === h)) out.activeHotspot = h;
       if (q.get('game') === 'intro') out.gamePhase = 'intro';
+    }
+    const issue = Number(q.get('issue'));
+    const im = missions.find((x) => x.issueNumber === issue);
+    if (im) {
+      out.missionId = im.id;
+      if (!out.stage || out.stage === 'archive') out.stage = 'story';
+      const page = Number(q.get('page'));
+      if (page >= 1) out.narrative = { page: page - 1, turning: false };
     }
     const mode = q.get('mode');
     if (mode === 'archival' || mode === 'illustrated') out.storyMode = mode;
@@ -113,6 +124,7 @@ export const useAppStore = create<AppState>()(
       soundOn: false,
       focusedMissionId: null,
       divingTo: null,
+      narrative: { page: 0, turning: false },
       ...fromUrl,
 
       go: (stage, missionId) => {
@@ -125,6 +137,7 @@ export const useAppStore = create<AppState>()(
           activeHotspot: null,
           gamePhase: 'closed',
           divingTo: null,
+          narrative: resolved !== s.missionId ? { page: 0, turning: false } : { ...s.narrative, turning: false },
           issuesOpened:
             needsMission && resolved && !s.issuesOpened.includes(resolved) ? [...s.issuesOpened, resolved] : s.issuesOpened,
         }));
@@ -133,6 +146,7 @@ export const useAppStore = create<AppState>()(
       openMission: (missionId) => get().go('story', missionId),
 
       setStoryMode: (storyMode) => set({ storyMode }),
+      setNarrative: (n) => set((s) => ({ narrative: { ...s.narrative, ...n } })),
 
       setHotspot: (id) =>
         set((s) => {
