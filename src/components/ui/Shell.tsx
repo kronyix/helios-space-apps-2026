@@ -4,15 +4,18 @@ import { HeliosMark } from './HeliosMark';
 import { IconBook, IconCube, IconGamepad, IconGlobe, IconMute, IconSound, IconSpark, IconTrophy } from './Icons';
 import { setSoundEnabled, blip } from '../../lib/audio';
 import type { ReactNode } from 'react';
+import { useT } from '../../i18n/useT';
+import { LANGUAGES } from '../../i18n/languages';
 
 type NavId = 'archive' | 'story' | 'hardware' | 'games' | 'badges';
 
+/** `label` is a key in src/data/locales/<lang>/ui.json. */
 const NAV: { id: NavId; label: string; icon: ReactNode }[] = [
-  { id: 'archive', label: 'Archive', icon: <IconGlobe size={22} /> },
-  { id: 'story', label: 'Story', icon: <IconBook size={22} /> },
-  { id: 'hardware', label: 'Hardware', icon: <IconCube size={22} /> },
-  { id: 'games', label: 'Games', icon: <IconGamepad size={22} /> },
-  { id: 'badges', label: 'Badges', icon: <IconTrophy size={22} /> },
+  { id: 'archive', label: 'nav.archive', icon: <IconGlobe size={22} /> },
+  { id: 'story', label: 'nav.story', icon: <IconBook size={22} /> },
+  { id: 'hardware', label: 'nav.hardware', icon: <IconCube size={22} /> },
+  { id: 'games', label: 'nav.games', icon: <IconGamepad size={22} /> },
+  { id: 'badges', label: 'nav.badges', icon: <IconTrophy size={22} /> },
 ];
 
 function useNavActive(): NavId {
@@ -38,6 +41,7 @@ export function navigate(id: NavId) {
 
 /** Desktop: vertical rail on the left. Mobile: bottom tab bar. */
 export function NavRail() {
+  const t = useT();
   const active = useNavActive();
   const missionId = useAppStore((s) => s.missionId);
   const opened = useAppStore((s) => s.issuesOpened.length);
@@ -46,7 +50,7 @@ export function NavRail() {
 
   return (
     <nav
-      aria-label="Primary"
+      aria-label={t('nav.primary')}
       className="fixed z-40 flex border-[var(--color-line)] bg-[rgb(9_9_12/0.88)] backdrop-blur-md
         inset-x-0 bottom-0 h-[calc(64px+var(--safe-b))] pb-[var(--safe-b)] border-t
         min-[900px]:inset-y-0 min-[900px]:left-0 min-[900px]:right-auto min-[900px]:h-auto min-[900px]:w-[var(--rail-w)] min-[900px]:flex-col min-[900px]:border-t-0 min-[900px]:border-r min-[900px]:pb-0"
@@ -55,7 +59,7 @@ export function NavRail() {
         type="button"
         onClick={() => navigate('archive')}
         className="hidden min-[900px]:flex flex-col items-center gap-3 pt-9 pb-10 text-[var(--color-fg-2)] hover:text-[var(--color-fg)]"
-        aria-label="Team Helios · back to the archive"
+        aria-label={t('nav.home')}
       >
         <HeliosMark />
         <span className="font-mono text-[10px] tracking-[0.32em]">HELIOS</span>
@@ -78,7 +82,7 @@ export function NavRail() {
                   className={`absolute bg-[var(--accent)] transition-opacity top-0 inset-x-6 h-[2px] min-[900px]:inset-x-auto min-[900px]:left-0 min-[900px]:inset-y-3 min-[900px]:h-auto min-[900px]:w-[3px] ${on ? 'opacity-100' : 'opacity-0'}`}
                 />
                 {n.icon}
-                <span>{n.label}</span>
+                <span>{t(n.label)}</span>
               </button>
             </li>
           );
@@ -91,9 +95,9 @@ export function NavRail() {
           navigate('badges');
           window.setTimeout(() => document.getElementById('credits')?.scrollIntoView({ block: 'start' }), 450);
         }}
-        className="mt-auto hidden min-h-[44px] font-mono text-[10px] tracking-[0.24em] text-fg-3 hover:text-fg min-[900px]:block"
+        className="mt-auto hidden min-h-[44px] font-mono text-[10px] tracking-[0.24em] uppercase text-fg-3 hover:text-fg min-[900px]:block"
       >
-        CREDITS
+        {t('nav.credits')}
       </button>
       <div className="hidden flex-col items-center gap-2 pb-8 min-[900px]:flex">
         <div
@@ -107,9 +111,9 @@ export function NavRail() {
             boxShadow: '0 0 30px -6px rgb(var(--accent-rgb) / 0.5)',
           }}
         />
-        <span className="text-[13px] text-[var(--color-fg)]">{m ? (body === 'moon' ? 'Moon' : 'Mars') : 'Archive'}</span>
-        <span className="font-mono text-[10px] tracking-[0.2em] text-[var(--color-fg-3)]">
-          {m ? `ISSUE ${String(m.issueNumber).padStart(2, '0')}` : `${opened} / ${missions.length} ISSUES`}
+        <span className="text-[13px] text-[var(--color-fg)]">{m ? t(body === 'moon' ? 'body.moon' : 'body.mars') : t('nav.archive')}</span>
+        <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[var(--color-fg-3)]">
+          {m ? t('nav.issue', { n: String(m.issueNumber).padStart(2, '0') }) : t('nav.issuesCount', { opened, total: missions.length })}
         </span>
         <span className="relative mt-1 h-[2px] w-16 overflow-hidden rounded bg-[var(--color-line-2)]" aria-hidden="true">
           <span
@@ -123,19 +127,20 @@ export function NavRail() {
 }
 
 const STATES: { id: Exclude<Stage, 'badges'>; roman: string; label: string }[] = [
-  { id: 'archive', roman: 'I', label: 'Archive' },
-  { id: 'story', roman: 'II', label: 'Story' },
-  { id: 'hardware', roman: 'III', label: 'Hardware' },
-  { id: 'reward', roman: 'IV', label: 'Transmission' },
+  { id: 'archive', roman: 'I', label: 'nav.archive' },
+  { id: 'story', roman: 'II', label: 'nav.story' },
+  { id: 'hardware', roman: 'III', label: 'nav.hardware' },
+  { id: 'reward', roman: 'IV', label: 'nav.transmission' },
 ];
 
 /** Roman-numeral state track at the bottom of the page. */
 export function StateTrack() {
+  const t = useT();
   const stage = useAppStore((s) => s.stage);
   const go = useAppStore((s) => s.go);
   const idx = STATES.findIndex((s) => s.id === stage);
   return (
-    <nav aria-label="Chapter" className="hidden min-[900px]:block">
+    <nav aria-label={t('nav.chapter')} className="hidden min-[900px]:block">
       <ol className="flex items-center gap-5 font-mono text-[11px] tracking-[0.22em] uppercase">
         {STATES.map((s, i) => {
           const on = s.id === stage;
@@ -148,7 +153,7 @@ export function StateTrack() {
                 onClick={() => go(s.id)}
                 className={`min-h-[44px] px-1 transition-colors ${on ? 'text-[var(--accent)]' : done ? 'text-[var(--color-fg-2)]' : 'text-[var(--color-fg-3)] hover:text-[var(--color-fg)]'}`}
               >
-                {s.roman} · {s.label}
+                {s.roman} · {t(s.label)}
               </button>
               {i === 0 && <span aria-hidden="true" className="h-px flex-1 bg-gradient-to-r from-[rgb(var(--accent-rgb)/0.6)] to-transparent" />}
             </li>
@@ -160,6 +165,7 @@ export function StateTrack() {
 }
 
 export function SoundToggle() {
+  const t = useT();
   const on = useAppStore((s) => s.soundOn);
   const set = useAppStore((s) => s.setSound);
   return (
@@ -167,7 +173,7 @@ export function SoundToggle() {
       type="button"
       className="btn-icon h-12 w-12"
       aria-pressed={on}
-      aria-label={on ? 'Turn sound off' : 'Turn sound on'}
+      aria-label={t(on ? 'sound.off' : 'sound.on')}
       onClick={() => {
         setSoundEnabled(!on);
         set(!on);
@@ -191,7 +197,27 @@ export function TopRight({ status }: { status: ReactNode }) {
   return (
     <div className="flex items-center gap-3">
       <StatusPill>{status}</StatusPill>
+      <LanguageSelect />
       <SoundToggle />
     </div>
+  );
+}
+
+/** Site-wide language (text + narration). Options show each language's own name. */
+export function LanguageSelect() {
+  const t = useT();
+  const lang = useAppStore((s) => s.lang);
+  const setLang = useAppStore((s) => s.setLang);
+  return (
+    <label className="lang-select">
+      <span className="sr-only">{t('lang.label')}</span>
+      <select value={lang} onChange={(e) => setLang(e.target.value)}>
+        {LANGUAGES.map((l) => (
+          <option key={l.code} value={l.code} lang={l.bcp47}>
+            {l.nativeName}
+          </option>
+        ))}
+      </select>
+    </label>
   );
 }

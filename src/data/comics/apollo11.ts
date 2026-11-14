@@ -390,4 +390,4 @@ const ISSUE_02_PANELS: ComicPanel[] = [
   },
 ];
 
-export const ISSUE_02: ComicIssue = { meta: ISSUE_02_META, panels: ISSUE_02_PANELS };
+export const ISSUE_02: ComicIssue = { missionId: 'apollo11', meta: ISSUE_02_META, panels: ISSUE_02_PANELS };

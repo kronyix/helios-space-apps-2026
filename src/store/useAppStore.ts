@@ -21,6 +21,18 @@ interface Progress {
   transmissionsRead: string[];
 }
 
+export type NarrationRate = 0.75 | 1 | 1.25;
+
+function initialLang(): string | null {
+  try {
+    const l = new URLSearchParams(window.location.search).get('lang');
+    return l && /^[a-z]{2,3}(-[A-Za-z]{2,4})?$/.test(l) ? l : null;
+  } catch {
+    return null;
+  }
+}
+const urlLang = initialLang();
+
 interface AppState extends Progress {
   stage: Stage;
   missionId: string | null;
@@ -31,6 +43,17 @@ interface AppState extends Progress {
   gamePhase: GamePhase;
   lastScore: number | null;
   soundOn: boolean;
+  /** Narration & language (lang, narrationOn, rate, textOnly, langPromptSeen are persisted). */
+  lang: string;
+  narrationOn: boolean;
+  autoAdvance: boolean;
+  rate: NarrationRate;
+  readAlong: boolean;
+  /** Text only: no voice and no read-along highlight (for screen-reader users). */
+  textOnly: boolean;
+  langPromptSeen: boolean;
+  /** Line currently being narrated (`<panelId>:<lineId>`), or null. */
+  currentLineId: string | null;
   /** Globe focus while on the archive (does not change stage). */
   focusedMissionId: string | null;
   /** Mission whose beacon the camera is currently diving into. */
@@ -45,6 +68,9 @@ interface AppState extends Progress {
   recordGame: (missionId: string, score: number, passed: boolean) => void;
   markTransmission: (missionId: string) => void;
   setSound: (on: boolean) => void;
+  setLang: (lang: string) => void;
+  setNarration: (n: Partial<Pick<AppState, 'narrationOn' | 'autoAdvance' | 'rate' | 'readAlong' | 'textOnly' | 'langPromptSeen'>>) => void;
+  setCurrentLine: (id: string | null) => void;
   setFocused: (id: string | null) => void;
   setDiving: (id: string | null) => void;
   resetProgress: () => void;
@@ -122,6 +148,14 @@ export const useAppStore = create<AppState>()(
       gamePhase: 'closed',
       lastScore: null,
       soundOn: false,
+      lang: 'en',
+      narrationOn: true,
+      autoAdvance: false,
+      rate: 1,
+      readAlong: true,
+      textOnly: false,
+      langPromptSeen: false,
+      currentLineId: null,
       focusedMissionId: null,
       divingTo: null,
       narrative: { page: 0, turning: false },
@@ -184,6 +218,9 @@ export const useAppStore = create<AppState>()(
         ),
 
       setSound: (soundOn) => set({ soundOn }),
+      setLang: (lang) => set({ lang, langPromptSeen: true, currentLineId: null }),
+      setNarration: (n) => set(n),
+      setCurrentLine: (currentLineId) => set({ currentLineId }),
       setFocused: (focusedMissionId) => set({ focusedMissionId }),
       setDiving: (divingTo) => set({ divingTo }),
       resetProgress: () => set({ ...emptyProgress }),
@@ -191,7 +228,7 @@ export const useAppStore = create<AppState>()(
     {
       name: 'helios-progress-v1',
       storage: safeStorage,
-      merge: (persisted, current) => ({ ...current, ...(persisted as object), ...(fromUrl.storyMode ? { storyMode: fromUrl.storyMode } : {}) }),
+      merge: (persisted, current) => ({ ...current, ...(persisted as object), ...(fromUrl.storyMode ? { storyMode: fromUrl.storyMode } : {}), ...(urlLang ? { lang: urlLang } : {}) }),
       partialize: (s) => ({
         issuesOpened: s.issuesOpened,
         hotspotsSeen: s.hotspotsSeen,
@@ -199,6 +236,12 @@ export const useAppStore = create<AppState>()(
         artifacts: s.artifacts,
         transmissionsRead: s.transmissionsRead,
         storyMode: s.storyMode,
+        lang: s.lang,
+        narrationOn: s.narrationOn,
+        rate: s.rate,
+        readAlong: s.readAlong,
+        textOnly: s.textOnly,
+        langPromptSeen: s.langPromptSeen,
       }),
     },
   ),

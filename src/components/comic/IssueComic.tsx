@@ -6,24 +6,34 @@ import {
   getStagePhotos,
   type ComicIssue,
   type ComicPanel,
-  type Line,
   type PanelBreakpoints,
   type Photo,
 } from '../../data/comics/opportunity-spirit';
 import { dur, ease } from '../../lib/motion';
 import { useReducedMotion } from '../../lib/useReducedMotion';
 import { IconArrowLeft, IconArrowRight, IconClose } from '../ui/Icons';
+import { useAppStore } from '../../store/useAppStore';
+import { useLocaleDict, type MissionsDict } from '../../i18n/locales';
+import { localizeIssue, type LocalizedPanel, type NarratedLine } from '../../i18n/comic';
+import { useT } from '../../i18n/useT';
+import { useNarrationPlayer } from '../../narration/useNarrationPlayer';
+import { NarrationBar } from './NarrationBar';
 
 export interface IssueComicProps {
   issue: ComicIssue;
   onContinue: () => void;
 }
 
-function formatPhotoLabel(photo: Photo): string {
-  if (photo.kind === 'falsecolor') return 'NASA photo · false color';
-  if (photo.kind === 'infographic') return 'NASA infographic';
-  if (photo.kind === 'map') return 'NASA map';
-  return 'NASA photo';
+const PHOTO_KIND_KEY: Record<Photo['kind'], string> = {
+  photo: 'comic.photo',
+  falsecolor: 'comic.photoFalseColor',
+  infographic: 'comic.infographic',
+  map: 'comic.map',
+};
+
+function PhotoKindLabel({ photo }: { photo: Photo }) {
+  const t = useT();
+  return <>{t(PHOTO_KIND_KEY[photo.kind] ?? 'comic.photo')}</>;
 }
 
 function CameraSmallIcon() {
@@ -46,6 +56,26 @@ function CameraSmallIcon() {
   );
 }
 
+/** Read-along highlight for the line being narrated: soft glow, or a plain outline with reduced motion. */
+function useReading(lineId: string, reduced: boolean): 'glow' | 'outline' | undefined {
+  const on = useAppStore((s) => s.readAlong && s.currentLineId === lineId);
+  return on ? (reduced ? 'outline' : 'glow') : undefined;
+}
+
+function LegacyCaption({ line, reduced }: { line: NarratedLine; reduced: boolean }) {
+  return (
+    <div
+      className="issue-caption issue-caption--compact"
+      data-line-id={line.id}
+      data-as-of={line.asOf}
+      data-reading={useReading(line.id, reduced)}
+      lang={line.textLang}
+    >
+      <p className="issue-caption__text">{line.text}</p>
+    </div>
+  );
+}
+
 function CaptionLine({
   line,
   lineIdx,
@@ -54,13 +84,14 @@ function CaptionLine({
   fadesOnDevelop,
   reduced,
 }: {
-  line: Line;
+  line: NarratedLine;
   lineIdx: number;
   bp: PanelBreakpoints;
   p: MotionValue<number>;
   fadesOnDevelop: boolean;
   reduced: boolean;
 }) {
+  const reading = useReading(line.id, reduced);
   const win = bp.lineWindows[lineIdx] ?? { start: 0, peak: 0.08, end: 0.5 };
   const fadeOutStart = bp.developStart;
   const fadeOutEnd = bp.developStart + Math.max(0.04, (bp.developEnd - bp.developStart) * 0.45);
@@ -93,6 +124,8 @@ function CaptionLine({
       className="issue-caption"
       data-line-id={line.id}
       data-as-of={line.asOf}
+      data-reading={reading}
+      lang={line.textLang}
     >
       <p className="issue-caption__text">{line.text}</p>
     </motion.div>
@@ -108,7 +141,7 @@ function SpeechBalloon({
   hasIntroBanner,
   reduced,
 }: {
-  line: Line;
+  line: NarratedLine;
   lineIdx: number;
   bp: PanelBreakpoints;
   p: MotionValue<number>;
@@ -116,6 +149,7 @@ function SpeechBalloon({
   hasIntroBanner: boolean;
   reduced: boolean;
 }) {
+  const reading = useReading(line.id, reduced);
   const win = bp.lineWindows[lineIdx] ?? { start: 0.2, peak: 0.3, end: 0.65 };
   const fadeOutStart = bp.developStart;
   const fadeOutEnd = bp.developStart + Math.max(0.04, (bp.developEnd - bp.developStart) * 0.45);
@@ -162,6 +196,8 @@ function SpeechBalloon({
       className="issue-balloon"
       data-tail={line.tail ?? (isRightSide ? 'bottom-left' : 'bottom-right')}
       data-line-id={line.id}
+      data-reading={reading}
+      lang={line.textLang}
     >
       {line.speaker && <span className="issue-balloon__speaker">{line.speaker}</span>}
       <p className="issue-balloon__text">{line.text}</p>
@@ -312,6 +348,16 @@ function StagePhotoSlide({
   );
 }
 
+/** Shown on a panel whose translation is missing, so it reads (and is voiced) in English. */
+function EnTag() {
+  const t = useT();
+  return (
+    <span className="issue-en-tag" lang="en" title={t('comic.enTag')}>
+      EN<span className="sr-only"> · {t('comic.enTag')}</span>
+    </span>
+  );
+}
+
 function PanelSection({
   panel,
   index,
@@ -326,7 +372,7 @@ function PanelSection({
   creditsNote,
 }: {
   creditsNote: string;
-  panel: ComicPanel;
+  panel: LocalizedPanel;
   index: number;
   total: number;
   priority: boolean;
@@ -456,8 +502,8 @@ function PanelSection({
   const speeches = panel.lines.filter((l) => l.kind === 'speech');
   const fadesLinesOnDevelop = hasPhotos && !isRealOnly;
 
-  const artNatureText =
-    panel.imageNature === 'imagined' ? 'Illustration · imagined' : 'Illustration';
+  const t = useT();
+  const artNatureText = t(panel.imageNature === 'imagined' ? 'comic.illustrationImagined' : 'comic.illustration');
 
   return (
     <section
@@ -466,7 +512,7 @@ function PanelSection({
         registerRef(index, el);
       }}
       id={panel.id}
-      aria-label={`Panel ${index + 1} of ${total}: ${panel.stamp}`}
+      aria-label={t('comic.panel', { n: index + 1, total, stamp: panel.stamp })}
       tabIndex={0}
       data-panel-id={panel.id}
       data-panel-index={index + 1}
@@ -551,14 +597,7 @@ function PanelSection({
                 >
                   <div className="issue-legacy-closing__captions">
                     {captions.map((line) => (
-                      <div
-                        key={line.id}
-                        className="issue-caption issue-caption--compact"
-                        data-line-id={line.id}
-                        data-as-of={line.asOf}
-                      >
-                        <p className="issue-caption__text">{line.text}</p>
-                      </div>
+                      <LegacyCaption key={line.id} line={line} reduced={reduced} />
                     ))}
                   </div>
                   <span className="issue-credits-note">{creditsNote}</span>
@@ -585,7 +624,7 @@ function PanelSection({
                             onOpenGallery(panel, activePhotoIdx, e.currentTarget);
                           }}
                         >
-                          +{extraPhotosCount} more {extraPhotosCount === 1 ? 'photo' : 'photos'}
+                          {t(extraPhotosCount === 1 ? 'comic.morePhotos.one' : 'comic.morePhotos.other', { n: extraPhotosCount })}
                         </button>
                       )}
                     </div>
@@ -594,7 +633,7 @@ function PanelSection({
                       <div
                         className="issue-photo-dots"
                         role="status"
-                        aria-label={`Photo ${activePhotoIdx + 1} of ${stagePhotos.length}`}
+                        aria-label={t('comic.photoOf', { n: activePhotoIdx + 1, total: stagePhotos.length })}
                       >
                         {stagePhotos.map((ph, dotIdx) => (
                           <span
@@ -614,7 +653,7 @@ function PanelSection({
                           className="btn-primary issue-continue-btn"
                           onClick={onContinue}
                         >
-                          Continue <IconArrowRight size={18} />
+                          {t('comic.continue')} <IconArrowRight size={18} />
                         </button>
                       )}
                     </div>
@@ -651,6 +690,7 @@ function PanelSection({
           <div className="issue-panel__topbar">
             <div className="issue-panel__top-left">
               <span className="issue-stamp">{panel.stamp}</span>
+              {panel.untranslated && <EnTag />}
               {panel.introBanner && (
                 <motion.div style={{ opacity: artLabelOpacity }} className="issue-intro-banner">
                   <span className="issue-intro-banner__title">{panel.introBanner.title}</span>
@@ -677,7 +717,9 @@ function PanelSection({
                 >
                   <span className="issue-top-label issue-top-label--photo">
                     <CameraSmallIcon />
-                    <span>{formatPhotoLabel(currentPhoto)}</span>
+                    <span>
+                      <PhotoKindLabel photo={currentPhoto} />
+                    </span>
                   </span>
                 </motion.div>
               )}
@@ -738,6 +780,7 @@ function PhotoGalleryModal({
   reduced: boolean;
   onClose: () => void;
 }) {
+  const t = useT();
   const photos = panel.photos;
   const total = photos.length;
   const [index, setIndex] = useState(() => Math.max(0, Math.min(total - 1, initialIndex)));
@@ -834,7 +877,7 @@ function PhotoGalleryModal({
       ref={modalRef}
       role="dialog"
       aria-modal="true"
-      aria-label={`NASA photo gallery for ${panel.stamp}`}
+      aria-label={t('comic.gallery', { stamp: panel.stamp })}
       className="issue-gallery"
       onClick={onClose}
     >
@@ -846,7 +889,7 @@ function PhotoGalleryModal({
           <span className="issue-gallery__sep" aria-hidden="true">
             ·
           </span>
-          <span className="issue-gallery__kind">{formatPhotoLabel(current)}</span>
+          <span className="issue-gallery__kind"><PhotoKindLabel photo={current} /></span>
         </div>
 
         <div className="issue-gallery__top-actions">
@@ -862,7 +905,7 @@ function PhotoGalleryModal({
             ref={closeBtnRef}
             type="button"
             onClick={onClose}
-            aria-label="Close photo gallery"
+            aria-label={t('comic.galleryClose')}
             className="issue-gallery__close"
           >
             <IconClose size={20} />
@@ -891,7 +934,7 @@ function PhotoGalleryModal({
           <button
             type="button"
             onClick={goPrev}
-            aria-label="Previous photo"
+            aria-label={t('comic.prevPhoto')}
             className="issue-gallery__nav issue-gallery__nav--prev"
           >
             <IconArrowLeft size={20} />
@@ -957,7 +1000,7 @@ function PhotoGalleryModal({
           <button
             type="button"
             onClick={goNext}
-            aria-label="Next photo"
+            aria-label={t('comic.nextPhoto')}
             className="issue-gallery__nav issue-gallery__nav--next"
           >
             <IconArrowRight size={20} />
@@ -992,7 +1035,16 @@ function PhotoGalleryModal({
 
 export function IssueComic({ issue, onContinue }: IssueComicProps) {
   const reduced = useReducedMotion();
-  const panels = issue.panels;
+  const t = useT();
+  const lang = useAppStore((s) => s.lang);
+  const dict = useLocaleDict<MissionsDict>('missions', lang);
+  const textReady = lang === 'en' || dict !== undefined;
+  const issueWord = t('comic.issue').toLocaleUpperCase();
+  const localized = useMemo(
+    () => localizeIssue(issue, lang, lang === 'en' ? undefined : dict, issueWord),
+    [issue, lang, dict, issueWord],
+  );
+  const panels = localized.panels;
   const total = panels.length;
 
   const [playing, setPlaying] = useState(false);
@@ -1098,7 +1150,53 @@ export function IssueComic({ issue, onContinue }: IssueComicProps) {
     [reduced, total],
   );
 
+  /** Scrolls just enough that a narrated line is on screen (never past its fade-out). */
+  const revealLine = useCallback(
+    (panelIdx: number, lineIdx: number) => {
+      const el = sectionRefs.current[panelIdx];
+      const panel = panels[panelIdx];
+      if (!el || !panel) return;
+      const scrollable = Math.max(1, el.offsetHeight - window.innerHeight);
+      const localP = ((window.scrollY || 0) - el.offsetTop) / scrollable;
+      let target = 0;
+      if (panel.art) {
+        const w = getPanelBreakpoints(panel).lineWindows[lineIdx];
+        if (!w) return;
+        if (localP >= w.peak && localP <= w.end) return;
+        target = Math.min(w.end, w.peak + 0.01);
+      } else if (localP <= 0.02) {
+        return; // real-only closing panel: captions sit at the very top
+      }
+      window.scrollTo({ top: el.offsetTop + scrollable * target, behavior: reduced ? 'auto' : 'smooth' });
+    },
+    [panels, reduced],
+  );
+
+  const narration = useNarrationPlayer({
+    missionId: issue.missionId ?? '',
+    panels,
+    activeIndex,
+    ready: textReady,
+    reduced,
+    revealLine,
+    jumpToPanel,
+  });
+  const { narrating, canNarrate } = narration;
+  const stopNarration = narration.stop;
+  const toggleNarration = narration.toggle;
+
   // Stop Play mode immediately on any manual user wheel or touch scroll
+  useEffect(() => {
+    if (!narrating) return;
+    const stopOnUserScroll = () => stopNarration();
+    window.addEventListener('wheel', stopOnUserScroll, { passive: true });
+    window.addEventListener('touchmove', stopOnUserScroll, { passive: true });
+    return () => {
+      window.removeEventListener('wheel', stopOnUserScroll);
+      window.removeEventListener('touchmove', stopOnUserScroll);
+    };
+  }, [narrating, stopNarration]);
+
   useEffect(() => {
     if (!playing) return;
     const pauseOnUserScroll = () => setPlaying(false);
@@ -1112,6 +1210,21 @@ export function IssueComic({ issue, onContinue }: IssueComicProps) {
     };
   }, [playing]);
 
+  /** One Play control: reads the panel aloud when a voice exists; otherwise auto-scrolls (no audio). */
+  const togglePlay = useCallback(() => {
+    if (canNarrate) {
+      setPlaying(false);
+      toggleNarration();
+      return;
+    }
+    const doc = document.documentElement;
+    const maxScroll = Math.max(1, doc.scrollHeight - window.innerHeight);
+    if (!playing && (window.scrollY || 0) >= maxScroll - 16) {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    }
+    setPlaying((prev) => !prev);
+  }, [canNarrate, toggleNarration, playing]);
+
   // Keyboard controls when gallery is closed: Space pauses during play; Left/Right jump panels; Esc stops play
   useEffect(() => {
     if (galleryState) return;
@@ -1119,14 +1232,16 @@ export function IssueComic({ issue, onContinue }: IssueComicProps) {
       const target = e.target as HTMLElement | null;
       const onInteractive = Boolean(target?.closest?.('button, a, input, textarea, select'));
 
-      if (e.key === 'Escape' && playing) {
+      if (e.key === 'Escape' && (playing || narrating)) {
         e.preventDefault();
         setPlaying(false);
+        if (narrating) stopNarration();
         return;
       }
-      if (e.key === ' ' && playing && !onInteractive) {
+      // Space plays/pauses: narration when a voice is available, otherwise the auto-scroll.
+      if (e.key === ' ' && !onInteractive && (canNarrate || playing)) {
         e.preventDefault();
-        setPlaying(false);
+        togglePlay();
         return;
       }
       if (e.key === 'ArrowRight' && !onInteractive) {
@@ -1151,7 +1266,7 @@ export function IssueComic({ issue, onContinue }: IssueComicProps) {
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [activeIndex, galleryState, jumpToPanel, playing]);
+  }, [activeIndex, canNarrate, galleryState, jumpToPanel, narrating, playing, stopNarration, togglePlay]);
 
   // Play mode auto-scroller over scroll progress p (single source of truth)
   useEffect(() => {
@@ -1251,15 +1366,6 @@ export function IssueComic({ issue, onContinue }: IssueComicProps) {
     return () => cancelAnimationFrame(raf);
   }, [activeIndex, galleryState, panels, playing, reduced, total]);
 
-  const togglePlay = useCallback(() => {
-    const doc = document.documentElement;
-    const maxScroll = Math.max(1, doc.scrollHeight - window.innerHeight);
-    if (!playing && (window.scrollY || 0) >= maxScroll - 16) {
-      window.scrollTo({ top: 0, behavior: 'auto' });
-    }
-    setPlaying((prev) => !prev);
-  }, [playing]);
-
   const ringRadius = 24;
   const ringCircumference = 2 * Math.PI * ringRadius;
   const ringDashOffset = ringCircumference * (1 - globalProgress);
@@ -1268,8 +1374,16 @@ export function IssueComic({ issue, onContinue }: IssueComicProps) {
     <button
       type="button"
       onClick={togglePlay}
-      aria-label={playing ? 'Pause story' : 'Play story'}
-      aria-pressed={playing}
+      aria-label={
+        canNarrate
+          ? narrating
+            ? t('narration.pause')
+            : t('narration.play')
+          : playing
+            ? t('story.pause')
+            : t('story.play')
+      }
+      aria-pressed={canNarrate ? narrating : playing}
       className="issue-play-btn"
       style={{
         transition: `transform ${dur.fast}s cubic-bezier(${ease.out.join(',')}), box-shadow ${dur.fast}s`,
@@ -1305,7 +1419,7 @@ export function IssueComic({ issue, onContinue }: IssueComicProps) {
       </svg>
 
       <span className="issue-play-btn__icon" aria-hidden="true">
-        {playing ? (
+        {playing || narrating ? (
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
             <rect x="6" y="5" width="4.5" height="14" rx="1" />
             <rect x="13.5" y="5" width="4.5" height="14" rx="1" />
@@ -1320,7 +1434,7 @@ export function IssueComic({ issue, onContinue }: IssueComicProps) {
   );
 
   return (
-    <div className="issue-comic" data-playing={playing ? 'true' : 'false'}>
+    <div className="issue-comic" data-playing={playing || narrating ? 'true' : 'false'} lang={lang === 'en' ? undefined : lang}>
       {panels.map((panel, idx) => (
         <div key={panel.id} className="issue-comic__item">
           <PanelSection
@@ -1336,7 +1450,7 @@ export function IssueComic({ issue, onContinue }: IssueComicProps) {
             onOpenGallery={handleOpenGallery}
             onContinue={idx === total - 1 ? onContinue : undefined}
             registerRef={registerRef}
-            creditsNote={issue.meta.creditsNote}
+            creditsNote={localized.meta.creditsNote}
           />
           {panel.id === 'p05' && (
             /* TODO(handoff): game entry point */
@@ -1345,7 +1459,15 @@ export function IssueComic({ issue, onContinue }: IssueComicProps) {
         </div>
       ))}
 
-      {typeof document !== 'undefined' ? createPortal(playButton, document.body) : playButton}
+      {typeof document !== 'undefined'
+        ? createPortal(
+            <>
+              <NarrationBar status={narration.status} total={total} />
+              {playButton}
+            </>,
+            document.body,
+          )
+        : playButton}
 
       {galleryState &&
         (typeof document !== 'undefined'

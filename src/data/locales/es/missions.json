@@ -1,0 +1,249 @@
+{
+  "opportunity": {
+    "meta": {
+      "title": "LOS RÓVERES DE 90 DÍAS",
+      "disclaimer": "Los globos de diálogo son una dramatización (narración ficticia). Los recuadros de texto son historia documentada.",
+      "creditsNote": "Fechas según NASA Science (hora del Pacífico de EE. UU.); en UTC, los aterrizajes fueron un día después."
+    },
+    "comic": {
+      "p01": {
+        "stamp": "SPIRIT · CRÁTER GUSEV · 3 ENE 2004",
+        "lines": {
+          "p01-c1": "Enero de 2004. Dos robots gemelos idénticos viajan a lados opuestos de Marte para buscar señales de agua del pasado. Spirit aterriza primero, protegido por bolsas de aire, en el cráter Gusev.",
+          "p01-s1": "Bote... bote... bote... ¿lo logramos?"
+        }
+      },
+      "p02": {
+        "stamp": "OPPORTUNITY · MERIDIANI PLANUM · 24 ENE 2004",
+        "lines": {
+          "p02-c1": "Tres semanas después, Opportunity aterriza en Meridiani Planum, donde los minerales sugerían un pasado húmedo. Ambos róveres estaban planeados para solo 90 soles, unos tres meses.",
+          "p02-s1": "Noventa soles. Esa es la promesa. Hagamos que cada uno cuente."
+        }
+      },
+      "p03": {
+        "stamp": "SPIRIT · CRÁTER GUSEV",
+        "lines": {
+          "p03-c1": "Más adelante en la misión, una de las seis ruedas de Spirit dejó de girar. El equipo siguió conduciendo, arrastrando la rueda atascada.",
+          "p03-s1": "Una rueda me abandonó. Me quedan cinco, y tengo adónde ir."
+        }
+      },
+      "p04": {
+        "stamp": "SPIRIT · HOME PLATE · MARZO 2007",
+        "lines": {
+          "p04-c1": "Marzo de 2007. La rueda que arrastra Spirit levanta un suelo brillante: sílice pura en un 90 % aproximadamente, en un lugar llamado Home Plate. En la Tierra, la sílice así se forma en fuentes termales y respiraderos de vapor.",
+          "p04-s1": "¡Mi rueda rota acaba de desenterrar una pista!"
+        }
+      },
+      "p05": {
+        "stamp": "OPPORTUNITY · CERCA DEL CRÁTER FRAM · ABRIL 2004",
+        "lines": {
+          "p05-c1": "Abril de 2004. Opportunity examina diminutos granos redondos de hematita, un mineral que suele formarse en el agua. Los científicos los apodaron «arándanos».",
+          "p05-s1": "Esferas diminutas por todas partes. ¡Las rocas están hablando!"
+        }
+      },
+      "p06": {
+        "stamp": "OPPORTUNITY · MERIDIANI PLANUM",
+        "lines": {
+          "p06-c1": "Las pistas encajaban: agua antigua empapó Meridiani Planum. Pero era salada y ácida, un lugar difícil para la vida, no un mar azul y brillante.",
+          "p06-s1": "Imagínalo: agua, justo donde estoy."
+        }
+      },
+      "p07": {
+        "stamp": "OPPORTUNITY",
+        "lines": {
+          "p07-c1": "El polvo se acumuló en los paneles solares de Opportunity. No había nadie allí para quitarlo.",
+          "p07-s1": "Si alguien pudiera barrer este polvo..."
+        }
+      },
+      "p08": {
+        "stamp": "OPPORTUNITY · 10 JUN 2018",
+        "lines": {
+          "p08-c1": "10 de junio de 2018. Una tormenta de polvo que cubre todo el planeta envuelve la zona de Opportunity. Es el último contacto del róver con la Tierra.",
+          "p08-s1": "El cielo se oscurece. Pero mira cuánto hemos visto."
+        }
+      },
+      "p09": {
+        "stamp": "SPIRIT Y OPPORTUNITY",
+        "lines": {
+          "p09-c1": "Planeado para unos tres meses, Opportunity trabajó 14 años y recorrió 28,06 millas (45,16 km). Spirit recorrió 4,8 millas (7,7 km) y terminó su misión en 2010.",
+          "p09-c2": "Opportunity tuvo el récord de distancia recorrida fuera de la Tierra hasta el 11 de octubre de 2026, cuando Perseverance lo superó.",
+          "p09-c3": "Construidos para 90 soles. Reescribieron la historia de Marte."
+        }
+      }
+    }
+  },
+  "apollo11": {
+    "meta": {
+      "title": "EL INTERCAMBIO DE PESO",
+      "disclaimer": "Los globos de diálogo son una dramatización (narración ficticia). Los recuadros de texto son historia documentada.",
+      "creditsNote": "Fechas en hora del Este de EE. UU., como las informó la NASA durante la misión."
+    },
+    "comic": {
+      "p01": {
+        "stamp": "APOLLO 11 · CENTRO ESPACIAL KENNEDY · 16 JUL 1969",
+        "lines": {
+          "p01-c1": "16 de julio de 1969. Un cohete Saturn V de 110 metros de altura despega con el Apollo 11 desde el Centro Espacial Kennedy, con tres astronautas a bordo.",
+          "p01-s1": "Plegado dentro de un cohete, rumbo a la Luna."
+        }
+      },
+      "p02": {
+        "stamp": "EAGLE Y COLUMBIA · ÓRBITA LUNAR · 20 JUL 1969",
+        "lines": {
+          "p02-c1": "20 de julio de 1969. En órbita alrededor de la Luna, el módulo lunar Eagle se separa del módulo de mando Columbia. Michael Collins se queda a bordo de Columbia.",
+          "p02-s1": "Adiós, Columbia. Déjanos la luz encendida."
+        }
+      },
+      "p03": {
+        "stamp": "EAGLE · DESCENSO PROPULSADO",
+        "lines": {
+          "p03-c1": "La computadora se dirige hacia un campo de rocas. Neil Armstrong toma el control manual y lo sobrevuela, y aterriza con muy poco combustible de sobra.",
+          "p03-s1": "¡Rocas abajo! Despacio… despacio… queda poco combustible."
+        }
+      },
+      "p04": {
+        "stamp": "EAGLE · TRANQUILITY BASE · 20 JUL 1969",
+        "lines": {
+          "p04-c1": "20 de julio de 1969. «Houston, aquí Tranquility Base. El Eagle ha aterrizado».",
+          "p04-s1": "Motor apagado. El polvo se asienta. Hemos llegado."
+        }
+      },
+      "p05": {
+        "stamp": "TRANQUILITY BASE · PRIMEROS PASOS",
+        "lines": {
+          "p05-c1": "Neil Armstrong pisa la Luna, seguido de Buzz Aldrin. En la Luna no hay viento ni lluvia que borren sus huellas.",
+          "p05-s1": "Sus primeros pasos. Aquí arriba, nada borra las huellas."
+        }
+      },
+      "p06": {
+        "stamp": "TRANQUILITY BASE · SISMÓMETRO Y RETRORREFLECTOR",
+        "lines": {
+          "p06-c1": "Aldrin instala un sismómetro para sentir los terremotos lunares, y un retrorreflector láser: un panel de 100 prismas que devuelve la luz justo al lugar de donde vino.",
+          "p06-s1": "Un espejo y un oyente. Regalos para dejar atrás."
+        }
+      },
+      "p07": {
+        "stamp": "TRANQUILITY BASE · 21,55 KG DE LUNA",
+        "lines": {
+          "p07-c1": "La tripulación recoge 21,55 kg de roca y suelo lunar y los sella en cajas para el viaje de vuelta.",
+          "p07-s1": "Cada roca que guardan es una razón para dejar algo atrás."
+        }
+      },
+      "p08": {
+        "stamp": "EAGLE · DESPEGUE DESDE LA LUNA · 21 JUL 1969",
+        "lines": {
+          "p08-c1": "21 de julio de 1969. La etapa superior del Eagle despega usando la etapa dorada de descenso como plataforma de lanzamiento. Cada kilogramo que se queda es combustible ahorrado para volver.",
+          "p08-s1": "Váyanse. Yo me quedo. Soy una buena plataforma de lanzamiento."
+        }
+      },
+      "p09": {
+        "stamp": "COLUMBIA · OCÉANO PACÍFICO · 24 JUL 1969",
+        "lines": {
+          "p09-c1": "24 de julio de 1969. Columbia amariza en el océano Pacífico, y el barco de rescate USS Hornet recoge a la tripulación y sus rocas lunares.",
+          "p09-s1": "¡Amerizaje! Veintiún kilogramos de Luna, a salvo en casa."
+        }
+      },
+      "p10": {
+        "stamp": "TRANQUILITY BASE · HOY",
+        "lines": {
+          "p10-c1": "Hoy. La etapa de descenso sigue en pie en Tranquility Base. Los observatorios de la Tierra todavía disparan láseres al retrorreflector para medir la distancia a la Luna con precisión de milímetros.",
+          "p10-s1": "Sigo aquí. Sigo devolviéndoles su luz."
+        }
+      },
+      "p11": {
+        "stamp": "APOLLO 11 · EL INTERCAMBIO DE PESO",
+        "lines": {
+          "p11-c1": "Para traer 21,55 kg de Luna a casa, el Apollo 11 dejó atrás la pesada etapa de descenso. Se convirtió en la plataforma de lanzamiento del viaje de vuelta.",
+          "p11-c2": "La luz láser disparada desde la Tierra llega al retrorreflector y vuelve en unos 2,5 segundos, y así mide la distancia a la Luna más de 50 años después.",
+          "p11-c3": "Dejado atrás a propósito. Todavía responde."
+        }
+      }
+    }
+  },
+  "ingenuity": {
+    "meta": {
+      "title": "VUELO 72",
+      "disclaimer": "Los globos de diálogo son una dramatización (narración ficticia). Los recuadros de texto son historia documentada.",
+      "creditsNote": "Fechas según la NASA (hora de EE. UU.)."
+    },
+    "comic": {
+      "p01": {
+        "stamp": "INGENUITY · CRÁTER JEZERO · 18 FEB 2021",
+        "lines": {
+          "p01-c1": "18 de febrero de 2021. Una grúa aérea baja el róver Perseverance al cráter Jezero. Plegado bajo su panza viaja Ingenuity, un helicóptero de 1,8 kg.",
+          "p01-s1": "Agárrate fuerte. Próxima parada: el cráter Jezero."
+        }
+      },
+      "p02": {
+        "stamp": "INGENUITY · CRÁTER JEZERO · 3 ABR 2021",
+        "lines": {
+          "p02-c1": "3 de abril de 2021. Perseverance deja a Ingenuity en el suelo del cráter y se aleja. Por primera vez, el helicóptero está solo.",
+          "p02-s1": "Bueno. Ahora solo yo."
+        }
+      },
+      "p03": {
+        "stamp": "INGENUITY · PRIMERA NOCHE A SOLAS",
+        "lines": {
+          "p03-c1": "Su primera noche a solas. La temperatura puede bajar a unos −90 °C, así que Ingenuity debe mantener calientes sus componentes electrónicos con la batería hasta que vuelva el Sol.",
+          "p03-s1": "Qué frío… mantén los calentadores encendidos. Espera al Sol."
+        }
+      },
+      "p04": {
+        "stamp": "INGENUITY · VUELO 1 · 19 ABR 2021",
+        "lines": {
+          "p04-c1": "19 de abril de 2021. Ingenuity se eleva 3 metros y se mantiene en el aire unos 30 segundos: el primer vuelo propulsado y controlado en otro planeta.",
+          "p04-s1": "¡Estoy volando! ¡En Marte!"
+        }
+      },
+      "p05": {
+        "stamp": "INGENUITY · EXPLORADOR PARA PERSEVERANCE",
+        "lines": {
+          "p05-c1": "Ingenuity estaba planeado para solo cinco vuelos de prueba. Tras superarlos, se convierte en explorador y vuela por delante para fotografiar la ruta del róver.",
+          "p05-s1": "Reviso el camino. ¡Sígueme!"
+        }
+      },
+      "p06": {
+        "stamp": "INGENUITY · INVIERNO MARCIANO",
+        "lines": {
+          "p06-c1": "El invierno marciano trae polvo, luz solar más débil y noches más frías. Con menos energía para recargar sus baterías, cada vuelo es más difícil.",
+          "p06-s1": "Polvo en mi panel solar. Un poquito más de sol, por favor."
+        }
+      },
+      "p07": {
+        "stamp": "INGENUITY · 72 VUELOS",
+        "lines": {
+          "p07-c1": "En casi tres años, Ingenuity vuela 72 veces, recorre unos 17 km y sube hasta 24 metros de altura.",
+          "p07-s1": "Planeado para cinco vuelos. ¡Mírame ahora!"
+        }
+      },
+      "p08": {
+        "stamp": "INGENUITY · VUELO 72 · 18 ENE 2024",
+        "lines": {
+          "p08-c1": "18 de enero de 2024. Sobre ondas de arena lisas y sin rasgos, su cámara de navegación no puede seguir el suelo. Ingenuity aterriza con fuerza y sus palas se rompen.",
+          "p08-s1": "No veo el suelo… ¡agárrate!"
+        }
+      },
+      "p09": {
+        "stamp": "INGENUITY · 25 ENE 2024",
+        "lines": {
+          "p09-c1": "25 de enero de 2024. La NASA anuncia que Ingenuity ya no volará más. Semanas después, Perseverance fotografía a su viejo amigo desde lejos antes de seguir su camino.",
+          "p09-s1": "Sigue, Perseverance. Yo me quedo aquí."
+        }
+      },
+      "p10": {
+        "stamp": "INGENUITY · HOY",
+        "lines": {
+          "p10-c1": "Hoy. Ingenuity ya no puede volar, pero sigue como estación fija, todavía recogiendo datos en la superficie de Marte.",
+          "p10-s1": "Ya no puedo volar. Pero sigo escuchando."
+        }
+      },
+      "p11": {
+        "stamp": "INGENUITY · VUELO 72",
+        "lines": {
+          "p11-c1": "El aire de Marte tiene alrededor del 1 % de la densidad del de la Tierra. Para despegar, los rotores de Ingenuity tenían que girar a unas 2537 RPM.",
+          "p11-c2": "Planeado para hasta cinco vuelos en 30 soles, Ingenuity voló 72 veces en casi tres años.",
+          "p11-c3": "Construido para demostrar que podía volar. Abrió el cielo de otro mundo."
+        }
+      }
+    }
+  }
+}

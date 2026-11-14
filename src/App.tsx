@@ -7,6 +7,9 @@ import { useReducedMotion } from './lib/useReducedMotion';
 import { NavRail } from './components/ui/Shell';
 import { Loader } from './components/ui/Loader';
 import ArchiveScreen from './screens/ArchiveScreen';
+import { LangPrompt } from './components/ui/LangPrompt';
+import { useT } from './i18n/useT';
+import { getLanguage, preloadLanguage } from './i18n/languages';
 
 const loadStory = () => import('./screens/StoryScreen');
 const loadHardware = () => import('./screens/HardwareScreen');
@@ -25,7 +28,7 @@ function prefetchScreens() {
   else window.setTimeout(run, 2500);
 }
 
-const TITLES = { archive: 'Archive', story: 'Story', hardware: 'Hardware', reward: 'Transmission', badges: 'Badges' } as const;
+const TITLES = { archive: 'nav.archive', story: 'nav.story', hardware: 'nav.hardware', reward: 'nav.transmission', badges: 'nav.badges' } as const;
 
 /** State router: Archive → Story → Hardware → Transmission (+ Badges). One live canvas per state. */
 export default function App() {
@@ -35,13 +38,24 @@ export default function App() {
   const reduced = useReducedMotion();
   const mission = getMission(missionId);
   const theme = stage === 'archive' || stage === 'badges' ? undefined : mission?.theme;
+  const t = useT();
+  const lang = useAppStore((s) => s.lang);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [stage, mission]);
 
   useEffect(() => {
     document.title = mission && stage !== 'archive' && stage !== 'badges'
-      ? `${TITLES[stage]} · ${mission.issueTitle} · Silent Pioneers`
-      : `${TITLES[stage]} · Silent Pioneers · Team Helios`;
-    window.scrollTo(0, 0);
-  }, [stage, mission]);
+      ? `${t(TITLES[stage])} · ${mission.issueTitle} · Silent Pioneers`
+      : `${t(TITLES[stage])} · Silent Pioneers · Team Helios`;
+  }, [stage, mission, t]);
+
+  // <html lang> follows the chosen language (screen readers, hyphenation, Devanagari font rules).
+  useEffect(() => {
+    document.documentElement.lang = getLanguage(lang).code;
+    preloadLanguage(lang);
+  }, [lang]);
 
   useEffect(prefetchScreens, []);
 
@@ -64,7 +78,7 @@ export default function App() {
   return (
     <div className="app grain">
       <a href="#main" className="skip-link">
-        Skip to content
+        {t('app.skip')}
       </a>
       <NavRail />
       <main id="main" className="app__main" tabIndex={-1}>
@@ -87,6 +101,7 @@ export default function App() {
           </motion.div>
         </AnimatePresence>
       </main>
+      <LangPrompt />
       <Loader gatesScene={initialStage === 'archive' || initialStage === 'hardware'} />
     </div>
   );

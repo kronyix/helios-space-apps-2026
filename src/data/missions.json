@@ -100,6 +100,20 @@
     "comicPanels": [
       {
         "panelNumber": 1,
+        "narration": {
+          "speaker": "opportunity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "opportunity.comicPanels.1.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "opportunity.comicPanels.1.dialogue"
+            }
+          ]
+        },
         "beat": "setup",
         "comicImage": "/images/comics/oppy_bold_airbag_landing.jpg",
         "comicAlt": "Stylized illustration: a rover wrapped in a cluster of airbags bounces across red plains in a burst of dust.",
@@ -116,6 +130,20 @@
       },
       {
         "panelNumber": 2,
+        "narration": {
+          "speaker": "spirit",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "opportunity.comicPanels.2.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "opportunity.comicPanels.2.dialogue"
+            }
+          ]
+        },
         "beat": "struggle",
         "comicImage": "/images/comics/oppy_p2.svg",
         "comicAlt": "Illustration: a rover driving backward, one front wheel dragging a furrow in the soil.",
@@ -131,6 +159,20 @@
       },
       {
         "panelNumber": 3,
+        "narration": {
+          "speaker": "opportunity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "opportunity.comicPanels.3.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "opportunity.comicPanels.3.dialogue"
+            }
+          ]
+        },
         "beat": "hardware",
         "comicImage": "/images/comics/oppy_bold_arm_trench_scan.jpg",
         "comicAlt": "Stylized composite of the twin rovers' stories, not a single real scene: a rover's arm scans small grey spherules (Opportunity's hematite \"blueberries\") beside a bright churned trench (Spirit's silica find).",
@@ -147,6 +189,20 @@
       },
       {
         "panelNumber": 4,
+        "narration": {
+          "speaker": "spirit",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "opportunity.comicPanels.4.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "opportunity.comicPanels.4.dialogue"
+            }
+          ]
+        },
         "beat": "discovery",
         "comicImage": "/images/comics/oppy_bold_silica_hot_springs.jpg",
         "comicAlt": "Stylized illustration: Spirit's dragging wheel exposes bright silica-rich soil beside a layered plateau; steam plumes imagine the hot springs that may have existed there long ago.",
@@ -162,6 +218,20 @@
       },
       {
         "panelNumber": 5,
+        "narration": {
+          "speaker": "opportunity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "opportunity.comicPanels.5.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "opportunity.comicPanels.5.dialogue"
+            }
+          ]
+        },
         "beat": "legacy",
         "comicImage": "/images/comics/oppy_bold_dust_storm.jpg",
         "comicAlt": "Stylized illustration: a lone rover under a dark crimson, dust-filled sky with a dim sun.",
@@ -179,6 +249,20 @@
     "longPanels": [
       {
         "panelNumber": 1,
+        "narration": {
+          "speaker": "spirit",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "opportunity.longPanels.1.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "opportunity.longPanels.1.dialogue"
+            }
+          ]
+        },
         "beat": "setup",
         "comicImage": "/images/comics/mer_long_01_twin_launch.jpg",
         "comicAlt": "Illustration: two slim rockets lift off from neighbouring launch pads at dawn, shown side by side.",
@@ -195,6 +279,20 @@
       },
       {
         "panelNumber": 2,
+        "narration": {
+          "speaker": "opportunity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "opportunity.longPanels.2.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "opportunity.longPanels.2.dialogue"
+            }
+          ]
+        },
         "beat": "setup",
         "comicImage": "/images/comics/mer_long_02_airbag_landing.jpg",
         "comicAlt": "Illustration: a ball of white airbags slams into red rocky ground in a burst of dust while a parachute and backshell drift away.",
@@ -211,6 +309,20 @@
       },
       {
         "panelNumber": 3,
+        "narration": {
+          "speaker": "opportunity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "opportunity.longPanels.3.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "opportunity.longPanels.3.dialogue"
+            }
+          ]
+        },
         "beat": "setup",
         "comicImage": "/images/comics/mer_long_03_two_rovers.jpg",
         "comicAlt": "Illustration, split panel: Spirit rolling across rocky Gusev Crater on the left; Opportunity on dark flat bedrock inside a crater on the right.",
@@ -227,6 +339,20 @@
       },
       {
         "panelNumber": 4,
+        "narration": {
+          "speaker": "opportunity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "opportunity.longPanels.4.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "opportunity.longPanels.4.dialogue"
+            }
+          ]
+        },
         "beat": "discovery",
         "comicImage": "/images/comics/mer_long_04_blueberries.jpg",
         "comicAlt": "Illustration: a rover's instrument arm hovers over pale layered bedrock studded with tiny dark-grey spheres.",
@@ -243,6 +369,20 @@
       },
       {
         "panelNumber": 5,
+        "narration": {
+          "speaker": "spirit",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "opportunity.longPanels.5.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "opportunity.longPanels.5.dialogue"
+            }
+          ]
+        },
         "beat": "struggle",
         "comicImage": "/images/comics/mer_long_05_wheel_drag.jpg",
         "comicAlt": "Illustration: Spirit crossing rocky plains with one wheel ploughing a deep furrow beside its other tracks.",
@@ -259,6 +399,20 @@
       },
       {
         "panelNumber": 6,
+        "narration": {
+          "speaker": "spirit",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "opportunity.longPanels.6.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "opportunity.longPanels.6.dialogue"
+            }
+          ]
+        },
         "beat": "discovery",
         "comicImage": "/images/comics/mer_long_06_white_soil.jpg",
         "comicAlt": "Illustration: Spirit beside a low layered plateau, a bright white streak of soil churned up behind its wheel; ghostly steam vents float in the sky.",
@@ -274,6 +428,20 @@
       },
       {
         "panelNumber": 7,
+        "narration": {
+          "speaker": "spirit",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "opportunity.longPanels.7.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "opportunity.longPanels.7.dialogue"
+            }
+          ]
+        },
         "beat": "struggle",
         "comicImage": "/images/comics/mer_long_07_stuck.jpg",
         "comicAlt": "Illustration: Spirit with its wheels half-buried in pale soft sand under a dim, cold sky, frost on nearby rocks.",
@@ -289,6 +457,20 @@
       },
       {
         "panelNumber": 8,
+        "narration": {
+          "speaker": "opportunity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "opportunity.longPanels.8.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "opportunity.longPanels.8.dialogue"
+            }
+          ]
+        },
         "beat": "legacy",
         "comicImage": "/images/comics/mer_long_08_marathon.jpg",
         "comicAlt": "Illustration: Opportunity on the rim of an enormous crater, its long wheel tracks winding back to the horizon at sunset.",
@@ -305,6 +487,20 @@
       },
       {
         "panelNumber": 9,
+        "narration": {
+          "speaker": "opportunity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "opportunity.longPanels.9.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "opportunity.longPanels.9.dialogue"
+            }
+          ]
+        },
         "beat": "legacy",
         "comicImage": "/images/comics/mer_long_09_dust_storm.jpg",
         "comicAlt": "Illustration: Opportunity on a valley slope under a dark crimson, dust-filled sky with a tiny dim sun.",
@@ -320,6 +516,20 @@
       },
       {
         "panelNumber": 10,
+        "narration": {
+          "speaker": "opportunity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "opportunity.longPanels.10.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "opportunity.longPanels.10.dialogue"
+            }
+          ]
+        },
         "beat": "legacy",
         "comicImage": "/images/comics/mer_long_10_silence.jpg",
         "comicAlt": "Illustration: a dust-covered Opportunity resting motionless on a valley slope as a hazy dawn breaks.",
@@ -563,6 +773,20 @@
     "comicPanels": [
       {
         "panelNumber": 1,
+        "narration": {
+          "speaker": "eagle",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "apollo11.comicPanels.1.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "apollo11.comicPanels.1.dialogue"
+            }
+          ]
+        },
         "beat": "setup",
         "comicImage": "/images/comics/apollo_lm_tranquility.jpg",
         "comicAlt": "Illustration (stylized): a lunar module stands on grey plains under a black sky, with Earth hanging over the horizon.",
@@ -579,6 +803,20 @@
       },
       {
         "panelNumber": 2,
+        "narration": {
+          "speaker": "eagle",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "apollo11.comicPanels.2.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "apollo11.comicPanels.2.dialogue"
+            }
+          ]
+        },
         "beat": "struggle",
         "comicImage": "/images/comics/apollo_ascent_liftoff.jpg",
         "comicAlt": "Illustration: the ascent stage blasts off, leaving the gold-foiled descent stage behind on the surface.",
@@ -594,6 +832,20 @@
       },
       {
         "panelNumber": 3,
+        "narration": {
+          "speaker": "eagle",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "apollo11.comicPanels.3.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "apollo11.comicPanels.3.dialogue"
+            }
+          ]
+        },
         "beat": "hardware",
         "comicImage": "/images/comics/apollo_lrrr_psep.jpg",
         "comicAlt": "Illustration: a laser retroreflector panel and a seismometer with solar wings stand on the regolith, the lunar module behind them.",
@@ -609,6 +861,20 @@
       },
       {
         "panelNumber": 4,
+        "narration": {
+          "speaker": "eagle",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "apollo11.comicPanels.4.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "apollo11.comicPanels.4.dialogue"
+            }
+          ]
+        },
         "beat": "discovery",
         "comicImage": "/images/comics/apollo_sample_box.jpg",
         "comicAlt": "Illustration: gloved hands hold an open metal sample box filled with grey rocks.",
@@ -624,6 +890,20 @@
       },
       {
         "panelNumber": 5,
+        "narration": {
+          "speaker": "eagle",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "apollo11.comicPanels.5.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "apollo11.comicPanels.5.dialogue"
+            }
+          ]
+        },
         "beat": "legacy",
         "comicImage": "/images/comics/apollo_laser_ranging.jpg",
         "comicAlt": "Illustration: an observatory on Earth fires a thin green laser beam toward the Moon.",
@@ -641,6 +921,20 @@
     "longPanels": [
       {
         "panelNumber": 1,
+        "narration": {
+          "speaker": "eagle",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "apollo11.longPanels.1.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "apollo11.longPanels.1.dialogue"
+            }
+          ]
+        },
         "beat": "setup",
         "comicImage": "/images/comics/apollo_long_01_liftoff.jpg",
         "comicAlt": "Illustration: a giant Saturn V rocket climbs past its launch tower on a column of fire while crowds watch in silhouette.",
@@ -656,6 +950,20 @@
       },
       {
         "panelNumber": 2,
+        "narration": {
+          "speaker": "eagle",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "apollo11.longPanels.2.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "apollo11.longPanels.2.dialogue"
+            }
+          ]
+        },
         "beat": "setup",
         "comicImage": "/images/comics/apollo_long_02_undocking.jpg",
         "comicAlt": "Illustration: the gold-and-silver lunar module drifts away from the command module above the grey curve of the Moon, Earth in the distance.",
@@ -671,6 +979,20 @@
       },
       {
         "panelNumber": 3,
+        "narration": {
+          "speaker": "eagle",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "apollo11.longPanels.3.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "apollo11.longPanels.3.dialogue"
+            }
+          ]
+        },
         "beat": "struggle",
         "comicImage": "/images/comics/apollo_long_03_descent.jpg",
         "comicAlt": "Illustration: the lunar module drops toward a rocky grey plain, its engine glowing and dust blowing outward beneath it.",
@@ -686,6 +1008,20 @@
       },
       {
         "panelNumber": 4,
+        "narration": {
+          "speaker": "eagle",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "apollo11.longPanels.4.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "apollo11.longPanels.4.dialogue"
+            }
+          ]
+        },
         "beat": "discovery",
         "comicImage": "/images/comics/apollo_long_04_landed.jpg",
         "comicAlt": "Illustration: the lunar module stands on a flat grey plain under a black sky, with a blue crescent Earth overhead.",
@@ -701,6 +1037,20 @@
       },
       {
         "panelNumber": 5,
+        "narration": {
+          "speaker": "eagle",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "apollo11.longPanels.5.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "apollo11.longPanels.5.dialogue"
+            }
+          ]
+        },
         "beat": "discovery",
         "comicImage": "/images/comics/apollo_long_05_bootprint.jpg",
         "comicAlt": "Illustration: a close-up of a ridged astronaut bootprint pressed into fine grey lunar dust.",
@@ -716,6 +1066,20 @@
       },
       {
         "panelNumber": 6,
+        "narration": {
+          "speaker": "eagle",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "apollo11.longPanels.6.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "apollo11.longPanels.6.dialogue"
+            }
+          ]
+        },
         "beat": "hardware",
         "comicImage": "/images/comics/apollo_long_06_instruments.jpg",
         "comicAlt": "Illustration: an astronaut with a gold visor sets down a square panel of prisms, with a winged seismometer and the lunar module behind.",
@@ -731,6 +1095,20 @@
       },
       {
         "panelNumber": 7,
+        "narration": {
+          "speaker": "eagle",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "apollo11.longPanels.7.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "apollo11.longPanels.7.dialogue"
+            }
+          ]
+        },
         "beat": "hardware",
         "comicImage": "/images/comics/apollo_long_07_sample_box.jpg",
         "comicAlt": "Illustration: a gloved hand tips a scoop of grey rocks into an open aluminum sample box, the gold lander behind.",
@@ -746,6 +1124,20 @@
       },
       {
         "panelNumber": 8,
+        "narration": {
+          "speaker": "eagle",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "apollo11.longPanels.8.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "apollo11.longPanels.8.dialogue"
+            }
+          ]
+        },
         "beat": "struggle",
         "comicImage": "/images/comics/apollo_long_08_weight_trade.jpg",
         "comicAlt": "Illustration: the silver upper stage of the lunar module blasts off on a bright flame, leaving the gold lower stage behind in a spray of dust and foil.",
@@ -761,6 +1153,20 @@
       },
       {
         "panelNumber": 9,
+        "narration": {
+          "speaker": "columbia",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "apollo11.longPanels.9.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "apollo11.longPanels.9.dialogue"
+            }
+          ]
+        },
         "beat": "legacy",
         "comicImage": "/images/comics/apollo_long_09_splashdown.jpg",
         "comicAlt": "Illustration: a cone-shaped capsule floats in ocean waves beside three orange-and-white parachutes, with a helicopter and an aircraft carrier beyond.",
@@ -776,6 +1182,20 @@
       },
       {
         "panelNumber": 10,
+        "narration": {
+          "speaker": "eagle",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "apollo11.longPanels.10.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "apollo11.longPanels.10.dialogue"
+            }
+          ]
+        },
         "beat": "legacy",
         "comicImage": "/images/comics/apollo_long_10_still_answering.jpg",
         "comicAlt": "Illustration: the abandoned gold descent stage stands on the silent Moon while a thin green laser from a tiny Earth strikes a prism panel nearby.",
@@ -943,6 +1363,20 @@
     "comicPanels": [
       {
         "panelNumber": 1,
+        "narration": {
+          "speaker": "ingenuity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "ingenuity.comicPanels.1.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "ingenuity.comicPanels.1.dialogue"
+            }
+          ]
+        },
         "beat": "setup",
         "comicImage": "/images/comics/ingy_with_perseverance.jpg",
         "comicAlt": "Illustration: a small helicopter sits on tan Martian ground with a large rover in the background.",
@@ -958,6 +1392,20 @@
       },
       {
         "panelNumber": 2,
+        "narration": {
+          "speaker": "ingenuity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "ingenuity.comicPanels.2.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "ingenuity.comicPanels.2.dialogue"
+            }
+          ]
+        },
         "beat": "struggle",
         "comicImage": "/images/comics/ingy_first_flight.jpg",
         "comicAlt": "Illustration: the helicopter hovers above the ground, rotors blurred, its shadow on the sand below.",
@@ -973,6 +1421,20 @@
       },
       {
         "panelNumber": 3,
+        "narration": {
+          "speaker": "ingenuity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "ingenuity.comicPanels.3.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "ingenuity.comicPanels.3.dialogue"
+            }
+          ]
+        },
         "beat": "hardware",
         "comicImage": "/images/comics/ingy_closeup.jpg",
         "comicAlt": "Illustration: a close-up of the helicopter, showing its body, legs, solar panel and stacked rotors.",
@@ -988,6 +1450,20 @@
       },
       {
         "panelNumber": 4,
+        "narration": {
+          "speaker": "ingenuity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "ingenuity.comicPanels.4.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "ingenuity.comicPanels.4.dialogue"
+            }
+          ]
+        },
         "beat": "discovery",
         "comicImage": "/images/comics/ingy_over_dunes.jpg",
         "comicAlt": "Illustration: the helicopter flies over dunes and a crater rim in low sunlight.",
@@ -1003,6 +1479,20 @@
       },
       {
         "panelNumber": 5,
+        "narration": {
+          "speaker": "ingenuity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "ingenuity.comicPanels.5.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "ingenuity.comicPanels.5.dialogue"
+            }
+          ]
+        },
         "beat": "legacy",
         "comicImage": "/images/comics/ingy_grounded_broken_blade.jpg",
         "comicAlt": "Illustration: the grounded helicopter on rippled sand, one rotor blade tip visibly broken.",
@@ -1020,6 +1510,20 @@
     "longPanels": [
       {
         "panelNumber": 1,
+        "narration": {
+          "speaker": "ingenuity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "ingenuity.longPanels.1.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "ingenuity.longPanels.1.dialogue"
+            }
+          ]
+        },
         "beat": "setup",
         "comicImage": "/images/comics/ingy_long_01_hitchhiker.jpg",
         "comicAlt": "Illustration: a rocket-powered sky crane lowers the Perseverance rover on cables through a cloud of dust, a tiny folded helicopter under its belly.",
@@ -1035,6 +1539,20 @@
       },
       {
         "panelNumber": 2,
+        "narration": {
+          "speaker": "ingenuity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "ingenuity.longPanels.2.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "ingenuity.longPanels.2.dialogue"
+            }
+          ]
+        },
         "beat": "setup",
         "comicImage": "/images/comics/ingy_long_02_set_down.jpg",
         "comicAlt": "Illustration: the small helicopter stands alone on the crater floor while the rover drives away in the distance.",
@@ -1050,6 +1568,20 @@
       },
       {
         "panelNumber": 3,
+        "narration": {
+          "speaker": "ingenuity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "ingenuity.longPanels.3.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "ingenuity.longPanels.3.dialogue"
+            }
+          ]
+        },
         "beat": "struggle",
         "comicImage": "/images/comics/ingy_long_03_first_night.jpg",
         "comicAlt": "Illustration: the helicopter alone under a starry Martian night sky, frost on its legs and a faint glow from its electronics.",
@@ -1065,6 +1597,20 @@
       },
       {
         "panelNumber": 4,
+        "narration": {
+          "speaker": "ingenuity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "ingenuity.longPanels.4.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "ingenuity.longPanels.4.dialogue"
+            }
+          ]
+        },
         "beat": "discovery",
         "comicImage": "/images/comics/ingy_long_04_first_flight.jpg",
         "comicAlt": "Illustration: the helicopter hovers a few metres above the ground, rotors blurred, as the rover watches from a distance.",
@@ -1080,6 +1626,20 @@
       },
       {
         "panelNumber": 5,
+        "narration": {
+          "speaker": "ingenuity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "ingenuity.longPanels.5.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "ingenuity.longPanels.5.dialogue"
+            }
+          ]
+        },
         "beat": "hardware",
         "comicImage": "/images/comics/ingy_long_05_scouting.jpg",
         "comicAlt": "Illustration: the helicopter flies low over rugged ridges and dark rocky ground, the rover a tiny dot far behind.",
@@ -1095,6 +1655,20 @@
       },
       {
         "panelNumber": 6,
+        "narration": {
+          "speaker": "ingenuity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "ingenuity.longPanels.6.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "ingenuity.longPanels.6.dialogue"
+            }
+          ]
+        },
         "beat": "struggle",
         "comicImage": "/images/comics/ingy_long_06_winter.jpg",
         "comicAlt": "Illustration: the helicopter rests under a hazy, dusty sky, a thin layer of dust on its solar panel.",
@@ -1110,6 +1684,20 @@
       },
       {
         "panelNumber": 7,
+        "narration": {
+          "speaker": "ingenuity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "ingenuity.longPanels.7.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "ingenuity.longPanels.7.dialogue"
+            }
+          ]
+        },
         "beat": "discovery",
         "comicImage": "/images/comics/ingy_long_07_record_flight.jpg",
         "comicAlt": "Illustration: the helicopter speeds high above rippled sand dunes at golden hour, its shadow racing below.",
@@ -1125,6 +1713,20 @@
       },
       {
         "panelNumber": 8,
+        "narration": {
+          "speaker": "ingenuity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "ingenuity.longPanels.8.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "ingenuity.longPanels.8.dialogue"
+            }
+          ]
+        },
         "beat": "struggle",
         "comicImage": "/images/comics/ingy_long_08_flight_72.jpg",
         "comicAlt": "Illustration: the helicopter comes down hard on smooth sand ripples in a burst of dust as the tip of one rotor blade snaps off.",
@@ -1140,6 +1742,20 @@
       },
       {
         "panelNumber": 9,
+        "narration": {
+          "speaker": "ingenuity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "ingenuity.longPanels.9.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "ingenuity.longPanels.9.dialogue"
+            }
+          ]
+        },
         "beat": "legacy",
         "comicImage": "/images/comics/ingy_long_09_farewell.jpg",
         "comicAlt": "Illustration: seen from far away, the small helicopter stands alone on the crest of a sand dune in a vast, empty landscape.",
@@ -1155,6 +1771,20 @@
       },
       {
         "panelNumber": 10,
+        "narration": {
+          "speaker": "ingenuity",
+          "lines": [
+            {
+              "id": "caption",
+              "speaker": "narrator",
+              "textKey": "ingenuity.longPanels.10.caption"
+            },
+            {
+              "id": "dialogue",
+              "textKey": "ingenuity.longPanels.10.dialogue"
+            }
+          ]
+        },
         "beat": "legacy",
         "comicImage": "/images/comics/ingy_long_10_still_listening.jpg",
         "comicAlt": "Illustration: the grounded helicopter with a broken rotor blade stands on a sand ripple at sunset, its small lights still glowing.",

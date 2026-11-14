@@ -26,6 +26,9 @@ export interface Line {
   asOf?: string;
   /** Reserved for future audio/TTS synchronization */
   audio?: { src: string; durationMs: number };
+  /** Narration override. Default: caption → "narrator", speech → lower-cased `speaker`;
+   *  textKey `<missionId>.comic.<panelId>.lines.<lineId>` (see src/i18n/comic.ts). */
+  narration?: { speaker?: string; textKey?: string };
 }
 
 export interface Photo {
@@ -925,8 +928,10 @@ export interface ComicIssueMeta {
 }
 
 export interface ComicIssue {
+  /** missions.json id; keys this issue's translations and narration audio. */
+  missionId?: string;
   meta: ComicIssueMeta;
   panels: ComicPanel[];
 }
 
-export const ISSUE_01: ComicIssue = { meta: ISSUE_01_META, panels: ISSUE_01_PANELS };
+export const ISSUE_01: ComicIssue = { missionId: 'opportunity', meta: ISSUE_01_META, panels: ISSUE_01_PANELS };

@@ -1,0 +1,54 @@
+[
+  {
+    "code": "en", "nativeName": "English", "englishName": "English", "bcp47": "en-US", "numberLocale": "en-US",
+    "tts": {
+      "narrator": { "name": "en-US-Neural2-D" },
+      "characters": {
+        "spirit": { "name": "en-US-Neural2-F", "pitch": 2 },
+        "opportunity": { "name": "en-US-Neural2-C", "pitch": 1 },
+        "eagle": { "name": "en-US-Neural2-J", "pitch": -2 },
+        "columbia": { "name": "en-US-Neural2-A" },
+        "ingenuity": { "name": "en-US-Neural2-H", "pitch": 3 }
+      }
+    }
+  },
+  {
+    "code": "hi", "nativeName": "हिन्दी", "englishName": "Hindi", "bcp47": "hi-IN", "numberLocale": "hi-IN", "script": "devanagari",
+    "tts": {
+      "narrator": { "name": "hi-IN-Neural2-B" },
+      "characters": {
+        "spirit": { "name": "hi-IN-Neural2-A", "pitch": 2 },
+        "opportunity": { "name": "hi-IN-Neural2-D", "pitch": 1 },
+        "eagle": { "name": "hi-IN-Neural2-C", "pitch": -2 },
+        "columbia": { "name": "hi-IN-Neural2-C", "pitch": 1 },
+        "ingenuity": { "name": "hi-IN-Neural2-A", "pitch": 4 }
+      }
+    }
+  },
+  {
+    "code": "es", "nativeName": "Español", "englishName": "Spanish", "bcp47": "es-ES", "numberLocale": "es-ES",
+    "tts": {
+      "narrator": { "name": "es-ES-Neural2-B" },
+      "characters": {
+        "spirit": { "name": "es-ES-Neural2-A", "pitch": 2 },
+        "opportunity": { "name": "es-ES-Neural2-C", "pitch": 1 },
+        "eagle": { "name": "es-ES-Neural2-F", "pitch": -2 },
+        "columbia": { "name": "es-ES-Neural2-F", "pitch": 1 },
+        "ingenuity": { "name": "es-ES-Neural2-E", "pitch": 3 }
+      }
+    }
+  },
+  {
+    "code": "fr", "nativeName": "Français", "englishName": "French", "bcp47": "fr-FR", "numberLocale": "fr-FR",
+    "tts": {
+      "narrator": { "name": "fr-FR-Neural2-B" },
+      "characters": {
+        "spirit": { "name": "fr-FR-Neural2-A", "pitch": 2 },
+        "opportunity": { "name": "fr-FR-Neural2-C", "pitch": 1 },
+        "eagle": { "name": "fr-FR-Neural2-D", "pitch": -2 },
+        "columbia": { "name": "fr-FR-Neural2-D", "pitch": 1 },
+        "ingenuity": { "name": "fr-FR-Neural2-E", "pitch": 3 }
+      }
+    }
+  }
+]

@@ -83,8 +83,16 @@ export default function MiniGameModal({ mission }: { mission: MissionData }) {
     return () => window.removeEventListener('keydown', onKey);
   });
 
+  // The result screen autofocuses "Try again"; Space/Enter are also game controls, so a key
+  // still being mashed when the run ends would restart it instantly. Ignore that brief window.
+  const resultAt = useRef(0);
+  useEffect(() => {
+    if (phase === 'success' || phase === 'failure') resultAt.current = performance.now();
+  }, [phase]);
+
   const start = () => {
     if (phase === 'active') return; // double-click guard
+    if (phase !== 'intro' && performance.now() - resultAt.current < 600) return;
     blip('tick');
     setLocking(null);
     setAttempt((a) => a + 1);

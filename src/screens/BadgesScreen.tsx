@@ -4,6 +4,21 @@ import { missions, pad2 } from '../lib/missions';
 import { selectBadges, useAppStore } from '../store/useAppStore';
 import { ScreenFrame } from '../components/ui/Layout';
 import { IconExternal, IconLock, IconTrophy } from '../components/ui/Icons';
+import { useT } from '../i18n/useT';
+import { narrator, useVoicesVersion } from '../narration/narrator';
+
+/** Names the voice source: the generated-audio provider when files exist, plus the device-voice fallback. */
+function NarrationCredit() {
+  const t = useT();
+  useVoicesVersion();
+  const provider = narrator.files.providerName;
+  return (
+    <p className="mt-2 max-w-[70ch] text-[14px] leading-relaxed text-fg-2">
+      {provider ? `${t('credits.narration', { provider })} ` : ''}
+      {t('credits.narrationDevice')}
+    </p>
+  );
+}
 
 export default function BadgesScreen() {
   const progress = useAppStore(
@@ -15,21 +30,28 @@ export default function BadgesScreen() {
       transmissionsRead: s.transmissionsRead,
     })),
   );
+  const t = useT();
   const reset = useAppStore((s) => s.resetProgress);
   const go = useAppStore((s) => s.go);
   const [confirm, setConfirm] = useState(false);
   const badges = selectBadges(progress);
   const earned = badges.filter((b) => b.earned).length;
+  const totalHotspots = missions.reduce((n, m) => n + m.hotspots.length, 0);
+  /** Interface keys exist for the built-in badges; mission badges keep their mission copy. */
+  const tOr = (key: string, fallback: string, vars?: Record<string, number>) => {
+    const v = t(key, vars);
+    return v === key ? fallback : v;
+  };
 
   return (
     <ScreenFrame
-      kicker="Expedition log"
+      kicker={t('badges.kicker')}
       title={
         <>
-          Badges &amp; <span className="text-[var(--accent)]">artifacts</span>
+          {t('badges.titleA')} <span className="text-[var(--accent)]">{t('badges.titleB')}</span>
         </>
       }
-      status={`${earned} / ${badges.length} badges`}
+      status={t('badges.status', { earned, total: badges.length })}
       background={<div className="reward-bg" aria-hidden="true" />}
     >
       <div className="badges-wrap">
@@ -40,38 +62,38 @@ export default function BadgesScreen() {
                 {b.earned ? <IconTrophy size={22} /> : <IconLock size={20} />}
               </span>
               <div>
-                <h2 className="font-display text-[19px] font-semibold">{b.name}</h2>
-                <p className="mt-1 text-[14px] text-fg-2">{b.criteria}</p>
+                <h2 className="font-display text-[19px] font-semibold">{tOr(`badge.${b.id}.name`, b.name)}</h2>
+                <p className="mt-1 text-[14px] text-fg-2">{tOr(`badge.${b.id}.criteria`, b.criteria, { n: totalHotspots })}</p>
                 <p className="mt-2 font-mono text-[10.5px] tracking-[0.2em]" style={{ color: b.earned ? 'var(--color-ok)' : 'var(--color-fg-3)' }}>
-                  {b.earned ? 'EARNED' : 'LOCKED'}
+                  {t(b.earned ? 'badges.earned' : 'badges.lockedCaps').toLocaleUpperCase()}
                 </p>
               </div>
             </li>
           ))}
         </ul>
 
-        <h2 className="label-caps mt-10 !text-fg-2">Issues</h2>
+        <h2 className="label-caps mt-10 !text-fg-2">{t('badges.issues')}</h2>
         <ul className="mt-3 grid gap-3 md:grid-cols-3">
           {missions.map((m) => {
             const r = progress.gameResults[m.id];
             return (
               <li key={m.id} className="plate" data-theme={m.theme}>
-                <p className="kicker">Issue {pad2(m.issueNumber)}</p>
+                <p className="kicker">{t('nav.issue', { n: pad2(m.issueNumber) })}</p>
                 <h3 className="plate__title">{m.shortName}</h3>
                 <dl className="mt-2 grid grid-cols-2 gap-y-1 font-mono text-[12px] text-fg-2">
-                  <dt>Opened</dt>
-                  <dd className="text-right">{progress.issuesOpened.includes(m.id) ? 'yes' : '—'}</dd>
-                  <dt>Hotspots</dt>
+                  <dt>{t('badges.opened')}</dt>
+                  <dd className="text-right">{progress.issuesOpened.includes(m.id) ? t('badges.yes') : '—'}</dd>
+                  <dt>{t('badges.hotspots')}</dt>
                   <dd className="text-right">
                     {progress.hotspotsSeen[m.id]?.length ?? 0}/{m.hotspots.length}
                   </dd>
-                  <dt>Best score</dt>
+                  <dt>{t('badges.best')}</dt>
                   <dd className="text-right">{r ? `${r.best}%` : '—'}</dd>
-                  <dt>Artifact</dt>
-                  <dd className="text-right">{progress.artifacts.includes(m.id) ? m.artifact.name : 'locked'}</dd>
+                  <dt>{t('badges.artifact')}</dt>
+                  <dd className="text-right">{progress.artifacts.includes(m.id) ? m.artifact.name : t('badges.locked')}</dd>
                 </dl>
                 <button type="button" className="btn-ghost mt-4" onClick={() => go('story', m.id)}>
-                  Open issue
+                  {t('badges.openIssue')}
                 </button>
               </li>
             );
@@ -81,31 +103,26 @@ export default function BadgesScreen() {
         <section id="credits" className="mt-10 grid scroll-mt-6 gap-8 md:grid-cols-[1.4fr_1fr]" aria-labelledby="credits-h">
           <div>
             <h2 id="credits-h" className="label-caps !text-fg-2">
-              Credits &amp; sources
+              {t('credits.title')}
             </h2>
-            <p className="mt-2 max-w-[70ch] text-[14px] leading-relaxed text-fg-2">
-              Panel illustrations were created with AI image tools (Google Gemini) under Team Helios art direction, and are
-              dramatizations. Archival photographs: NASA/JPL-Caltech and NASA, credited individually. 3D models: re-exported and
-              art-directed by Team Helios; original model sources are being confirmed.
-            </p>
-            <p className="mt-2 max-w-[70ch] text-[14px] leading-relaxed text-fg-2">
-              Every image is labelled ILLUSTRATION or ARCHIVAL. Speech balloons are fictionalized narration; caption boxes and
-              hotspot facts are documented history. This project is not affiliated with or endorsed by NASA.
-            </p>
+            <p className="mt-2 max-w-[70ch] text-[14px] leading-relaxed text-fg-2">{t('credits.art')}</p>
+            <p className="mt-2 max-w-[70ch] text-[14px] leading-relaxed text-fg-2">{t('credits.labels')}</p>
+            <NarrationCredit />
+            <p className="mt-2 max-w-[70ch] text-[14px] leading-relaxed text-fg-2">{t('credits.translation')}</p>
             <ul className="mt-4 space-y-1.5">
               {missions.flatMap((m) => m.sources).map((s) => (
                 <li key={s.url}>
                   <a href={s.url} target="_blank" rel="noreferrer noopener" className="credit-link text-[13px]">
                     {s.label} <IconExternal size={12} />
-                    <span className="sr-only"> (opens in a new tab)</span>
+                    <span className="sr-only"> {t('credits.newTab')}</span>
                   </a>
                 </li>
               ))}
             </ul>
           </div>
           <div>
-            <h2 className="label-caps !text-fg-2">Progress</h2>
-            <p className="mt-2 text-[14px] text-fg-2">Progress is saved in this browser only.</p>
+            <h2 className="label-caps !text-fg-2">{t('progress.title')}</h2>
+            <p className="mt-2 text-[14px] text-fg-2">{t('progress.saved')}</p>
             {confirm ? (
               <div className="mt-4 flex flex-wrap gap-3">
                 <button
@@ -116,15 +133,15 @@ export default function BadgesScreen() {
                     setConfirm(false);
                   }}
                 >
-                  Yes, erase progress
+                  {t('progress.erase')}
                 </button>
                 <button type="button" className="btn-ghost" onClick={() => setConfirm(false)}>
-                  Cancel
+                  {t('progress.cancel')}
                 </button>
               </div>
             ) : (
               <button type="button" className="btn-ghost mt-4" onClick={() => setConfirm(true)}>
-                Reset progress
+                {t('progress.reset')}
               </button>
             )}
           </div>

@@ -25,6 +25,23 @@ export interface ComicPanelLine {
   text: string;
 }
 
+/** ext: one narrated line. Text resolves from `textKey` (locale file, then English source). */
+export interface NarrationLine {
+  id: string;
+  /** Dotted path, e.g. "opportunity.comicPanels.1.caption". */
+  textKey: string;
+  /** Overrides the block speaker (e.g. "narrator" for the caption box). */
+  speaker?: string;
+}
+
+/** ext: narration for a panel. `speaker` is "narrator" or a character id. */
+export interface Narration {
+  speaker: string;
+  lines: NarrationLine[];
+  /** Optional explicit audio per language; otherwise public/audio/manifest.json is used. */
+  audio?: Record<string, string>;
+}
+
 export interface Coordinates {
   lat: number;
   lng: number;
@@ -71,6 +88,8 @@ export interface ComicPanel {
   beat?: StoryBeat;
   /** ext: structured caption and speech lines */
   lines?: ComicPanelLine[];
+  /** ext: voice narration (text keys into src/data/locales) */
+  narration?: Narration;
   // Phase 2/4
   reveal?: Record<string, unknown>;
   // Phase 2/4

@@ -4,9 +4,9 @@
    NASA Archival Futurism: near-black space, Helios amber, hairlines,
    mono annotation. Mission themes override --accent* via [data-theme]. */
 @theme {
-  --font-display: 'Space Grotesk Variable', 'Space Grotesk', system-ui, sans-serif;
-  --font-sans: 'Inter Variable', 'Inter', system-ui, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+  --font-display: 'Space Grotesk Variable', 'Space Grotesk', 'Noto Sans Devanagari', system-ui, sans-serif;
+  --font-sans: 'Inter Variable', 'Inter', 'Noto Sans Devanagari', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', 'Noto Sans Devanagari', monospace;
 
   --color-void: #07070a;
   --color-ink: #0c0c10;
@@ -2952,3 +2952,247 @@ body:has(.issue-comic),
 
 
 
+
+/* ── Narration: settings toggle (left of the Play button), popover, read-along highlight ── */
+.narration-bar {
+  /* Phones: stacked above the Play button so the caption box stays clear. */
+  position: fixed;
+  right: 22px;
+  bottom: calc(76px + 56px + 10px + var(--safe-b));
+  z-index: 55;
+}
+@media (min-width: 900px) {
+  .narration-bar {
+    right: calc(28px + 56px + 12px);
+    bottom: calc(28px + 6px + var(--safe-b));
+  }
+  .narration-bar .narration-toggle {
+    padding: 0 14px;
+  }
+  .narration-bar .narration-toggle__meta {
+    display: inline;
+  }
+}
+.narration-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  min-width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid var(--color-line-2);
+  background: rgb(8 10 14 / 0.92);
+  color: var(--color-fg);
+  box-shadow: 0 12px 32px -6px rgb(0 0 0 / 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.narration-toggle[aria-expanded='true'] {
+  border-color: rgb(var(--accent-rgb) / 0.6);
+  color: var(--accent);
+}
+.narration-toggle__meta {
+  display: none;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+.narration-panel {
+  position: fixed;
+  right: 16px;
+  bottom: calc(76px + 56px + 10px + 44px + 12px + var(--safe-b));
+  width: min(340px, calc(100vw - 32px));
+  max-height: calc(100dvh - 180px);
+  overflow-y: auto;
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid var(--color-line-2);
+  background: rgb(8 10 14 / 0.96);
+  color: var(--color-fg);
+  box-shadow: 0 24px 48px -12px rgb(0 0 0 / 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+@media (min-width: 900px) {
+  .narration-panel {
+    right: 28px;
+    bottom: calc(28px + 56px + 12px + var(--safe-b));
+  }
+}
+.narration-panel__row {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.narration-panel__label {
+  margin-bottom: 8px;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-fg-3);
+}
+.narration-panel__options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.narration-chip {
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--color-line-2);
+  background: transparent;
+  color: var(--color-fg-2);
+  font-size: 14px;
+}
+.narration-chip[aria-pressed='true'] {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgb(var(--accent-rgb) / 0.1);
+}
+.narration-switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  width: 100%;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  color: var(--color-fg);
+  font-size: 14px;
+  text-align: start;
+}
+.narration-switch__track {
+  position: relative;
+  flex: none;
+  width: 38px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--color-ink-3);
+  border: 1px solid var(--color-line-2);
+}
+.narration-switch__thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--color-fg-3);
+  transition: transform var(--dur-fast, 0.18s) ease-out;
+}
+.narration-switch[aria-checked='true'] .narration-switch__track {
+  background: rgb(var(--accent-rgb) / 0.25);
+  border-color: var(--accent);
+}
+.narration-switch[aria-checked='true'] .narration-switch__thumb {
+  transform: translateX(16px);
+  background: var(--accent);
+}
+
+.issue-caption[data-reading='glow'],
+.issue-balloon[data-reading='glow'] {
+  box-shadow:
+    0 0 0 2px rgb(var(--accent-rgb) / 0.85),
+    0 0 26px 2px rgb(var(--accent-rgb) / 0.35);
+  transition: box-shadow 0.35s ease-out;
+}
+.issue-caption[data-reading='outline'],
+.issue-balloon[data-reading='outline'] {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .narration-switch__thumb,
+  .issue-caption[data-reading],
+  .issue-balloon[data-reading] {
+    transition: none;
+  }
+}
+
+.issue-en-tag {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 6px;
+  border-radius: 3px;
+  border: 1px solid rgb(255 255 255 / 0.4);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: rgb(255 255 255 / 0.85);
+  vertical-align: middle;
+}
+
+/* ── Hindi (Devanagari): letter-spacing breaks the headline stroke and conjuncts; matras need room. ── */
+:root:lang(hi) {
+  /* Plex Mono has no Devanagari and its wide space splits Hindi words apart: use the sans stack. */
+  --font-mono: 'Inter Variable', 'Inter', 'Noto Sans Devanagari', system-ui, sans-serif;
+}
+:root:lang(hi) body * {
+  letter-spacing: normal !important;
+}
+:root:lang(hi) .issue-caption__text,
+:root:lang(hi) .issue-balloon__text {
+  line-height: 1.62;
+}
+:root:lang(hi) .issue-stamp,
+:root:lang(hi) .issue-intro-banner__disclaimer,
+:root:lang(hi) .narration-panel__label {
+  line-height: 1.5;
+}
+
+/* Site-wide language select (top bar, next to the sound toggle). */
+.lang-select select {
+  height: 48px;
+  min-width: 44px;
+  padding: 0 34px 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--color-line-2);
+  background: rgb(0 0 0 / 0.3)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23b9b3a8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")
+    no-repeat right 14px center;
+  color: var(--color-fg);
+  font-size: 14px;
+  appearance: none;
+}
+.lang-select option {
+  background: var(--color-ink);
+  color: var(--color-fg);
+}
+
+/* One-time "also available in …" offer. */
+.lang-prompt {
+  position: fixed;
+  left: 50%;
+  bottom: calc(76px + 16px + var(--safe-b));
+  z-index: 70;
+  width: min(420px, calc(100vw - 32px));
+  transform: translateX(-50%);
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid var(--color-line-2);
+  background: rgb(8 10 14 / 0.96);
+  color: var(--color-fg);
+  box-shadow: 0 24px 48px -12px rgb(0 0 0 / 0.9);
+  font-size: 15px;
+}
+@media (min-width: 900px) {
+  .lang-prompt {
+    bottom: calc(28px + var(--safe-b));
+  }
+}
+.lang-prompt__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}

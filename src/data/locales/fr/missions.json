@@ -1,0 +1,249 @@
+{
+  "opportunity": {
+    "meta": {
+      "title": "LES ROVERS DE 90 JOURS",
+      "disclaimer": "Les bulles sont romancées (narration fictive). Les encadrés racontent l’histoire documentée.",
+      "creditsNote": "Dates publiées par NASA Science (heure du Pacifique, États-Unis) ; en UTC, les atterrissages ont eu lieu un jour plus tard."
+    },
+    "comic": {
+      "p01": {
+        "stamp": "SPIRIT · CRATÈRE GUSEV · 3 JANV. 2004",
+        "lines": {
+          "p01-c1": "Janvier 2004. Deux robots jumeaux identiques partent vers deux côtés opposés de Mars pour chercher des traces d’eau ancienne. Spirit se pose le premier, protégé par des airbags, dans le cratère Gusev.",
+          "p01-s1": "Boing… boing… boing… on a réussi ?"
+        }
+      },
+      "p02": {
+        "stamp": "OPPORTUNITY · MERIDIANI PLANUM · 24 JANV. 2004",
+        "lines": {
+          "p02-c1": "Trois semaines plus tard, Opportunity se pose à Meridiani Planum, où des minéraux laissaient deviner un passé humide. Les deux rovers étaient prévus pour seulement 90 sols, environ trois mois.",
+          "p02-s1": "Quatre-vingt-dix sols. C’est la promesse. Faisons compter chacun d’eux."
+        }
+      },
+      "p03": {
+        "stamp": "SPIRIT · CRATÈRE GUSEV",
+        "lines": {
+          "p03-c1": "Plus tard dans la mission, l’une des six roues de Spirit a cessé de tourner. L’équipe a continué à rouler, en traînant la roue bloquée.",
+          "p03-s1": "Une roue m’a lâché. Il m’en reste cinq, et j’ai de la route à faire."
+        }
+      },
+      "p04": {
+        "stamp": "SPIRIT · HOME PLATE · MARS 2007",
+        "lines": {
+          "p04-c1": "Mars 2007. La roue que traîne Spirit retourne un sol clair : de la silice pure à environ 90 %, à un endroit appelé Home Plate. Sur Terre, ce genre de silice se forme près des sources chaudes et des cheminées de vapeur.",
+          "p04-s1": "Ma roue cassée vient de déterrer un indice !"
+        }
+      },
+      "p05": {
+        "stamp": "OPPORTUNITY · PRÈS DU CRATÈRE FRAM · AVRIL 2004",
+        "lines": {
+          "p05-c1": "Avril 2004. Opportunity examine de minuscules grains ronds d’hématite, un minéral qui se forme d’habitude dans l’eau. Les scientifiques les ont surnommés « myrtilles ».",
+          "p05-s1": "De minuscules billes, partout. Les roches nous parlent !"
+        }
+      },
+      "p06": {
+        "stamp": "OPPORTUNITY · MERIDIANI PLANUM",
+        "lines": {
+          "p06-c1": "Les indices concordaient : une eau ancienne a imprégné Meridiani Planum. Mais elle était salée et acide, un endroit difficile pour la vie, pas une mer bleue étincelante.",
+          "p06-s1": "Imagine : de l’eau, juste là où je me tiens."
+        }
+      },
+      "p07": {
+        "stamp": "OPPORTUNITY",
+        "lines": {
+          "p07-c1": "La poussière s’est accumulée sur les panneaux solaires d’Opportunity. Personne n’était là pour l’enlever.",
+          "p07-s1": "Si seulement quelqu’un pouvait balayer cette poussière…"
+        }
+      },
+      "p08": {
+        "stamp": "OPPORTUNITY · 10 JUIN 2018",
+        "lines": {
+          "p08-c1": "10 juin 2018. Une tempête de poussière qui couvre toute la planète recouvre la zone d’Opportunity. C’est le dernier contact du rover avec la Terre.",
+          "p08-s1": "Le ciel s’assombrit. Mais regarde tout ce qu’on a vu."
+        }
+      },
+      "p09": {
+        "stamp": "SPIRIT ET OPPORTUNITY",
+        "lines": {
+          "p09-c1": "Prévu pour environ trois mois, Opportunity a travaillé 14 ans et parcouru 28,06 miles (45,16 km). Spirit a parcouru 4,8 miles (7,7 km) et a terminé sa mission en 2010.",
+          "p09-c2": "Opportunity a détenu le record de distance parcourue hors de la Terre jusqu’au 11 octobre 2026, quand Perseverance l’a dépassé.",
+          "p09-c3": "Conçus pour 90 sols. Ils ont réécrit l’histoire de Mars."
+        }
+      }
+    }
+  },
+  "apollo11": {
+    "meta": {
+      "title": "L’ÉCHANGE DE POIDS",
+      "disclaimer": "Les bulles sont romancées (narration fictive). Les encadrés racontent l’histoire documentée.",
+      "creditsNote": "Dates à l’heure de l’Est des États-Unis, telles que la NASA les a annoncées pendant la mission."
+    },
+    "comic": {
+      "p01": {
+        "stamp": "APOLLO 11 · CENTRE SPATIAL KENNEDY · 16 JUIL. 1969",
+        "lines": {
+          "p01-c1": "16 juillet 1969. Une fusée Saturn V, haute de 110 mètres, emporte Apollo 11 depuis le Centre spatial Kennedy, avec trois astronautes à bord.",
+          "p01-s1": "Replié dans une fusée, en route pour la Lune."
+        }
+      },
+      "p02": {
+        "stamp": "EAGLE ET COLUMBIA · ORBITE LUNAIRE · 20 JUIL. 1969",
+        "lines": {
+          "p02-c1": "20 juillet 1969. En orbite autour de la Lune, le module lunaire Eagle se sépare du module de commande Columbia. Michael Collins reste à bord de Columbia.",
+          "p02-s1": "Au revoir, Columbia. Laisse-nous la lumière allumée."
+        }
+      },
+      "p03": {
+        "stamp": "EAGLE · DESCENTE PROPULSÉE",
+        "lines": {
+          "p03-c1": "L’ordinateur se dirige vers un champ de rochers. Neil Armstrong prend les commandes à la main, le survole et se pose avec très peu de carburant en réserve.",
+          "p03-s1": "Des rochers en dessous ! Doucement… doucement… le carburant baisse."
+        }
+      },
+      "p04": {
+        "stamp": "EAGLE · TRANQUILITY BASE · 20 JUIL. 1969",
+        "lines": {
+          "p04-c1": "20 juillet 1969. « Houston, ici Tranquility Base. L’Eagle s’est posé. »",
+          "p04-s1": "Moteur coupé. La poussière retombe. Nous y sommes."
+        }
+      },
+      "p05": {
+        "stamp": "TRANQUILITY BASE · PREMIERS PAS",
+        "lines": {
+          "p05-c1": "Neil Armstrong pose le pied sur la Lune, suivi de Buzz Aldrin. Sur la Lune, il n’y a ni vent ni pluie pour effacer leurs empreintes.",
+          "p05-s1": "Leurs premiers pas. Ici, rien n’efface les empreintes."
+        }
+      },
+      "p06": {
+        "stamp": "TRANQUILITY BASE · SISMOMÈTRE ET RÉTRORÉFLECTEUR",
+        "lines": {
+          "p06-c1": "Aldrin installe un sismomètre pour sentir les séismes lunaires, et un rétroréflecteur laser : un panneau de 100 prismes qui renvoie la lumière exactement d’où elle vient.",
+          "p06-s1": "Un miroir et une oreille. Des cadeaux à laisser derrière soi."
+        }
+      },
+      "p07": {
+        "stamp": "TRANQUILITY BASE · 21,55 KG DE LUNE",
+        "lines": {
+          "p07-c1": "L’équipage récolte 21,55 kg de roches et de sol lunaires et les scelle dans des boîtes pour le retour.",
+          "p07-s1": "Chaque roche emportée est une raison de laisser quelque chose ici."
+        }
+      },
+      "p08": {
+        "stamp": "EAGLE · DÉCOLLAGE DE LA LUNE · 21 JUIL. 1969",
+        "lines": {
+          "p08-c1": "21 juillet 1969. L’étage supérieur d’Eagle décolle en se servant de l’étage de descente doré comme rampe de lancement. Chaque kilogramme laissé ici, c’est du carburant économisé pour le retour.",
+          "p08-s1": "Partez. Je reste. Je fais une bonne rampe de lancement."
+        }
+      },
+      "p09": {
+        "stamp": "COLUMBIA · OCÉAN PACIFIQUE · 24 JUIL. 1969",
+        "lines": {
+          "p09-c1": "24 juillet 1969. Columbia amerrit dans l’océan Pacifique, et le navire de récupération USS Hornet recueille l’équipage et ses roches lunaires.",
+          "p09-s1": "Amerrissage ! Vingt et un kilogrammes de Lune, à l’abri à la maison."
+        }
+      },
+      "p10": {
+        "stamp": "TRANQUILITY BASE · AUJOURD’HUI",
+        "lines": {
+          "p10-c1": "Aujourd’hui. L’étage de descente se dresse toujours à Tranquility Base. Des observatoires sur Terre tirent encore des lasers vers le rétroréflecteur pour mesurer la distance de la Lune au millimètre près.",
+          "p10-s1": "Toujours là. Je vous renvoie toujours votre lumière."
+        }
+      },
+      "p11": {
+        "stamp": "APOLLO 11 · L’ÉCHANGE DE POIDS",
+        "lines": {
+          "p11-c1": "Pour rapporter 21,55 kg de Lune, Apollo 11 a laissé derrière lui le lourd étage de descente. Il est devenu la rampe de lancement du voyage retour.",
+          "p11-c2": "La lumière laser tirée depuis la Terre atteint le rétroréflecteur et revient en environ 2,5 secondes : elle mesure encore la distance de la Lune plus de 50 ans plus tard.",
+          "p11-c3": "Laissé là exprès. Il répond toujours."
+        }
+      }
+    }
+  },
+  "ingenuity": {
+    "meta": {
+      "title": "VOL 72",
+      "disclaimer": "Les bulles sont romancées (narration fictive). Les encadrés racontent l’histoire documentée.",
+      "creditsNote": "Dates publiées par la NASA (heure des États-Unis)."
+    },
+    "comic": {
+      "p01": {
+        "stamp": "INGENUITY · CRATÈRE JEZERO · 18 FÉVR. 2021",
+        "lines": {
+          "p01-c1": "18 février 2021. Une grue volante dépose le rover Perseverance dans le cratère Jezero. Replié sous son ventre voyage Ingenuity, un hélicoptère de 1,8 kg.",
+          "p01-s1": "Accroche-toi. Prochain arrêt : le cratère Jezero."
+        }
+      },
+      "p02": {
+        "stamp": "INGENUITY · CRATÈRE JEZERO · 3 AVR. 2021",
+        "lines": {
+          "p02-c1": "3 avril 2021. Perseverance pose Ingenuity au fond du cratère et s’éloigne. Pour la première fois, l’hélicoptère est seul.",
+          "p02-s1": "Bon. Plus que moi maintenant."
+        }
+      },
+      "p03": {
+        "stamp": "INGENUITY · PREMIÈRE NUIT SEUL",
+        "lines": {
+          "p03-c1": "Sa première nuit seul. La température peut descendre jusqu’à environ −90 °C : Ingenuity doit garder son électronique au chaud grâce à sa batterie jusqu’au retour du Soleil.",
+          "p03-s1": "Si froid… garde le chauffage allumé. Attends le Soleil."
+        }
+      },
+      "p04": {
+        "stamp": "INGENUITY · VOL 1 · 19 AVR. 2021",
+        "lines": {
+          "p04-c1": "19 avril 2021. Ingenuity s’élève à 3 mètres et reste en vol stationnaire pendant environ 30 secondes : le premier vol motorisé et contrôlé sur une autre planète.",
+          "p04-s1": "Je vole. Sur Mars !"
+        }
+      },
+      "p05": {
+        "stamp": "INGENUITY · ÉCLAIREUR DE PERSEVERANCE",
+        "lines": {
+          "p05-c1": "Ingenuity n’était prévu que pour cinq vols d’essai. Après les avoir réussis, il devient éclaireur et vole en avant pour photographier la route du rover.",
+          "p05-s1": "Je vérifie le chemin. Suis-moi !"
+        }
+      },
+      "p06": {
+        "stamp": "INGENUITY · HIVER MARTIEN",
+        "lines": {
+          "p06-c1": "L’hiver martien apporte de la poussière, un soleil plus faible et des nuits plus froides. Avec moins d’énergie pour recharger ses batteries, chaque vol devient plus difficile.",
+          "p06-s1": "De la poussière sur mon panneau solaire. Encore un peu de soleil, s’il te plaît."
+        }
+      },
+      "p07": {
+        "stamp": "INGENUITY · 72 VOLS",
+        "lines": {
+          "p07-c1": "En près de trois ans, Ingenuity vole 72 fois, parcourt environ 17 km et monte jusqu’à 24 mètres de haut.",
+          "p07-s1": "Prévu pour cinq vols. Regarde-moi maintenant !"
+        }
+      },
+      "p08": {
+        "stamp": "INGENUITY · VOL 72 · 18 JANV. 2024",
+        "lines": {
+          "p08-c1": "18 janvier 2024. Au-dessus de rides de sable lisses et sans relief, sa caméra de navigation ne peut pas suivre le sol. Ingenuity se pose brutalement et ses pales se brisent.",
+          "p08-s1": "Je ne vois plus le sol… attention !"
+        }
+      },
+      "p09": {
+        "stamp": "INGENUITY · 25 JANVIER 2024",
+        "lines": {
+          "p09-c1": "25 janvier 2024. La NASA annonce qu’Ingenuity ne volera plus. Quelques semaines plus tard, Perseverance photographie son vieil ami de loin avant de reprendre la route.",
+          "p09-s1": "Vas-y, Perseverance. Je reste ici."
+        }
+      },
+      "p10": {
+        "stamp": "INGENUITY · AUJOURD’HUI",
+        "lines": {
+          "p10-c1": "Aujourd’hui. Ingenuity ne peut plus voler, mais il reste comme station fixe et collecte toujours des données à la surface de Mars.",
+          "p10-s1": "Je ne peux plus voler. Mais j’écoute toujours."
+        }
+      },
+      "p11": {
+        "stamp": "INGENUITY · VOL 72",
+        "lines": {
+          "p11-c1": "L’air de Mars est environ 1 % aussi dense que celui de la Terre. Pour décoller, les rotors d’Ingenuity devaient tourner à environ 2 537 RPM.",
+          "p11-c2": "Prévu pour cinq vols au maximum en 30 sols, Ingenuity a volé 72 fois en près de trois ans.",
+          "p11-c3": "Conçu pour prouver qu’il pouvait voler. Il a ouvert le ciel d’un autre monde."
+        }
+      }
+    }
+  }
+}

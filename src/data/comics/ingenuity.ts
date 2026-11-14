@@ -390,4 +390,4 @@ const ISSUE_03_PANELS: ComicPanel[] = [
   },
 ];
 
-export const ISSUE_03: ComicIssue = { meta: ISSUE_03_META, panels: ISSUE_03_PANELS };
+export const ISSUE_03: ComicIssue = { missionId: 'ingenuity', meta: ISSUE_03_META, panels: ISSUE_03_PANELS };

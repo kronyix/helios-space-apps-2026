@@ -1,7 +1,8 @@
 import type { MissionData } from '../data/types';
 import { IconArrowLeft, IconArrowRight } from '../components/ui/Icons';
+import { useT } from '../i18n/useT';
 
-const STEPS = ['Archive', 'Story', 'Hardware', 'Transmission'];
+const STEPS = ['nav.archive', 'nav.story', 'nav.hardware', 'nav.transmission'];
 
 /** Bottom bar: back · four-step progress · chapter label · next. */
 export function ChapterNav({
@@ -19,24 +20,25 @@ export function ChapterNav({
   nextLabel: string;
   nextDisabled?: boolean;
 }) {
+  const t = useT();
   const roman = ['I', 'II', 'III', 'IV'][step];
   return (
-    <nav aria-label="Chapter navigation" className="chapter-nav">
-      <button type="button" className="btn-icon h-12 w-12 shrink-0" onClick={onPrev} aria-label={`Back to ${STEPS[step - 1] ?? 'archive'}`}>
+    <nav aria-label={t('chapter.nav')} className="chapter-nav">
+      <button type="button" className="btn-icon h-12 w-12 shrink-0" onClick={onPrev} aria-label={t('chapter.back', { name: t(STEPS[step - 1] ?? STEPS[0]) })}>
         <IconArrowLeft />
       </button>
-      <ol className="chapter-nav__track" aria-label={`Step ${step + 1} of 4`}>
+      <ol className="chapter-nav__track" aria-label={t('chapter.step', { n: step + 1, total: STEPS.length })}>
         {STEPS.map((s, i) => (
           <li key={s} data-state={i < step ? 'done' : i === step ? 'current' : 'todo'}>
             <span className="sr-only">
-              {s}
-              {i === step ? ' (current)' : ''}
+              {t(s)}
+              {i === step ? ` ${t('chapter.current')}` : ''}
             </span>
           </li>
         ))}
       </ol>
       <p className="hidden shrink-0 text-[15px] text-fg-2 md:block">
-        Chapter {roman} · {mission.issueTitle}
+        {t('chapter.label', { roman })} · {mission.issueTitle}
       </p>
       <button type="button" className="btn-primary shrink-0" onClick={onNext} disabled={nextDisabled}>
         {nextLabel} <IconArrowRight size={18} />
