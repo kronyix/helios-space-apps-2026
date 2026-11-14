@@ -27,6 +27,13 @@ interface RockSpire {
   width: number;
 }
 
+interface DustDevil {
+  x: number;
+  y: number;
+  vx: number;
+  radius: number;
+}
+
 export default function RpmThrottle({ durationSec, params, successThreshold, onFinish }: GameProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [score, setScore] = useState(0);
@@ -34,12 +41,13 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
   const [battery, setBattery] = useState(100);
   const [altitudeMeters, setAltitudeMeters] = useState(0);
   const [ringsCleared, setRingsCleared] = useState(0);
+  const [combo, setCombo] = useState(1);
   const [distanceMeters, setDistanceMeters] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [victory, setVictory] = useState(false);
-  const [timeRemaining, setTimeRemaining] = useState(durationSec > 15 ? durationSec : 75);
+  const [timeRemaining, setTimeRemaining] = useState(durationSec > 15 ? durationSec : 85);
 
-  const totalTime = durationSec > 15 ? durationSec : 75;
+  const totalTime = durationSec > 15 ? durationSec : 85;
   const targetRpm = params.targetRpm ?? 2537;
 
   // Touch controls
@@ -56,7 +64,7 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
       y: 280,
       vx: 0,
       vy: 0,
-      pitch: 0, // Tilt angle in radians
+      pitch: 0,
       rpm: 0,
       targetRpm: 2537,
       battery: 100,
@@ -64,40 +72,47 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
       bladeAngleBottom: 0,
       onGround: true,
       landedOnPad: false,
+      combo: 1,
+      score: 0,
     },
     cameraX: 0,
-    cameraY: 0,
     particles: [] as Particle[],
     waypoints: [] as WaypointRing[],
     spires: [] as RockSpire[],
-    airfieldX: 2000,
-    levelLength: 2200,
+    dustDevils: [] as DustDevil[],
+    airfieldX: 2200,
+    levelLength: 2450,
     elapsed: 0,
     ringsPassed: 0,
     keys: { throttle: false, left: false, right: false },
   });
 
-  // Setup flight waypoints and rock obstacles
+  // Setup flight route, waypoint rings, rock spires, and dust devils
   useEffect(() => {
     const s = gameState.current;
     s.waypoints = [
-      { x: 350, y: 160, radius: 38, cleared: false, label: 'WP1' },
-      { x: 720, y: 110, radius: 38, cleared: false, label: 'WP2' },
-      { x: 1100, y: 180, radius: 38, cleared: false, label: 'WP3' },
-      { x: 1480, y: 120, radius: 38, cleared: false, label: 'WP4' },
-      { x: 1820, y: 190, radius: 38, cleared: false, label: 'WP5' },
+      { x: 380, y: 160, radius: 40, cleared: false, label: 'WP1' },
+      { x: 760, y: 110, radius: 40, cleared: false, label: 'WP2' },
+      { x: 1150, y: 175, radius: 40, cleared: false, label: 'WP3' },
+      { x: 1540, y: 115, radius: 40, cleared: false, label: 'WP4' },
+      { x: 1920, y: 185, radius: 40, cleared: false, label: 'WP5' },
     ];
 
     s.spires = [
-      { x: 520, height: 140, width: 45 },
-      { x: 910, height: 180, width: 50 },
-      { x: 1300, height: 130, width: 45 },
-      { x: 1650, height: 160, width: 55 },
+      { x: 560, height: 145, width: 48 },
+      { x: 960, height: 185, width: 52 },
+      { x: 1350, height: 135, width: 46 },
+      { x: 1740, height: 165, width: 54 },
+    ];
+
+    s.dustDevils = [
+      { x: 850, y: 220, vx: -35, radius: 25 },
+      { x: 1620, y: 210, vx: -40, radius: 28 },
     ];
   }, []);
 
   function getGroundY(x: number): number {
-    return 300 + Math.sin(x * 0.005) * 25 + Math.cos(x * 0.015) * 10;
+    return 300 + Math.sin(x * 0.005) * 26 + Math.cos(x * 0.015) * 11;
   }
 
   // Keyboard controls
@@ -156,25 +171,25 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
         const tiltLeft = k.left || touchLeft.current;
         const tiltRight = k.right || touchRight.current;
 
-        // Rotor speed acceleration & spin-down
+        // Rotor acceleration towards target 2,537 RPM
         if (isThrottling) {
-          h.rpm = Math.min(2900, h.rpm + 1150 * dt);
+          h.rpm = Math.min(2950, h.rpm + 1200 * dt);
         } else {
-          h.rpm = Math.max(0, h.rpm - 750 * dt);
+          h.rpm = Math.max(0, h.rpm - 780 * dt);
         }
 
-        // Tilt / Pitch control (-0.35 rad to +0.35 rad)
+        // Tilt / Pitch control (-0.38 rad to +0.38 rad)
         if (tiltRight) {
-          h.pitch += (0.35 - h.pitch) * Math.min(1, 8 * dt);
+          h.pitch += (0.38 - h.pitch) * Math.min(1, 8.5 * dt);
         } else if (tiltLeft) {
-          h.pitch += (-0.35 - h.pitch) * Math.min(1, 8 * dt);
+          h.pitch += (-0.38 - h.pitch) * Math.min(1, 8.5 * dt);
         } else {
-          h.pitch += (0 - h.pitch) * Math.min(1, 6 * dt);
+          h.pitch += (0 - h.pitch) * Math.min(1, 6.5 * dt);
         }
 
-        // Aerodynamic Lift Physics (Ingenuity requires ~2,537 RPM in 1% Martian CO2)
+        // Aerodynamic Lift Physics (Ingenuity in 1% Martian CO2)
         // Lift is proportional to RPM squared
-        const liftForce = Math.pow(h.rpm / 2537, 2.0) * 310;
+        const liftForce = Math.pow(h.rpm / 2537, 2.0) * 315;
         const martianGravity = 175; // px/s²
 
         // Resolve lift into vertical and horizontal components based on pitch tilt
@@ -184,28 +199,44 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
         h.vx += thrustX * dt;
         h.vy += (liftY + martianGravity) * dt;
 
-        // Aerodynamic drag in thin air
-        h.vx *= Math.pow(0.55, dt);
-        h.vy *= Math.pow(0.7, dt);
+        // Aerodynamic drag in Martian atmosphere
+        h.vx *= Math.pow(0.58, dt);
+        h.vy *= Math.pow(0.72, dt);
 
-        // Battery Power Consumption (cubed with RPM, double penalty on overspeed >2700)
-        let drainRate = 1.8 * Math.pow(h.rpm / 2537, 3);
-        if (h.rpm > 2700) drainRate *= 2.2;
+        // Battery Power Consumption (cubed with RPM; overspeed penalty >2700)
+        let drainRate = 1.75 * Math.pow(h.rpm / 2537, 3);
+        if (h.rpm > 2700) drainRate *= 2.3;
         h.battery = Math.max(0, h.battery - drainRate * dt);
 
         // Update Position
         h.x += h.vx * dt;
         h.y += h.vy * dt;
 
-        // Ground Collision
+        // Dynamic Dust Devils Update
+        s.dustDevils.forEach((dd) => {
+          dd.x += dd.vx * dt;
+          if (dd.x < s.cameraX - 80) dd.x = s.cameraX + 850 + Math.random() * 200;
+
+          // Dust devil turbulence collision
+          const dist = Math.hypot(dd.x - h.x, dd.y - h.y);
+          if (dist < dd.radius + 15) {
+            h.vy += (Math.random() - 0.5) * 60;
+            h.pitch += (Math.random() - 0.5) * 0.15;
+            h.battery = Math.max(0, h.battery - 1.5 * dt);
+            h.combo = 1;
+            setCombo(1);
+            blip('bad');
+          }
+        });
+
+        // Ground Collision & Landing Check
         const groundY = getGroundY(h.x);
         if (h.y >= groundY - 16) {
-          // Landing evaluation
           const isLevel = Math.abs(h.pitch) < 0.12;
-          const isGentle = Math.abs(h.vy) < 60 && Math.abs(h.vx) < 40;
+          const isGentle = Math.abs(h.vy) < 65 && Math.abs(h.vx) < 45;
 
-          if (h.x >= s.airfieldX - 45 && h.x <= s.airfieldX + 45 && isLevel && isGentle) {
-            // Successful Airfield Beta Touchdown!
+          if (h.x >= s.airfieldX - 50 && h.x <= s.airfieldX + 50 && isLevel && isGentle) {
+            // Precision Landing on Airfield Beta!
             h.y = groundY - 16;
             h.vy = 0;
             h.vx = 0;
@@ -220,17 +251,16 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
                 45 +
                   s.ringsPassed * 9 +
                   (h.battery / 100) * 15 +
-                  (Math.abs(h.rpm - 2537) < 100 ? 10 : 5),
+                  (Math.abs(h.rpm - 2537) < 90 ? 10 : 5),
               ),
             );
             handleFinish(
               finalScore,
               finalScore >= successThreshold,
-              `Ingenuity landed smoothly on Airfield Beta! Flight distance: 2.0 km · Cleared ${s.ringsPassed}/5 aerial waypoints · ${Math.round(h.battery)}% battery preserved`,
+              `Ingenuity landed smoothly on Airfield Beta! Flight distance: 2.2 km · Cleared ${s.ringsPassed}/5 waypoint rings · ${Math.round(h.battery)}% flight battery preserved`,
             );
-          } else if (h.y > groundY - 10) {
-            // Hard crash on terrain
-            if (Math.abs(h.vy) > 120 || !isLevel) {
+          } else if (h.y > groundY - 9) {
+            if (Math.abs(h.vy) > 125 || !isLevel) {
               setGameOver(true);
               blip('bad');
               handleFinish(
@@ -248,7 +278,7 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
           h.onGround = false;
         }
 
-        // Rock Spire Collisions
+        // Basalt Rock Spire Collisions
         for (const spire of s.spires) {
           const spireTop = getGroundY(spire.x) - spire.height;
           if (
@@ -258,7 +288,7 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
           ) {
             setGameOver(true);
             blip('bad');
-            handleFinish(score, false, 'Collision with Martian basalt rock spire');
+            handleFinish(score, false, 'Collision with canyon basalt rock spire');
           }
         }
 
@@ -268,41 +298,43 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
             wp.cleared = true;
             s.ringsPassed += 1;
             setRingsCleared(s.ringsPassed);
+            h.combo = Math.min(4, h.combo + 1);
+            setCombo(h.combo);
             blip('ok');
 
-            // Ring pass particle burst
-            for (let i = 0; i < 16; i++) {
+            // Ring burst particles
+            for (let i = 0; i < 18; i++) {
               s.particles.push({
                 x: wp.x,
                 y: wp.y,
-                vx: (Math.random() - 0.5) * 80,
-                vy: (Math.random() - 0.5) * 80,
-                life: 0.6,
-                maxLife: 0.6,
+                vx: (Math.random() - 0.5) * 90,
+                vy: (Math.random() - 0.5) * 90,
+                life: 0.65,
+                maxLife: 0.65,
                 color: '#52ff8f',
-                size: 3.5,
+                size: 3.6,
               });
             }
           }
         });
 
-        // Rotor Blade Spin Animation (Opposite directions)
-        const bladeSpeed = (h.rpm / 60) * Math.PI * 2 * 0.15;
+        // Rotor Blade Spin Animation (Opposite Directions)
+        const bladeSpeed = (h.rpm / 60) * Math.PI * 2 * 0.16;
         h.bladeAngleTop += bladeSpeed * dt;
         h.bladeAngleBottom -= bladeSpeed * dt;
 
-        // Downward Rotor Wash Dust Particles
-        if (h.rpm > 1800 && h.y > groundY - 90) {
+        // Downward Rotor Wash Dust Plumes
+        if (h.rpm > 1850 && h.y > groundY - 95) {
           for (let i = 0; i < 2; i++) {
             s.particles.push({
-              x: h.x + (Math.random() - 0.5) * 35,
+              x: h.x + (Math.random() - 0.5) * 38,
               y: groundY - 4,
-              vx: (Math.random() - 0.5) * 75,
-              vy: -Math.random() * 20,
-              life: 0.4,
-              maxLife: 0.4,
-              color: '#d67c46',
-              size: 2.2,
+              vx: (Math.random() - 0.5) * 80,
+              vy: -Math.random() * 22,
+              life: 0.42,
+              maxLife: 0.42,
+              color: '#d67544',
+              size: 2.4,
             });
           }
         }
@@ -316,31 +348,31 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
           if (p.life <= 0) s.particles.splice(i, 1);
         }
 
-        // Camera follow (tracks helicopter horizontally and vertically)
+        // Camera follow
         s.cameraX += (h.x - 220 - s.cameraX) * Math.min(1, 5 * dt);
-        s.cameraX = Math.max(0, Math.min(s.levelLength - 500, s.cameraX));
+        s.cameraX = Math.max(0, Math.min(s.levelLength - 520, s.cameraX));
 
         setRpm(Math.round(h.rpm));
         setBattery(Math.round(h.battery));
         setAltitudeMeters(Math.max(0, Math.round((groundY - h.y) * 0.1)));
         setDistanceMeters(Math.round(h.x));
 
-        const curScore = Math.round(
+        const computedScore = Math.round(
           Math.min(
             100,
             (s.ringsPassed / 5) * 50 + (h.x / s.levelLength) * 35 + (h.battery / 100) * 15,
           ),
         );
-        setScore(curScore);
+        setScore(computedScore);
 
         // Battery Exhaustion / Time expiration
         if (h.battery <= 0 || remaining <= 0) {
           setGameOver(true);
           blip('bad');
           handleFinish(
-            curScore,
+            computedScore,
             false,
-            h.battery <= 0 ? 'Solar battery depleted during flight' : 'Flight operations window expired',
+            h.battery <= 0 ? 'Solar battery depleted during high-torque flight' : 'Flight operational window expired',
           );
         }
       }
@@ -355,50 +387,71 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
 
           // 1. Martian Sky & Canyon Atmosphere
           const skyGrad = ctx.createLinearGradient(0, 0, 0, h);
-          skyGrad.addColorStop(0, '#5a2e1d');
-          skyGrad.addColorStop(0.55, '#9e502e');
-          skyGrad.addColorStop(1, '#d88656');
+          skyGrad.addColorStop(0, '#532918');
+          skyGrad.addColorStop(0.55, '#994a28');
+          skyGrad.addColorStop(1, '#db8454');
           ctx.fillStyle = skyGrad;
           ctx.fillRect(0, 0, w, h);
 
-          // Distant Martian crater rim mountains
-          ctx.fillStyle = '#6e351f';
+          // Distant mountains (Parallax 0.15)
+          ctx.fillStyle = '#662f1a';
           ctx.beginPath();
           ctx.moveTo(0, h);
-          for (let px = 0; px <= w; px += 40) {
-            const worldX = px + s.cameraX * 0.18;
-            const my = 140 + Math.sin(worldX * 0.006) * 35 + Math.cos(worldX * 0.015) * 20;
+          for (let px = 0; px <= w; px += 35) {
+            const worldX = px + s.cameraX * 0.15;
+            const my = 140 + Math.sin(worldX * 0.006) * 36 + Math.cos(worldX * 0.014) * 20;
             ctx.lineTo(px, my);
           }
           ctx.lineTo(w, h);
           ctx.closePath();
           ctx.fill();
 
-          // 2. Foreground Martian Terrain & Obstacles
+          // 2. Foreground Martian Canyon Terrain & Obstacles
           ctx.save();
           ctx.translate(-s.cameraX, 0);
 
-          // Canyon Rock Spires (Hazards)
+          // Canyon Rock Spires
           s.spires.forEach((spire) => {
             const groundY = getGroundY(spire.x);
             const topY = groundY - spire.height;
-            ctx.fillStyle = '#482012';
+            ctx.fillStyle = '#441d0e';
             ctx.beginPath();
             ctx.moveTo(spire.x - spire.width / 2, groundY);
-            ctx.lineTo(spire.x - spire.width * 0.2, topY);
-            ctx.lineTo(spire.x + spire.width * 0.2, topY);
+            ctx.lineTo(spire.x - spire.width * 0.22, topY);
+            ctx.lineTo(spire.x + spire.width * 0.22, topY);
             ctx.lineTo(spire.x + spire.width / 2, groundY);
             ctx.closePath();
             ctx.fill();
 
-            ctx.strokeStyle = '#944224';
+            ctx.strokeStyle = '#944020';
             ctx.lineWidth = 2;
             ctx.stroke();
 
-            ctx.fillStyle = '#ff8f52';
-            ctx.font = '9px monospace';
+            ctx.fillStyle = '#ff8848';
+            ctx.font = '9px monospace font-bold';
             ctx.textAlign = 'center';
-            ctx.fillText('! SPIRE !', spire.x, topY - 8);
+            ctx.fillText('! ROCK SPIRE !', spire.x, topY - 9);
+          });
+
+          // Moving Martian Dust Devils
+          s.dustDevils.forEach((dd) => {
+            const spin = s.elapsed * 8;
+            ctx.fillStyle = 'rgba(215, 120, 70, 0.45)';
+            ctx.beginPath();
+            ctx.ellipse(dd.x, dd.y, dd.radius * 0.85, dd.radius * 1.9, Math.sin(spin) * 0.15, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.strokeStyle = 'rgba(255, 175, 120, 0.65)';
+            ctx.lineWidth = 1.6;
+            ctx.beginPath();
+            ctx.arc(dd.x, dd.y - dd.radius * 0.6, dd.radius * 0.6, 0, Math.PI * 2);
+            ctx.arc(dd.x, dd.y + dd.radius * 0.6, dd.radius * 0.35, 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.fillStyle = '#ffcf99';
+            ctx.font = '8px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('DUST DEVIL', dd.x, dd.y - dd.radius * 2);
           });
 
           // Ground Surface Fill
@@ -412,8 +465,8 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
           ctx.closePath();
           ctx.fill();
 
-          // Ground Ridge Highlight Line
-          ctx.strokeStyle = '#d67544';
+          // Ridge Line
+          ctx.strokeStyle = '#d97444';
           ctx.lineWidth = 3.5;
           ctx.beginPath();
           for (let px = 0; px <= s.levelLength + 200; px += 20) {
@@ -423,19 +476,17 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
           }
           ctx.stroke();
 
-          // Flight Waypoint Rings
+          // Flight Waypoint Gate Rings
           s.waypoints.forEach((wp) => {
             ctx.save();
             ctx.translate(wp.x, wp.y);
 
-            // Ring Glow / Outline
             ctx.strokeStyle = wp.cleared ? '#52ff8f' : '#ffcf42';
             ctx.lineWidth = wp.cleared ? 2 : 3.5;
             ctx.beginPath();
             ctx.arc(0, 0, wp.radius, 0, Math.PI * 2);
             ctx.stroke();
 
-            // Inner crosshairs
             ctx.strokeStyle = wp.cleared ? 'rgba(82, 255, 143, 0.4)' : 'rgba(255, 207, 66, 0.45)';
             ctx.lineWidth = 1.2;
             ctx.beginPath();
@@ -448,25 +499,24 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
             ctx.fillStyle = wp.cleared ? '#52ff8f' : '#fff';
             ctx.font = '10px monospace';
             ctx.textAlign = 'center';
-            ctx.fillText(wp.cleared ? '✓' : wp.label, 0, -wp.radius - 8);
+            ctx.fillText(wp.cleared ? '✓ PASS' : wp.label, 0, -wp.radius - 8);
             ctx.restore();
           });
 
-          // Airfield Beta (Landing Zone)
+          // Airfield Beta Precision Landing Pad
           const padY = getGroundY(s.airfieldX);
-          ctx.fillStyle = '#2c3542';
-          ctx.fillRect(s.airfieldX - 45, padY - 6, 90, 8);
-          ctx.strokeStyle = '#55ff88';
+          ctx.fillStyle = '#2a3340';
+          ctx.fillRect(s.airfieldX - 50, padY - 6, 100, 8);
+          ctx.strokeStyle = '#52ff8f';
           ctx.lineWidth = 2.5;
-          ctx.strokeRect(s.airfieldX - 45, padY - 6, 90, 8);
+          ctx.strokeRect(s.airfieldX - 50, padY - 6, 100, 8);
 
-          // Helipad "H"
-          ctx.fillStyle = '#55ff88';
-          ctx.font = '14px monospace font-bold';
+          ctx.fillStyle = '#52ff8f';
+          ctx.font = '13px monospace font-bold';
           ctx.textAlign = 'center';
           ctx.fillText('AIRFIELD BETA [ H ]', s.airfieldX, padY - 14);
 
-          // Dust Particles
+          // Particles
           s.particles.forEach((p) => {
             ctx.fillStyle = p.color;
             ctx.beginPath();
@@ -479,49 +529,57 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
           ctx.translate(s.heli.x, s.heli.y);
           ctx.rotate(s.heli.pitch);
 
-          // Shadow on ground
+          // Contact Shadow on Ground
           const distToGround = getGroundY(s.heli.x) - s.heli.y;
-          const shadowScale = Math.max(0.2, 1 - distToGround / 250);
+          const shadowScale = Math.max(0.2, 1 - distToGround / 260);
           ctx.save();
           ctx.rotate(-s.heli.pitch);
-          ctx.fillStyle = `rgba(35, 12, 6, ${0.45 * shadowScale})`;
+          ctx.fillStyle = `rgba(32, 11, 5, ${0.45 * shadowScale})`;
           ctx.beginPath();
-          ctx.ellipse(0, distToGround, 24 * shadowScale, 5 * shadowScale, 0, 0, Math.PI * 2);
+          ctx.ellipse(0, distToGround, 25 * shadowScale, 5 * shadowScale, 0, 0, Math.PI * 2);
           ctx.fill();
           ctx.restore();
 
           // 4 Carbon-Composite Landing Legs
-          ctx.strokeStyle = '#22252b';
+          ctx.strokeStyle = '#202329';
           ctx.lineWidth = 2;
-          // Left legs
           ctx.beginPath();
           ctx.moveTo(-5, 4);
-          ctx.lineTo(-18, 16);
+          ctx.lineTo(-19, 16);
           ctx.moveTo(5, 4);
-          ctx.lineTo(18, 16);
-          // Landing footpads
-          ctx.moveTo(-22, 16);
-          ctx.lineTo(-14, 16);
-          ctx.moveTo(14, 16);
-          ctx.lineTo(22, 16);
+          ctx.lineTo(19, 16);
+          // Footpads
+          ctx.moveTo(-23, 16);
+          ctx.lineTo(-15, 16);
+          ctx.moveTo(15, 16);
+          ctx.lineTo(23, 16);
           ctx.stroke();
 
-          // Fuselage Cube (Avionics, Battery, Downward Camera)
+          // Fuselage Cube
           ctx.fillStyle = '#9e9786';
           ctx.beginPath();
           ctx.roundRect(-8, -6, 16, 14, 2);
           ctx.fill();
-          ctx.strokeStyle = '#545045';
+          ctx.strokeStyle = '#524e43';
           ctx.lineWidth = 1;
           ctx.stroke();
 
-          // Gold Kapton / Solar Battery Cover
+          // Gold Kapton Solar Battery Blanket
           ctx.fillStyle = '#dca026';
           ctx.fillRect(-6, -4, 12, 6);
 
-          // Downward Altimeter Sensor
+          // Downward Laser Altimeter Rangefinder
           ctx.fillStyle = '#38e8ff';
           ctx.fillRect(-2, 7, 4, 2);
+          // Altimeter Beam
+          if (distToGround < 200) {
+            ctx.strokeStyle = 'rgba(56, 232, 255, 0.4)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(0, 9);
+            ctx.lineTo(0, distToGround);
+            ctx.stroke();
+          }
 
           // Rotor Mast
           ctx.strokeStyle = '#2d3038';
@@ -531,15 +589,15 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
           ctx.lineTo(0, -26);
           ctx.stroke();
 
-          // Solar Panel on top of mast
+          // Solar Panel on Mast Top
           ctx.fillStyle = '#1e293b';
           ctx.fillRect(-12, -28, 24, 3);
           ctx.strokeStyle = '#38bdf8';
           ctx.lineWidth = 0.8;
           ctx.strokeRect(-12, -28, 24, 3);
 
-          // Counter-Rotating Coaxial Carbon Blades (with RPM blur)
-          const bladeWidth = 42;
+          // Counter-Rotating Coaxial Carbon Blades with RPM Blur
+          const bladeWidth = 44;
           const blurOpacity = Math.min(0.85, (s.heli.rpm / 2537) * 0.85);
 
           // Upper Rotor
@@ -547,14 +605,13 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
           ctx.translate(0, -22);
           const topBladeScale = Math.cos(s.heli.bladeAngleTop);
           ctx.strokeStyle = '#1b1d22';
-          ctx.lineWidth = 3;
+          ctx.lineWidth = 3.2;
           ctx.beginPath();
           ctx.moveTo(-bladeWidth * topBladeScale, 0);
           ctx.lineTo(bladeWidth * topBladeScale, 0);
           ctx.stroke();
-          // Blur disc
           if (s.heli.rpm > 800) {
-            ctx.fillStyle = `rgba(30, 35, 45, ${blurOpacity * 0.4})`;
+            ctx.fillStyle = `rgba(30, 35, 45, ${blurOpacity * 0.45})`;
             ctx.beginPath();
             ctx.ellipse(0, 0, bladeWidth, 3, 0, 0, Math.PI * 2);
             ctx.fill();
@@ -566,14 +623,13 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
           ctx.translate(0, -14);
           const bottomBladeScale = Math.cos(s.heli.bladeAngleBottom);
           ctx.strokeStyle = '#2a2d36';
-          ctx.lineWidth = 3;
+          ctx.lineWidth = 3.2;
           ctx.beginPath();
           ctx.moveTo(-bladeWidth * bottomBladeScale, 0);
           ctx.lineTo(bladeWidth * bottomBladeScale, 0);
           ctx.stroke();
-          // Blur disc
           if (s.heli.rpm > 800) {
-            ctx.fillStyle = `rgba(40, 48, 60, ${blurOpacity * 0.4})`;
+            ctx.fillStyle = `rgba(40, 48, 60, ${blurOpacity * 0.45})`;
             ctx.beginPath();
             ctx.ellipse(0, 0, bladeWidth, 3, 0, 0, Math.PI * 2);
             ctx.fill();
@@ -601,6 +657,7 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
     s.heli.pitch = 0;
     s.heli.rpm = 0;
     s.heli.battery = 100;
+    s.heli.combo = 1;
     s.heli.landedOnPad = false;
     s.ringsPassed = 0;
     s.elapsed = 0;
@@ -611,6 +668,7 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
     setRpm(0);
     setBattery(100);
     setRingsCleared(0);
+    setCombo(1);
     setAltitudeMeters(0);
     doneRef.current = false;
   };
@@ -649,7 +707,10 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
               WAYPOINTS: <b className="text-[#52ff8f]">{ringsCleared}</b>/5
             </span>
             <span>
-              DIST: <b>{distanceMeters}m</b>/2000m
+              COMBO: <b className="text-amber-300">{combo}x</b>
+            </span>
+            <span>
+              DIST: <b>{distanceMeters}m</b>/2200m
             </span>
             <span>
               SCORE: <b className="text-amber-300">{score}</b>
@@ -664,7 +725,7 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
             <p className="mt-1 font-mono text-sm text-[var(--color-fg-2)]">
               {battery <= 0
                 ? 'Solar battery depleted during high-torque flight.'
-                : 'Helicopter collided with Martian obstacles or terrain.'}
+                : 'Helicopter collided with canyon spires or terrain.'}
             </p>
             <div className="mt-4 flex gap-3">
               <button type="button" className="btn-primary" onClick={restart}>
@@ -679,10 +740,10 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 p-6 text-center">
             <h3 className="font-display text-2xl font-bold text-[var(--color-ok)]">TOUCHDOWN SUCCESSFUL!</h3>
             <p className="mt-1 font-mono text-sm text-[var(--color-fg)]">
-              Ingenuity successfully flew through the Martian canyon and landed gently on Airfield Beta!
+              Ingenuity successfully navigated the Martian canyon and landed gently on Airfield Beta!
             </p>
             <p className="mt-2 font-mono text-xs text-[var(--color-fg-3)]">
-              Score: <b>{score} / 100</b> · Preserved {battery}% flight battery.
+              Final Score: <b>{score} / 100</b> · Preserved {battery}% flight battery.
             </p>
           </div>
         )}
