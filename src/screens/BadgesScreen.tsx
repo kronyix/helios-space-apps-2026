@@ -13,6 +13,7 @@ export default function BadgesScreen() {
       gameResults: s.gameResults,
       artifacts: s.artifacts,
       transmissionsRead: s.transmissionsRead,
+      roverResult: s.roverResult,
     })),
   );
   const reset = useAppStore((s) => s.resetProgress);

@@ -334,6 +334,55 @@
         "imageKind": "illustration"
       }
     ],
+    "extraGame": {
+      "id": "rover_drive",
+      "route": "/play/rover-drive",
+      "title": "Signal Delay",
+      "kicker": "Drive the rover",
+      "tagline": "Plan a sol of driving, uplink it across the solar system, and find out what Mars did with it.",
+      "ctaLabel": "Drive the rover",
+      "briefing": [
+        "You can't joystick a rover on Mars. A radio signal takes roughly 3 to 22 minutes to cross between Earth and Mars, one way.",
+        "So drivers plan a whole day's drive, uplink it, and wait for the rover to report back.",
+        "Your job: plan each sol, reach the pale hematite outcrop, and SCAN it before the mission runs out."
+      ],
+      "rulesTitle": "Mission rules",
+      "rulesNote": "These numbers are game tuning, not real rover specs.",
+      "rules": [
+        "Queue up to 6 commands per sol. You have 8 sols.",
+        "Tilt over 20° triggers a warning; over 30° the rover stops itself (it may roll on about half a metre); over 40° it tips over.",
+        "Soft sand: wheels only cover about 40–70% of the commanded distance, it drains extra battery, and the rover digs in deeper the longer it drives there.",
+        "Three sols in a row ending in sand with under 20% progress = stuck.",
+        "Rocks stop the drive and log a hazard fault. Turning in place can clip a nearby rock.",
+        "Battery recharges between sols, a little less each sol as dust settles on the solar panels.",
+        "SCAN only works within 3 m of the outcrop."
+      ],
+      "uplinkNote": "≈ 14 min one-way · time compressed",
+      "timeNote": "Opportunity's top speed was about 5 cm/s. Drives here are time-compressed.",
+      "events": {
+        "clean": "Drive completed as planned.",
+        "slip": "Soft sand: the wheels spun and the rover fell short of the plan.",
+        "rock_stop": "Hazard avoidance stopped the drive: a rock was in the way.",
+        "turn_blocked": "A rock blocked the turn. Back up before turning.",
+        "tilt_stop": "Tilt went past 30°, so the rover stopped itself.",
+        "tilt_warning": "The rover leaned past 20° on this drive.",
+        "edge_stop": "The rover reached the edge of the mapped area.",
+        "scan_range": "SCAN failed: the outcrop is more than 3 m away.",
+        "scan_ok": "SCAN complete: hematite confirmed at the outcrop."
+      },
+      "outcomes": {
+        "won": "Outcrop reached and scanned. Hematite \"blueberries\" like these told Opportunity's team that liquid water once soaked Meridiani Planum.",
+        "sand": "Stuck in a sand ripple. Opportunity spent weeks trapped in one nicknamed \"Purgatory\" in 2005 and escaped. Spirit got stuck in soft soil at \"Troy\" in 2009 and never got free.",
+        "battery": "The battery ran flat. Without power the rover can't drive, phone home, or keep itself warm.",
+        "tipover": "The rover tipped over on a steep slope. Real drivers plan carefully to keep the rover on gentle ground.",
+        "sols": "Out of sols before reaching the outcrop. Every sol of a real mission is planned with the same patience."
+      },
+      "badge": {
+        "id": "patient-driver",
+        "name": "Patient Driver",
+        "criteria": "Reach the outcrop and SCAN it in Signal Delay."
+      }
+    },
     "miniGame": {
       "type": "spectrometer_scan",
       "targetValue": "Fe2O3_Hematite",

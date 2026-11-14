@@ -62,6 +62,7 @@ export default function ArchiveScreen() {
       gameResults: s.gameResults,
       artifacts: s.artifacts,
       transmissionsRead: s.transmissionsRead,
+      roverResult: s.roverResult,
     })),
   );
   const reduced = useReducedMotion();
