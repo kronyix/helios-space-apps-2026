@@ -1,427 +1,732 @@
 import { useEffect, useRef, useState } from 'react';
 import { blip } from '../../lib/audio';
-import { useReducedMotion } from '../../lib/useReducedMotion';
-import { TimerBar, useGameLoop, type GameProps } from './useGameLoop';
+import { TimerBar, type GameProps } from './useGameLoop';
 
-interface GustEvent {
-  name: string;
-  loadDelta: number; // RPM disturbance
-  duration: number;
-  remaining: number;
+interface Particle {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  life: number;
+  maxLife: number;
+  color: string;
+  size: number;
+}
+
+interface WaypointRing {
+  x: number;
+  y: number;
+  radius: number;
+  cleared: boolean;
+  label: string;
+}
+
+interface RockSpire {
+  x: number;
+  height: number;
+  width: number;
 }
 
 export default function RpmThrottle({ durationSec, params, successThreshold, onFinish }: GameProps) {
-  const T = params.targetRpm ?? 2537;
-  const band = params.bandRpm ?? 70;
-  const holdSec = params.holdSec ?? 3;
-  const maxRpm = params.maxRpm ?? 3000;
-  const up = params.spinUpPerSec ?? 950;
-  const down = params.spinDownPerSec ?? 700;
-  const drainAtT = params.drainAtTargetPerSec ?? 4.2;
-  const over = params.overspeedRpm ?? 2700;
-  const reduced = useReducedMotion();
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [score, setScore] = useState(0);
+  const [rpm, setRpm] = useState(0);
+  const [battery, setBattery] = useState(100);
+  const [altitudeMeters, setAltitudeMeters] = useState(0);
+  const [ringsCleared, setRingsCleared] = useState(0);
+  const [distanceMeters, setDistanceMeters] = useState(0);
+  const [gameOver, setGameOver] = useState(false);
+  const [victory, setVictory] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState(durationSec > 15 ? durationSec : 75);
 
-  // Simulation state
-  const sim = useRef({
-    cmd: 0,
-    rpm: 0,
-    battery: 100,
-    hold: 0,
-    angleTop: 0,
-    angleBottom: 0,
-    held: false,
-    fineTrim: false,
-    gust: null as GustEvent | null,
-    nextGustTimer: 2.2,
-    harmonicBonus: 0,
-  });
+  const totalTime = durationSec > 15 ? durationSec : 75;
+  const targetRpm = params.targetRpm ?? 2537;
 
-  const [view, setView] = useState({
-    rpm: 0,
-    cmd: 0,
-    battery: 100,
-    hold: 0,
+  // Touch controls
+  const touchThrottle = useRef(false);
+  const touchLeft = useRef(false);
+  const touchRight = useRef(false);
+
+  const doneRef = useRef(false);
+
+  // Helicopter simulation state
+  const gameState = useRef({
+    heli: {
+      x: 100,
+      y: 280,
+      vx: 0,
+      vy: 0,
+      pitch: 0, // Tilt angle in radians
+      rpm: 0,
+      targetRpm: 2537,
+      battery: 100,
+      bladeAngleTop: 0,
+      bladeAngleBottom: 0,
+      onGround: true,
+      landedOnPad: false,
+    },
+    cameraX: 0,
+    cameraY: 0,
+    particles: [] as Particle[],
+    waypoints: [] as WaypointRing[],
+    spires: [] as RockSpire[],
+    airfieldX: 2000,
+    levelLength: 2200,
     elapsed: 0,
-    gustText: null as string | null,
-    isHarmonic: false,
+    ringsPassed: 0,
+    keys: { throttle: false, left: false, right: false },
   });
 
-  const [throttleInput, setThrottleInput] = useState(0); // 0 to 1 continuous throttle slider
-  const [held, setHeld] = useState(false);
-  const done = useRef(false);
-  const topRotor = useRef<SVGGElement>(null);
-  const bottomRotor = useRef<SVGGElement>(null);
-
-  const finish = (lifted: boolean) => {
-    if (done.current) return;
-    done.current = true;
-    const s = sim.current;
-
-    // Score calculation: 30 base + 70 * battery% + harmonic precision bonus
-    const batteryScore = 30 + 70 * (s.battery / 100);
-    const score = lifted
-      ? Math.round(Math.min(100, batteryScore + s.harmonicBonus))
-      : Math.round(40 * Math.min(1, s.hold / holdSec));
-
-    blip(lifted ? 'ok' : 'bad');
-    const passed = lifted && score >= successThreshold;
-    const detail = lifted
-      ? `Stable lift-off achieved · ${Math.round(s.battery)}% battery preserved · ${(s.hold).toFixed(1)}s stable envelope`
-      : s.battery <= 0
-        ? 'Battery depleted before aerodynamic lift-off'
-        : `Time expired · held lift band for ${s.hold.toFixed(1)} of ${holdSec} s`;
-
-    onFinish(score, passed, detail);
-  };
-
-  useGameLoop(true, (dt) => {
-    if (done.current) return;
-    const s = sim.current;
-
-    // Atmospheric disturbances generator (Mars wind gusts & thermal downdrafts)
-    s.nextGustTimer -= dt;
-    if (s.nextGustTimer <= 0) {
-      const gustPool = [
-        { name: 'MARTIAN GUST: +130 RPM SURGE', loadDelta: 130, duration: 1.6, remaining: 1.6 },
-        { name: 'THIN CO₂ POCKET: -110 RPM SINK', loadDelta: -110, duration: 1.8, remaining: 1.8 },
-        { name: 'THERMAL UPDRAFT: +80 RPM LOAD', loadDelta: 80, duration: 1.4, remaining: 1.4 },
-        { name: 'CROSSWIND SHEAR: -90 RPM DRAFT', loadDelta: -90, duration: 1.5, remaining: 1.5 },
-      ];
-      s.gust = gustPool[Math.floor(Math.random() * gustPool.length)];
-      s.nextGustTimer = 3.2 + Math.random() * 2.5;
-    }
-
-    let gustLoad = 0;
-    if (s.gust) {
-      s.gust.remaining -= dt;
-      // Parabolic gust envelope
-      const gFrac = 1 - s.gust.remaining / s.gust.duration;
-      const gWeight = Math.sin(gFrac * Math.PI);
-      gustLoad = s.gust.loadDelta * gWeight;
-      if (s.gust.remaining <= 0) s.gust = null;
-    }
-
-    // Command update: if button held or slider active
-    if (s.held) {
-      s.cmd = Math.min(maxRpm, s.cmd + up * dt);
-    } else if (throttleInput > 0) {
-      // Direct slider targeting
-      const targetFromSlider = throttleInput * maxRpm;
-      if (s.cmd < targetFromSlider) s.cmd = Math.min(targetFromSlider, s.cmd + up * dt);
-      else s.cmd = Math.max(targetFromSlider, s.cmd - down * dt);
-    } else {
-      s.cmd = Math.max(0, s.cmd - down * dt);
-    }
-
-    // Rotor aerodynamic inertia: rotor speed smoothly lags the throttle command + gust disturbance
-    const targetWithGust = Math.max(0, s.cmd + gustLoad);
-    s.rpm += (targetWithGust - s.rpm) * (1 - Math.exp(-dt / 0.35));
-
-    // Power consumption: cubic with RPM; doubled when transonic overspeed (>2700 RPM)
-    let drain = drainAtT * Math.pow(s.rpm / T, 3);
-    if (s.rpm > over) drain *= 2.2;
-    s.battery = Math.max(0, s.battery - drain * dt);
-
-    // Stability & lift band check (around 2,537 RPM)
-    const rpmDelta = Math.abs(s.rpm - T);
-    const inBand = rpmDelta <= band;
-    const isHarmonic = rpmDelta <= 20;
-
-    if (inBand) {
-      const holdRate = isHarmonic ? dt * 1.25 : dt;
-      s.hold += holdRate;
-      if (isHarmonic) s.harmonicBonus = Math.min(8, s.harmonicBonus + dt * 2.5);
-    } else {
-      // Degrade hold progress if falling out of flight envelope
-      s.hold = Math.max(0, s.hold - dt * 1.2);
-    }
-
-    // Rotate coaxial blades in opposite directions
-    const revsPerSec = s.rpm / 60;
-    s.angleTop = (s.angleTop + revsPerSec * 360 * dt * 0.25) % 360;
-    s.angleBottom = (s.angleBottom - revsPerSec * 360 * dt * 0.25) % 360;
-
-    if (!reduced) {
-      if (topRotor.current) topRotor.current.setAttribute('transform', `rotate(${s.angleTop.toFixed(1)})`);
-      if (bottomRotor.current) bottomRotor.current.setAttribute('transform', `rotate(${s.angleBottom.toFixed(1)})`);
-    }
-
-    setView((v) => {
-      const elapsed = Math.min(durationSec, v.elapsed + dt);
-      if (s.hold >= holdSec) {
-        queueMicrotask(() => finish(true));
-      } else if (s.battery <= 0 || elapsed >= durationSec) {
-        queueMicrotask(() => finish(false));
-      }
-
-      return {
-        rpm: s.rpm,
-        cmd: s.cmd,
-        battery: s.battery,
-        hold: s.hold,
-        elapsed,
-        gustText: s.gust ? s.gust.name : null,
-        isHarmonic,
-      };
-    });
-  });
-
-  const setThrottleButton = (on: boolean) => {
-    sim.current.held = on;
-    setHeld(on);
-    if (on) setThrottleInput(1);
-    else setThrottleInput(sim.current.cmd / maxRpm);
-  };
-
-  const adjustThrottleDelta = (deltaRpm: number) => {
-    sim.current.cmd = Math.min(maxRpm, Math.max(0, sim.current.cmd + deltaRpm));
-    setThrottleInput(sim.current.cmd / maxRpm);
-  };
-
+  // Setup flight waypoints and rock obstacles
   useEffect(() => {
-    const isThrottleKey = (k: string) => k === ' ' || k === 'ArrowUp' || k === 'w' || k === 'W';
-    const kd = (e: KeyboardEvent) => {
-      if (isThrottleKey(e.key)) {
-        if ((e.target as HTMLElement).closest?.('button, a') && e.key === ' ' && (e.target as HTMLElement).dataset.throttle === undefined) return;
-        e.preventDefault();
-        setThrottleButton(true);
-      } else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
-        e.preventDefault();
-        setThrottleButton(false);
-        adjustThrottleDelta(-120);
-      } else if (e.key === 'ArrowRight') {
-        e.preventDefault();
-        adjustThrottleDelta(50);
-      } else if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        adjustThrottleDelta(-50);
-      }
-    };
-    const ku = (e: KeyboardEvent) => {
-      if (isThrottleKey(e.key)) setThrottleButton(false);
-    };
-    const blur = () => setThrottleButton(false);
+    const s = gameState.current;
+    s.waypoints = [
+      { x: 350, y: 160, radius: 38, cleared: false, label: 'WP1' },
+      { x: 720, y: 110, radius: 38, cleared: false, label: 'WP2' },
+      { x: 1100, y: 180, radius: 38, cleared: false, label: 'WP3' },
+      { x: 1480, y: 120, radius: 38, cleared: false, label: 'WP4' },
+      { x: 1820, y: 190, radius: 38, cleared: false, label: 'WP5' },
+    ];
 
-    window.addEventListener('keydown', kd);
-    window.addEventListener('keyup', ku);
-    window.addEventListener('blur', blur);
+    s.spires = [
+      { x: 520, height: 140, width: 45 },
+      { x: 910, height: 180, width: 50 },
+      { x: 1300, height: 130, width: 45 },
+      { x: 1650, height: 160, width: 55 },
+    ];
+  }, []);
+
+  function getGroundY(x: number): number {
+    return 300 + Math.sin(x * 0.005) * 25 + Math.cos(x * 0.015) * 10;
+  }
+
+  // Keyboard controls
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', ' ', 'w', 'a', 's', 'd'].includes(e.key)) {
+        if (!(e.target as HTMLElement).closest('input, textarea')) e.preventDefault();
+      }
+      const k = gameState.current.keys;
+      if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W' || e.key === ' ') k.throttle = true;
+      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') k.left = true;
+      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') k.right = true;
+    };
+
+    const onKeyUp = (e: KeyboardEvent) => {
+      const k = gameState.current.keys;
+      if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W' || e.key === ' ') k.throttle = false;
+      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') k.left = false;
+      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') k.right = false;
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('keyup', onKeyUp);
     return () => {
-      window.removeEventListener('keydown', kd);
-      window.removeEventListener('keyup', ku);
-      window.removeEventListener('blur', blur);
+      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('keyup', onKeyUp);
     };
   }, []);
 
-  // Tachometer geometry: 240° arc
-  const A0 = -210;
-  const A1 = 30;
-  const ang = (r: number) => A0 + (Math.min(maxRpm, Math.max(0, r)) / maxRpm) * (A1 - A0);
-  const pt = (a: number, R: number) => [Math.cos((a * Math.PI) / 180) * R, Math.sin((a * Math.PI) / 180) * R];
-  const arc = (a: number, b: number, R: number) => {
-    const [x0, y0] = pt(a, R);
-    const [x1, y1] = pt(b, R);
-    return `M${x0} ${y0} A${R} ${R} 0 ${b - a > 180 ? 1 : 0} 1 ${x1} ${y1}`;
+  const handleFinish = (finalScore: number, passed: boolean, detail: string) => {
+    if (doneRef.current) return;
+    doneRef.current = true;
+    onFinish(finalScore, passed, detail);
   };
 
-  const inBand = Math.abs(view.rpm - T) <= band;
-  const [nx, ny] = pt(ang(view.rpm), 72);
-  const [cx, cy] = pt(ang(view.cmd), 86);
-  const [cx0, cy0] = pt(ang(view.cmd), 74);
+  // Main 60FPS Flight Physics Loop
+  useEffect(() => {
+    let animationId: number;
+    let lastTime = performance.now();
 
-  const liftFraction = Math.min(1, view.hold / holdSec);
+    const loop = (now: number) => {
+      const dt = Math.min(0.05, (now - lastTime) / 1000);
+      lastTime = now;
+
+      const s = gameState.current;
+      const h = s.heli;
+      const k = s.keys;
+      const canvas = canvasRef.current;
+
+      if (!gameOver && !victory && canvas) {
+        s.elapsed += dt;
+        const remaining = Math.max(0, totalTime - s.elapsed);
+        setTimeRemaining(remaining);
+
+        const isThrottling = k.throttle || touchThrottle.current;
+        const tiltLeft = k.left || touchLeft.current;
+        const tiltRight = k.right || touchRight.current;
+
+        // Rotor speed acceleration & spin-down
+        if (isThrottling) {
+          h.rpm = Math.min(2900, h.rpm + 1150 * dt);
+        } else {
+          h.rpm = Math.max(0, h.rpm - 750 * dt);
+        }
+
+        // Tilt / Pitch control (-0.35 rad to +0.35 rad)
+        if (tiltRight) {
+          h.pitch += (0.35 - h.pitch) * Math.min(1, 8 * dt);
+        } else if (tiltLeft) {
+          h.pitch += (-0.35 - h.pitch) * Math.min(1, 8 * dt);
+        } else {
+          h.pitch += (0 - h.pitch) * Math.min(1, 6 * dt);
+        }
+
+        // Aerodynamic Lift Physics (Ingenuity requires ~2,537 RPM in 1% Martian CO2)
+        // Lift is proportional to RPM squared
+        const liftForce = Math.pow(h.rpm / 2537, 2.0) * 310;
+        const martianGravity = 175; // px/s²
+
+        // Resolve lift into vertical and horizontal components based on pitch tilt
+        const liftY = -liftForce * Math.cos(h.pitch);
+        const thrustX = liftForce * Math.sin(h.pitch);
+
+        h.vx += thrustX * dt;
+        h.vy += (liftY + martianGravity) * dt;
+
+        // Aerodynamic drag in thin air
+        h.vx *= Math.pow(0.55, dt);
+        h.vy *= Math.pow(0.7, dt);
+
+        // Battery Power Consumption (cubed with RPM, double penalty on overspeed >2700)
+        let drainRate = 1.8 * Math.pow(h.rpm / 2537, 3);
+        if (h.rpm > 2700) drainRate *= 2.2;
+        h.battery = Math.max(0, h.battery - drainRate * dt);
+
+        // Update Position
+        h.x += h.vx * dt;
+        h.y += h.vy * dt;
+
+        // Ground Collision
+        const groundY = getGroundY(h.x);
+        if (h.y >= groundY - 16) {
+          // Landing evaluation
+          const isLevel = Math.abs(h.pitch) < 0.12;
+          const isGentle = Math.abs(h.vy) < 60 && Math.abs(h.vx) < 40;
+
+          if (h.x >= s.airfieldX - 45 && h.x <= s.airfieldX + 45 && isLevel && isGentle) {
+            // Successful Airfield Beta Touchdown!
+            h.y = groundY - 16;
+            h.vy = 0;
+            h.vx = 0;
+            h.onGround = true;
+            h.landedOnPad = true;
+            setVictory(true);
+            blip('ok');
+
+            const finalScore = Math.round(
+              Math.min(
+                100,
+                45 +
+                  s.ringsPassed * 9 +
+                  (h.battery / 100) * 15 +
+                  (Math.abs(h.rpm - 2537) < 100 ? 10 : 5),
+              ),
+            );
+            handleFinish(
+              finalScore,
+              finalScore >= successThreshold,
+              `Ingenuity landed smoothly on Airfield Beta! Flight distance: 2.0 km · Cleared ${s.ringsPassed}/5 aerial waypoints · ${Math.round(h.battery)}% battery preserved`,
+            );
+          } else if (h.y > groundY - 10) {
+            // Hard crash on terrain
+            if (Math.abs(h.vy) > 120 || !isLevel) {
+              setGameOver(true);
+              blip('bad');
+              handleFinish(
+                score,
+                false,
+                'Helicopter suffered hard ground impact outside flight envelope',
+              );
+            } else {
+              h.y = groundY - 16;
+              h.vy = 0;
+              h.onGround = true;
+            }
+          }
+        } else {
+          h.onGround = false;
+        }
+
+        // Rock Spire Collisions
+        for (const spire of s.spires) {
+          const spireTop = getGroundY(spire.x) - spire.height;
+          if (
+            h.x >= spire.x - spire.width / 2 &&
+            h.x <= spire.x + spire.width / 2 &&
+            h.y >= spireTop
+          ) {
+            setGameOver(true);
+            blip('bad');
+            handleFinish(score, false, 'Collision with Martian basalt rock spire');
+          }
+        }
+
+        // Waypoint Ring Checkpoints
+        s.waypoints.forEach((wp) => {
+          if (!wp.cleared && Math.hypot(wp.x - h.x, wp.y - h.y) < wp.radius) {
+            wp.cleared = true;
+            s.ringsPassed += 1;
+            setRingsCleared(s.ringsPassed);
+            blip('ok');
+
+            // Ring pass particle burst
+            for (let i = 0; i < 16; i++) {
+              s.particles.push({
+                x: wp.x,
+                y: wp.y,
+                vx: (Math.random() - 0.5) * 80,
+                vy: (Math.random() - 0.5) * 80,
+                life: 0.6,
+                maxLife: 0.6,
+                color: '#52ff8f',
+                size: 3.5,
+              });
+            }
+          }
+        });
+
+        // Rotor Blade Spin Animation (Opposite directions)
+        const bladeSpeed = (h.rpm / 60) * Math.PI * 2 * 0.15;
+        h.bladeAngleTop += bladeSpeed * dt;
+        h.bladeAngleBottom -= bladeSpeed * dt;
+
+        // Downward Rotor Wash Dust Particles
+        if (h.rpm > 1800 && h.y > groundY - 90) {
+          for (let i = 0; i < 2; i++) {
+            s.particles.push({
+              x: h.x + (Math.random() - 0.5) * 35,
+              y: groundY - 4,
+              vx: (Math.random() - 0.5) * 75,
+              vy: -Math.random() * 20,
+              life: 0.4,
+              maxLife: 0.4,
+              color: '#d67c46',
+              size: 2.2,
+            });
+          }
+        }
+
+        // Particle updates
+        for (let i = s.particles.length - 1; i >= 0; i--) {
+          const p = s.particles[i];
+          p.x += p.vx * dt;
+          p.y += p.vy * dt;
+          p.life -= dt;
+          if (p.life <= 0) s.particles.splice(i, 1);
+        }
+
+        // Camera follow (tracks helicopter horizontally and vertically)
+        s.cameraX += (h.x - 220 - s.cameraX) * Math.min(1, 5 * dt);
+        s.cameraX = Math.max(0, Math.min(s.levelLength - 500, s.cameraX));
+
+        setRpm(Math.round(h.rpm));
+        setBattery(Math.round(h.battery));
+        setAltitudeMeters(Math.max(0, Math.round((groundY - h.y) * 0.1)));
+        setDistanceMeters(Math.round(h.x));
+
+        const curScore = Math.round(
+          Math.min(
+            100,
+            (s.ringsPassed / 5) * 50 + (h.x / s.levelLength) * 35 + (h.battery / 100) * 15,
+          ),
+        );
+        setScore(curScore);
+
+        // Battery Exhaustion / Time expiration
+        if (h.battery <= 0 || remaining <= 0) {
+          setGameOver(true);
+          blip('bad');
+          handleFinish(
+            curScore,
+            false,
+            h.battery <= 0 ? 'Solar battery depleted during flight' : 'Flight operations window expired',
+          );
+        }
+      }
+
+      // Render Canvas
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          const w = canvas.width;
+          const h = canvas.height;
+          ctx.clearRect(0, 0, w, h);
+
+          // 1. Martian Sky & Canyon Atmosphere
+          const skyGrad = ctx.createLinearGradient(0, 0, 0, h);
+          skyGrad.addColorStop(0, '#5a2e1d');
+          skyGrad.addColorStop(0.55, '#9e502e');
+          skyGrad.addColorStop(1, '#d88656');
+          ctx.fillStyle = skyGrad;
+          ctx.fillRect(0, 0, w, h);
+
+          // Distant Martian crater rim mountains
+          ctx.fillStyle = '#6e351f';
+          ctx.beginPath();
+          ctx.moveTo(0, h);
+          for (let px = 0; px <= w; px += 40) {
+            const worldX = px + s.cameraX * 0.18;
+            const my = 140 + Math.sin(worldX * 0.006) * 35 + Math.cos(worldX * 0.015) * 20;
+            ctx.lineTo(px, my);
+          }
+          ctx.lineTo(w, h);
+          ctx.closePath();
+          ctx.fill();
+
+          // 2. Foreground Martian Terrain & Obstacles
+          ctx.save();
+          ctx.translate(-s.cameraX, 0);
+
+          // Canyon Rock Spires (Hazards)
+          s.spires.forEach((spire) => {
+            const groundY = getGroundY(spire.x);
+            const topY = groundY - spire.height;
+            ctx.fillStyle = '#482012';
+            ctx.beginPath();
+            ctx.moveTo(spire.x - spire.width / 2, groundY);
+            ctx.lineTo(spire.x - spire.width * 0.2, topY);
+            ctx.lineTo(spire.x + spire.width * 0.2, topY);
+            ctx.lineTo(spire.x + spire.width / 2, groundY);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.strokeStyle = '#944224';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.fillStyle = '#ff8f52';
+            ctx.font = '9px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('! SPIRE !', spire.x, topY - 8);
+          });
+
+          // Ground Surface Fill
+          ctx.fillStyle = '#a64f27';
+          ctx.beginPath();
+          ctx.moveTo(0, h);
+          for (let px = 0; px <= s.levelLength + 200; px += 20) {
+            ctx.lineTo(px, getGroundY(px));
+          }
+          ctx.lineTo(s.levelLength + 200, h);
+          ctx.closePath();
+          ctx.fill();
+
+          // Ground Ridge Highlight Line
+          ctx.strokeStyle = '#d67544';
+          ctx.lineWidth = 3.5;
+          ctx.beginPath();
+          for (let px = 0; px <= s.levelLength + 200; px += 20) {
+            const gy = getGroundY(px);
+            if (px === 0) ctx.moveTo(px, gy);
+            else ctx.lineTo(px, gy);
+          }
+          ctx.stroke();
+
+          // Flight Waypoint Rings
+          s.waypoints.forEach((wp) => {
+            ctx.save();
+            ctx.translate(wp.x, wp.y);
+
+            // Ring Glow / Outline
+            ctx.strokeStyle = wp.cleared ? '#52ff8f' : '#ffcf42';
+            ctx.lineWidth = wp.cleared ? 2 : 3.5;
+            ctx.beginPath();
+            ctx.arc(0, 0, wp.radius, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Inner crosshairs
+            ctx.strokeStyle = wp.cleared ? 'rgba(82, 255, 143, 0.4)' : 'rgba(255, 207, 66, 0.45)';
+            ctx.lineWidth = 1.2;
+            ctx.beginPath();
+            ctx.moveTo(-wp.radius, 0);
+            ctx.lineTo(wp.radius, 0);
+            ctx.moveTo(0, -wp.radius);
+            ctx.lineTo(0, wp.radius);
+            ctx.stroke();
+
+            ctx.fillStyle = wp.cleared ? '#52ff8f' : '#fff';
+            ctx.font = '10px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText(wp.cleared ? '✓' : wp.label, 0, -wp.radius - 8);
+            ctx.restore();
+          });
+
+          // Airfield Beta (Landing Zone)
+          const padY = getGroundY(s.airfieldX);
+          ctx.fillStyle = '#2c3542';
+          ctx.fillRect(s.airfieldX - 45, padY - 6, 90, 8);
+          ctx.strokeStyle = '#55ff88';
+          ctx.lineWidth = 2.5;
+          ctx.strokeRect(s.airfieldX - 45, padY - 6, 90, 8);
+
+          // Helipad "H"
+          ctx.fillStyle = '#55ff88';
+          ctx.font = '14px monospace font-bold';
+          ctx.textAlign = 'center';
+          ctx.fillText('AIRFIELD BETA [ H ]', s.airfieldX, padY - 14);
+
+          // Dust Particles
+          s.particles.forEach((p) => {
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size * (p.life / p.maxLife), 0, Math.PI * 2);
+            ctx.fill();
+          });
+
+          // 3. Render Playable NASA Ingenuity Helicopter
+          ctx.save();
+          ctx.translate(s.heli.x, s.heli.y);
+          ctx.rotate(s.heli.pitch);
+
+          // Shadow on ground
+          const distToGround = getGroundY(s.heli.x) - s.heli.y;
+          const shadowScale = Math.max(0.2, 1 - distToGround / 250);
+          ctx.save();
+          ctx.rotate(-s.heli.pitch);
+          ctx.fillStyle = `rgba(35, 12, 6, ${0.45 * shadowScale})`;
+          ctx.beginPath();
+          ctx.ellipse(0, distToGround, 24 * shadowScale, 5 * shadowScale, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+
+          // 4 Carbon-Composite Landing Legs
+          ctx.strokeStyle = '#22252b';
+          ctx.lineWidth = 2;
+          // Left legs
+          ctx.beginPath();
+          ctx.moveTo(-5, 4);
+          ctx.lineTo(-18, 16);
+          ctx.moveTo(5, 4);
+          ctx.lineTo(18, 16);
+          // Landing footpads
+          ctx.moveTo(-22, 16);
+          ctx.lineTo(-14, 16);
+          ctx.moveTo(14, 16);
+          ctx.lineTo(22, 16);
+          ctx.stroke();
+
+          // Fuselage Cube (Avionics, Battery, Downward Camera)
+          ctx.fillStyle = '#9e9786';
+          ctx.beginPath();
+          ctx.roundRect(-8, -6, 16, 14, 2);
+          ctx.fill();
+          ctx.strokeStyle = '#545045';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+
+          // Gold Kapton / Solar Battery Cover
+          ctx.fillStyle = '#dca026';
+          ctx.fillRect(-6, -4, 12, 6);
+
+          // Downward Altimeter Sensor
+          ctx.fillStyle = '#38e8ff';
+          ctx.fillRect(-2, 7, 4, 2);
+
+          // Rotor Mast
+          ctx.strokeStyle = '#2d3038';
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.moveTo(0, -6);
+          ctx.lineTo(0, -26);
+          ctx.stroke();
+
+          // Solar Panel on top of mast
+          ctx.fillStyle = '#1e293b';
+          ctx.fillRect(-12, -28, 24, 3);
+          ctx.strokeStyle = '#38bdf8';
+          ctx.lineWidth = 0.8;
+          ctx.strokeRect(-12, -28, 24, 3);
+
+          // Counter-Rotating Coaxial Carbon Blades (with RPM blur)
+          const bladeWidth = 42;
+          const blurOpacity = Math.min(0.85, (s.heli.rpm / 2537) * 0.85);
+
+          // Upper Rotor
+          ctx.save();
+          ctx.translate(0, -22);
+          const topBladeScale = Math.cos(s.heli.bladeAngleTop);
+          ctx.strokeStyle = '#1b1d22';
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.moveTo(-bladeWidth * topBladeScale, 0);
+          ctx.lineTo(bladeWidth * topBladeScale, 0);
+          ctx.stroke();
+          // Blur disc
+          if (s.heli.rpm > 800) {
+            ctx.fillStyle = `rgba(30, 35, 45, ${blurOpacity * 0.4})`;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, bladeWidth, 3, 0, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.restore();
+
+          // Lower Rotor
+          ctx.save();
+          ctx.translate(0, -14);
+          const bottomBladeScale = Math.cos(s.heli.bladeAngleBottom);
+          ctx.strokeStyle = '#2a2d36';
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.moveTo(-bladeWidth * bottomBladeScale, 0);
+          ctx.lineTo(bladeWidth * bottomBladeScale, 0);
+          ctx.stroke();
+          // Blur disc
+          if (s.heli.rpm > 800) {
+            ctx.fillStyle = `rgba(40, 48, 60, ${blurOpacity * 0.4})`;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, bladeWidth, 3, 0, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.restore();
+
+          ctx.restore(); // Restore helicopter
+          ctx.restore(); // Restore camera
+        }
+      }
+
+      animationId = requestAnimationFrame(loop);
+    };
+
+    animationId = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(animationId);
+  }, [gameOver, victory, totalTime, successThreshold, targetRpm, score]);
+
+  const restart = () => {
+    const s = gameState.current;
+    s.heli.x = 100;
+    s.heli.y = 280;
+    s.heli.vx = 0;
+    s.heli.vy = 0;
+    s.heli.pitch = 0;
+    s.heli.rpm = 0;
+    s.heli.battery = 100;
+    s.heli.landedOnPad = false;
+    s.ringsPassed = 0;
+    s.elapsed = 0;
+    s.waypoints.forEach((wp) => (wp.cleared = false));
+    setGameOver(false);
+    setVictory(false);
+    setScore(0);
+    setRpm(0);
+    setBattery(100);
+    setRingsCleared(0);
+    setAltitudeMeters(0);
+    doneRef.current = false;
+  };
+
+  const inOptimalRpm = Math.abs(rpm - targetRpm) <= 150;
 
   return (
     <div className="flex flex-col gap-3">
-      <TimerBar remaining={durationSec - view.elapsed} total={durationSec} />
+      <TimerBar remaining={timeRemaining} total={totalTime} />
 
-      {/* Main Flight Avionics Grid */}
-      <div className="grid items-center gap-3 sm:grid-cols-[1.2fr_1fr]">
-        {/* Dual-Needle Avionics Tachometer */}
-        <div className="relative overflow-hidden rounded-md border border-[var(--color-line-2)] bg-[#080a0e] p-3 shadow-inner">
-          <svg viewBox="-105 -100 210 155" className="w-full select-none" role="img" aria-label={`Rotor tachometer: ${Math.round(view.rpm)} RPM`}>
-            {/* Background Arc */}
-            <path d={arc(A0, A1, 80)} stroke="rgba(255, 255, 255, 0.12)" strokeWidth="12" fill="none" strokeLinecap="round" />
+      {/* Arcade Canvas Game Viewport */}
+      <div className="relative overflow-hidden rounded-md border border-[var(--color-line-2)] bg-[#120804] shadow-2xl">
+        <canvas
+          ref={canvasRef}
+          width={720}
+          height={380}
+          className="block w-full touch-none select-none"
+        />
 
-            {/* Target Lift Band: 2,537 RPM ± 70 */}
-            <path d={arc(ang(T - band), ang(T + band), 80)} stroke="var(--accent)" strokeWidth="12" fill="none" />
-            {/* Center Sweet Spot 2,537 */}
-            <path d={arc(ang(T - 15), ang(T + 15), 80)} stroke="var(--color-ok)" strokeWidth="12" fill="none" />
-
-            {/* Overspeed Danger Zone (>2,700 RPM) */}
-            <path d={arc(ang(over), A1, 80)} stroke="var(--color-bad)" strokeOpacity="0.6" strokeWidth="12" fill="none" strokeLinecap="round" />
-
-            {/* Commanded Throttle (Ghost needle) */}
-            <line x1={cx0} y1={cy0} x2={cx} y2={cy} stroke="var(--accent-2)" strokeWidth="3.5" strokeLinecap="round" />
-
-            {/* Actual Rotor RPM Needle */}
-            <line
-              x1="0"
-              y1="0"
-              x2={nx}
-              y2={ny}
-              stroke={view.isHarmonic ? 'var(--color-ok)' : inBand ? '#fff' : view.rpm > over ? 'var(--color-bad)' : '#e2dbcd'}
-              strokeWidth="2.8"
-              strokeLinecap="round"
-            />
-            <circle r="6" fill="#1e222a" stroke="#fff" strokeWidth="1.5" />
-
-            {/* Digital Readout */}
-            <text y="32" textAnchor="middle" fontSize="24" fill={inBand ? 'var(--color-ok)' : '#ffffff'} className="font-mono font-bold tabular-nums">
-              {Math.round(view.rpm).toLocaleString()}
-            </text>
-            <text y="46" textAnchor="middle" fontSize="8" letterSpacing="1.8" fill="var(--color-fg-3)" className="font-mono">
-              ROTOR RPM · TARGET {T}
-            </text>
-            <text y="-88" textAnchor="middle" fontSize="8" letterSpacing="1.2" fill="var(--accent-2)" className="font-mono font-semibold">
-              CMD THROTTLE {Math.round(view.cmd).toLocaleString()} RPM
-            </text>
-          </svg>
-
-          {/* Wind Gust / Environmental Alert Banner */}
-          {view.gustText && (
-            <div className="absolute inset-x-2 top-2 rounded bg-[#1e1510]/90 px-2 py-1 text-center font-mono text-[10px] font-bold text-amber-400 border border-amber-600/60 animate-pulse">
-              {view.gustText}
-            </div>
-          )}
+        {/* Arcade HUD Overlay */}
+        <div className="absolute inset-x-0 top-0 flex flex-wrap items-center justify-between border-b border-black/40 bg-black/60 px-3 py-1.5 font-mono text-[11px] text-white">
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1.5">
+              <span className={`h-2 w-2 rounded-full ${inOptimalRpm ? 'bg-[var(--color-ok)] animate-pulse' : 'bg-amber-400'}`} />
+              INGENUITY ROTOR: <b className={inOptimalRpm ? 'text-[var(--color-ok)]' : rpm > 2700 ? 'text-[var(--color-bad)]' : 'text-white'}>{rpm}</b> / 2537 RPM
+            </span>
+            <span>
+              BATTERY: <b className={battery < 25 ? 'text-[var(--color-bad)]' : 'text-amber-400'}>{battery}%</b>
+            </span>
+            <span>
+              ALT: <b>{altitudeMeters}m</b>
+            </span>
+          </div>
+          <div className="flex items-center gap-4">
+            <span>
+              WAYPOINTS: <b className="text-[#52ff8f]">{ringsCleared}</b>/5
+            </span>
+            <span>
+              DIST: <b>{distanceMeters}m</b>/2000m
+            </span>
+            <span>
+              SCORE: <b className="text-amber-300">{score}</b>
+            </span>
+          </div>
         </div>
 
-        {/* Counter-Rotating Rotor Model & Telemetry Panel */}
-        <div className="flex flex-col justify-between gap-3 rounded-md border border-[var(--color-line-2)] bg-[#0b0d13] p-3 font-mono text-[12px]">
-          {/* Dual Coaxial Rotor Animation */}
-          <div className="flex items-center justify-center gap-4">
-            <svg viewBox="-60 -60 120 120" className="w-24 select-none" aria-hidden="true">
-              {/* Lift progress ring */}
-              <circle r="54" fill="none" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="4" />
-              <circle
-                r="54"
-                fill="none"
-                stroke="var(--color-ok)"
-                strokeWidth="4"
-                strokeDasharray={`${liftFraction * 339} 339`}
-                transform="rotate(-90)"
-              />
-
-              {/* Upper Carbon-Fiber Rotor */}
-              <g ref={topRotor} opacity={reduced ? 0.8 : 0.95}>
-                <rect x="-48" y="-3.5" width="96" height="7" rx="3.5" fill="#cfd6dd" />
-                <rect x="-48" y="-1.5" width="96" height="3" fill="#1b222a" />
-              </g>
-
-              {/* Lower Counter-Rotating Rotor */}
-              <g ref={bottomRotor} opacity={reduced ? 0.7 : 0.85}>
-                <rect x="-3.5" y="-48" width="7" height="96" rx="3.5" fill="#8fa3b5" />
-                <rect x="-1.5" y="-48" width="3" height="96" fill="#151b22" />
-              </g>
-
-              {/* Rotor Mast Hub */}
-              <circle r="7" fill="#242c36" stroke="#cfd6dd" strokeWidth="1.5" />
-            </svg>
-
-            {/* Flight Envelope Status Box */}
-            <div className="flex flex-col gap-1 text-[11px]">
-              <span className="text-[10px] tracking-wider text-[var(--color-fg-3)]">FLIGHT REGIME</span>
-              <span className={`font-bold ${view.isHarmonic ? 'text-[var(--color-ok)]' : inBand ? 'text-white' : view.rpm > over ? 'text-[var(--color-bad)]' : 'text-amber-400'}`}>
-                {view.isHarmonic ? 'HARMONIC LOCK' : inBand ? 'LIFT ENVELOPE' : view.rpm > over ? 'TRANSONIC OVERSPEED' : 'BELOW AERODYNAMIC LIFT'}
-              </span>
-              <span className="text-[10px] text-[var(--color-fg-3)]">
-                LIFT ACCUM: <b>{(view.hold).toFixed(1)}s</b> / {holdSec}s
-              </span>
+        {/* Game Over Screen */}
+        {gameOver && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 p-6 text-center">
+            <h3 className="font-display text-2xl font-bold text-[var(--color-bad)]">FLIGHT ABORTED</h3>
+            <p className="mt-1 font-mono text-sm text-[var(--color-fg-2)]">
+              {battery <= 0
+                ? 'Solar battery depleted during high-torque flight.'
+                : 'Helicopter collided with Martian obstacles or terrain.'}
+            </p>
+            <div className="mt-4 flex gap-3">
+              <button type="button" className="btn-primary" onClick={restart}>
+                Retry Flight
+              </button>
             </div>
           </div>
+        )}
 
-          {/* Battery Consumption Gauge */}
-          <div>
-            <div className="mb-1 flex justify-between font-mono text-[11px] tracking-wider text-[var(--color-fg-2)]">
-              <span>BATTERY CAPACITY</span>
-              <span className={`tabular-nums font-bold ${view.battery < 30 ? 'text-[var(--color-bad)]' : 'text-[var(--color-ok)]'}`}>
-                {Math.round(view.battery)}%
-              </span>
-            </div>
-            <div className="h-2 w-full overflow-hidden rounded bg-[var(--color-line-2)]">
-              <div
-                className="h-full transition-all duration-75"
-                style={{
-                  width: `${view.battery}%`,
-                  background: view.battery < 30 ? 'var(--color-bad)' : view.battery < 55 ? 'var(--accent)' : 'var(--color-ok)',
-                }}
-              />
-            </div>
-            <div className="mt-1.5 flex justify-between text-[10px] text-[var(--color-fg-3)]">
-              <span>DRAIN: {view.rpm > over ? 'HIGH (2.2x)' : inBand ? 'NOMINAL' : 'LOW'}</span>
-              <span>{view.rpm > over ? 'TIP SHOCKWAVES DETECTED' : 'CO₂ DENSITY: 0.020 kg/m³'}</span>
-            </div>
+        {/* Victory Screen */}
+        {victory && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 p-6 text-center">
+            <h3 className="font-display text-2xl font-bold text-[var(--color-ok)]">TOUCHDOWN SUCCESSFUL!</h3>
+            <p className="mt-1 font-mono text-sm text-[var(--color-fg)]">
+              Ingenuity successfully flew through the Martian canyon and landed gently on Airfield Beta!
+            </p>
+            <p className="mt-2 font-mono text-xs text-[var(--color-fg-3)]">
+              Score: <b>{score} / 100</b> · Preserved {battery}% flight battery.
+            </p>
           </div>
+        )}
+      </div>
+
+      {/* On-Screen Mobile & Touch Arcade Controls */}
+      <div className="grid grid-cols-2 gap-3 sm:hidden">
+        <div className="flex gap-2">
+          <button
+            type="button"
+            className="btn-ghost flex-1 py-3 text-center font-mono font-bold select-none active:bg-white/20"
+            onPointerDown={() => (touchLeft.current = true)}
+            onPointerUp={() => (touchLeft.current = false)}
+            onPointerCancel={() => (touchLeft.current = false)}
+          >
+            ◀ TILT L
+          </button>
+          <button
+            type="button"
+            className="btn-ghost flex-1 py-3 text-center font-mono font-bold select-none active:bg-white/20"
+            onPointerDown={() => (touchRight.current = true)}
+            onPointerUp={() => (touchRight.current = false)}
+            onPointerCancel={() => (touchRight.current = false)}
+          >
+            TILT R ▶
+          </button>
+        </div>
+        <div>
+          <button
+            type="button"
+            className="btn-primary w-full py-3 text-center font-mono font-bold select-none active:bg-amber-500"
+            onPointerDown={() => (touchThrottle.current = true)}
+            onPointerUp={() => (touchThrottle.current = false)}
+            onPointerCancel={() => (touchThrottle.current = false)}
+          >
+            ▲ THROTTLE (2537 RPM)
+          </button>
         </div>
       </div>
 
-      {/* Dynamic Continuous Throttle Slider */}
-      <label className="flex flex-col gap-1.5">
-        <div className="flex justify-between font-mono text-[11px]">
-          <span className="text-[var(--color-fg-3)] tracking-wider">VARIABLE THROTTLE TRIM LEVER</span>
-          <span className="text-[var(--accent)] font-semibold">
-            {Math.round(throttleInput * maxRpm)} RPM COMMAND
-          </span>
-        </div>
-        <input
-          type="range"
-          min={0}
-          max={1}
-          step={0.01}
-          value={throttleInput}
-          onChange={(e) => {
-            const val = Number(e.target.value);
-            setThrottleInput(val);
-            sim.current.cmd = val * maxRpm;
-          }}
-          className="range"
-          aria-label="Throttle command slider"
-        />
-      </label>
-
-      {/* Interactive Controls Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            data-throttle=""
-            className={`btn-primary select-none touch-none ${held ? 'ring-2 ring-[var(--accent-2)] bg-[var(--accent-2)]' : ''}`}
-            aria-pressed={held}
-            onPointerDown={(e) => {
-              try {
-                e.currentTarget.setPointerCapture(e.pointerId);
-              } catch {
-                /* synthetic or already-released pointer */
-              }
-              setThrottleButton(true);
-            }}
-            onPointerUp={() => setThrottleButton(false)}
-            onPointerCancel={() => setThrottleButton(false)}
-            onContextMenu={(e) => e.preventDefault()}
-          >
-            {held ? 'Holding Boost Throttle…' : 'Hold Throttle Boost'}
-          </button>
-
-          <button
-            type="button"
-            className="btn-ghost text-[11px] font-mono"
-            onClick={() => adjustThrottleDelta(60)}
-            title="Step throttle up"
-          >
-            +60 RPM
-          </button>
-          <button
-            type="button"
-            className="btn-ghost text-[11px] font-mono"
-            onClick={() => adjustThrottleDelta(-60)}
-            title="Step throttle down"
-          >
-            −60 RPM
-          </button>
-        </div>
-
-        <div className="font-mono text-[11px] text-[var(--color-fg-3)]">
-          <span>Keyboard: ↑ / Space boost · ↓ / S cut · ← / → trim</span>
-        </div>
+      {/* Desktop Instructions Bar */}
+      <div className="hidden sm:flex items-center justify-between font-mono text-[11px] text-[var(--color-fg-3)]">
+        <span>Controls: <b>W / Space / ↑</b> Throttle Lift (Target 2537 RPM) · <b>A / D / ← →</b> Tilt Pitch</span>
+        <span>Goal: Fly through 5 waypoints · Land gently on Airfield Beta (keep vertical speed low & level)</span>
       </div>
     </div>
   );
