@@ -586,15 +586,13 @@ button:disabled {
     grid-template-columns: minmax(0, 1fr) 300px;
     grid-template-rows: 1fr auto auto;
     min-height: 100%;
-    height: 100%;
   }
   .screen__body:has(.archive-grid) {
     display: flex;
     flex-direction: column;
-    min-height: 0;
   }
   .archive-hero {
-    padding-top: clamp(8px, 6vh, 90px);
+    padding-top: clamp(8px, 3.4vh, 72px);
     grid-column: 1;
     align-self: start;
   }
@@ -1039,11 +1037,12 @@ button:disabled {
 .story-hardware {
   margin-top: 10px;
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(32px, 3.6vw, 54px);
-  line-height: 1.03;
-  letter-spacing: -0.015em;
-  max-width: 14ch;
+  font-weight: 500;
+  font-size: clamp(24px, 2.4vw, 36px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  max-width: 20ch;
+  color: var(--color-fg);
 }
 @media (min-width: 1100px) {
   .story-grid {
@@ -1550,4 +1549,75 @@ button:disabled {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--accent);
+}
+
+.artifact-card__lock {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  translate: -50% 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border: 1px solid var(--color-line-2);
+  background: rgb(6 6 8 / 0.75);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  color: var(--color-fg-2);
+}
+
+/* Tablet landscape (900–1279): compact issue list so it doesn't bury the globe. */
+@media (min-width: 900px) and (max-width: 1279px) {
+  .archive-grid {
+    grid-template-columns: minmax(0, 1fr) 230px;
+  }
+  .issue-list {
+    padding: 12px;
+  }
+  .issue-row {
+    min-height: 0;
+    padding: 8px 10px;
+  }
+  .issue-row__thumb,
+  .issue-row .font-mono.text-\[10px\] {
+    display: none;
+  }
+}
+
+/* Story → hardware: the panel-3 illustration dissolves into the live scene. */
+.panel-dissolve {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+.panel-dissolve img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Short desktop/tablet viewports (e.g. 1024×768): tighten the hero so the strip clears the chapter track. */
+@media (min-width: 900px) and (max-height: 820px) {
+  .archive-hero {
+    padding-top: 4px;
+  }
+  .archive-headline {
+    font-size: clamp(40px, min(5vw, 7.4vh), 72px);
+  }
+  .archive-lede {
+    margin-top: 10px;
+  }
+  .archive-cards .plate__text {
+    display: none;
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1279px) {
+  .archive-cards .progress-ring {
+    display: none;
+  }
 }

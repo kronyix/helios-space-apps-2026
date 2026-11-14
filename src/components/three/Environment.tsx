@@ -1,4 +1,6 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
+import { useThree } from '@react-three/fiber';
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import * as THREE from 'three';
 import { Stars } from '@react-three/drei';
 import { fbm, mulberry32 } from '../../lib/noise';
@@ -212,4 +214,27 @@ export function Lights({ body, shadowSize }: { body: CelestialBody; shadowSize: 
       />
     </>
   );
+}
+
+/**
+ * Image-based lighting for metals (Kapton foil, rotor carbon, rover deck) without
+ * downloading an HDR: a prefiltered procedural room, kept faint so the art-directed
+ * sun stays the key light. The Moon gets less (black sky, little bounce).
+ */
+export function ReflectionEnv({ body }: { body: CelestialBody }) {
+  const { gl, scene } = useThree();
+  useEffect(() => {
+    const pmrem = new THREE.PMREMGenerator(gl);
+    const room = new RoomEnvironment();
+    const rt = pmrem.fromScene(room, 0.04);
+    scene.environment = rt.texture;
+    scene.environmentIntensity = body === 'moon' ? 0.22 : 0.4;
+    room.dispose();
+    pmrem.dispose();
+    return () => {
+      scene.environment = null;
+      rt.dispose();
+    };
+  }, [gl, scene, body]);
+  return null;
 }

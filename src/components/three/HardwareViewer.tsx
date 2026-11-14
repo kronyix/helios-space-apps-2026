@@ -12,7 +12,7 @@ import { useReducedMotion } from '../../lib/useReducedMotion';
 import { isCoarsePointer } from '../../lib/device';
 import { blip } from '../../lib/audio';
 import { useAppStore } from '../../store/useAppStore';
-import { Lights, Rocks, Sky, Terrain } from './Environment';
+import { Lights, ReflectionEnv, Rocks, Sky, Terrain } from './Environment';
 import { ApolloSurfaceProps } from './ApolloProps';
 
 export interface HardwareViewerProps {
@@ -223,6 +223,7 @@ function Diorama(props: HardwareViewerProps & { reduced: boolean; compact: boole
   return (
     <>
       <Sky body={body} />
+      <ReflectionEnv body={body} />
       <Lights body={body} shadowSize={compact ? 1024 : 2048} />
       <Terrain body={body} segments={compact ? 120 : 220} />
       <Rocks body={body} count={compact ? 260 : 620} />

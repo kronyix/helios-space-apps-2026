@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useProgress } from '@react-three/drei';
 import type { MissionData } from '../data/types';
@@ -14,6 +14,45 @@ import { ChapterNav } from './ChapterNav';
 import MiniGameModal from '../components/comic/MiniGameModal';
 
 const HardwareViewer = lazy(() => import('../components/three/HardwareViewer'));
+
+/**
+ * The comic panel the reader just left stays full-bleed over the canvas, then
+ * dissolves (fade + blur + slight push) into the live 3D scene once the model has
+ * loaded. That turns the model download into part of the transition, so the reader
+ * never sees an empty canvas.
+ */
+function PanelDissolve({ src, focus }: { src: string; focus?: string }) {
+  const { active, progress } = useProgress();
+  const reduced = useReducedMotion();
+  const [minDone, setMinDone] = useState(false);
+  const [gone, setGone] = useState(false);
+  useEffect(() => {
+    const id = window.setTimeout(() => setMinDone(true), reduced ? 0 : 650);
+    const cap = window.setTimeout(() => setGone(true), 4000);
+    return () => {
+      window.clearTimeout(id);
+      window.clearTimeout(cap);
+    };
+  }, [reduced]);
+  const ready = minDone && !active && progress >= 100;
+  if (reduced && ready) return null;
+  return (
+    <AnimatePresence>
+      {!gone && (
+        <motion.div
+          className="panel-dissolve"
+          aria-hidden="true"
+          initial={{ opacity: 1 }}
+          animate={ready ? { opacity: 0, filter: 'blur(12px)', scale: 1.06 } : { opacity: 1, filter: 'blur(0px)', scale: 1 }}
+          transition={{ duration: reduced ? dur.instant : dur.cinematic * 0.85, ease: ease.inOut }}
+          onAnimationComplete={() => ready && setGone(true)}
+        >
+          <img src={src} alt="" style={focus ? { objectPosition: focus } : undefined} />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
 
 function ModelProgress() {
   const { active, progress } = useProgress();
@@ -61,6 +100,7 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
               />
             </Suspense>
             <ModelProgress />
+            <PanelDissolve src={panel.comicImage} focus={panel.comicFocus} />
             <div className="hardware-scrim" aria-hidden="true" />
           </div>
         ) : (

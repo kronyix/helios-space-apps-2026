@@ -1,4 +1,4 @@
-import { Suspense, useMemo, useRef, useState } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import type { MissionData } from '../../data/types';
@@ -7,7 +7,7 @@ import { hasWebGL } from '../../lib/device';
 import { IconLock } from '../ui/Icons';
 
 /** Procedural artifact geometry per mission (no extra downloads). */
-function ArtifactMesh({ id, accent, reduced }: { id: string; accent: string; reduced: boolean }) {
+function ArtifactMesh({ id, accent, reduced, locked = false }: { id: string; accent: string; reduced: boolean; locked?: boolean }) {
   const ref = useRef<THREE.Group>(null);
   useFrame((s, dt) => {
     if (!ref.current) return;
@@ -30,8 +30,20 @@ function ArtifactMesh({ id, accent, reduced }: { id: string; accent: string; red
     return g;
   }, []);
 
+  // Locked: show only a wireframe silhouette (the artifact is "encrypted").
+  useEffect(() => {
+    if (!locked || !ref.current) return;
+    const wire = new THREE.MeshBasicMaterial({ color: accent, wireframe: true, transparent: true, opacity: 0.35 });
+    ref.current.traverse((o) => {
+      const m = o as THREE.Mesh;
+      if (m.isMesh) m.material = wire;
+    });
+    ref.current.visible = true;
+    return () => wire.dispose();
+  }, [locked, accent]);
+
   return (
-    <group ref={ref}>
+    <group ref={ref} visible={!locked}>
       {id === 'opportunity' && (
         <mesh>
           <icosahedronGeometry args={[0.62, 5]} />
@@ -84,16 +96,22 @@ export default function ArtifactCard({ mission, unlocked }: { mission: MissionDa
       }}
     >
       <div className="artifact-card__stage" aria-hidden={!unlocked}>
-        {unlocked && gl ? (
+        {gl ? (
           <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0.2, 2.6], fov: 35 }} gl={{ antialias: true, alpha: true }}>
             <Suspense fallback={null}>
               <ambientLight intensity={0.35} />
               <directionalLight position={[-2, 3, 2]} intensity={2.4} />
               <directionalLight position={[2, -1, -2]} intensity={1.2} color={accent} />
-              <ArtifactMesh id={mission.id} accent={accent} reduced={reduced} />
+              <ArtifactMesh id={mission.id} accent={accent} reduced={reduced} locked={!unlocked} />
             </Suspense>
           </Canvas>
-        ) : (
+        ) : null}
+        {gl && !unlocked && (
+          <span className="artifact-card__lock">
+            <IconLock size={16} /> ENCRYPTED
+          </span>
+        )}
+        {!gl && (
           <div className="grid h-full place-items-center text-fg-3">
             {unlocked ? (
               <span className="font-mono text-xs tracking-[0.2em]">{a.designation}</span>

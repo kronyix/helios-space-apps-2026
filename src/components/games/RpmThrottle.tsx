@@ -167,7 +167,11 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
         className={`btn-primary self-start select-none touch-none ${held ? 'ring-2 ring-[var(--accent-2)]' : ''}`}
         aria-pressed={held}
         onPointerDown={(e) => {
-          e.currentTarget.setPointerCapture(e.pointerId);
+          try {
+            e.currentTarget.setPointerCapture(e.pointerId);
+          } catch {
+            /* synthetic or already-released pointer */
+          }
           setThrottle(true);
         }}
         onPointerUp={() => setThrottle(false)}
