@@ -1679,8 +1679,9 @@ a.image-label:hover {
   gap: 14px;
 }
 .book {
-  --page-h: min(64vh, 660px);
-  --page-w: calc(var(--page-h) * 0.74);
+  /* Near-square pages so the 16:9 panels fill the spread; width-capped so it clears the sidebar at 900px. */
+  --page-w: min(calc(min(66vh, 700px) * 0.96), calc((100vw - 260px) / 2));
+  --page-h: calc(var(--page-w) / 0.96);
   position: relative;
   perspective: 2400px;
   touch-action: pan-y;

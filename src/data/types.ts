@@ -149,6 +149,8 @@ export interface MissionData {
   telemetry: Telemetry;
   hotspots: HotspotData[];
   comicPanels: ComicPanel[];
+  /** ext: optional long-form story chapter. When present, the story book reads these instead of the State II panels. */
+  longPanels?: ComicPanel[];
   miniGame: MiniGame;
   /** ext */
   issueTitle: string;

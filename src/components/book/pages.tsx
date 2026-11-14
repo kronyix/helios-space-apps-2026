@@ -11,12 +11,15 @@ export type BookPage =
   | { kind: 'panel'; key: string; panelNumber: number }
   | { kind: 'back'; key: string };
 
-/** Cover · mission intro · story panels (State II) · back cover. */
+/** The panels the story book reads: the long-form chapter when the issue has one, else the State II panels. */
+export const storyPanels = (m: MissionData) => (m.longPanels?.length ? m.longPanels : panelsForStage(m, 'story'));
+
+/** Cover · mission intro · story panels · back cover. */
 export function buildPages(m: MissionData): BookPage[] {
   return [
     { kind: 'cover', key: 'cover' },
     { kind: 'intro', key: 'intro' },
-    ...panelsForStage(m, 'story').map((p) => ({ kind: 'panel' as const, key: `p${p.panelNumber}`, panelNumber: p.panelNumber })),
+    ...storyPanels(m).map((p) => ({ kind: 'panel' as const, key: `p${p.panelNumber}`, panelNumber: p.panelNumber })),
     { kind: 'back', key: 'back' },
   ];
 }
@@ -106,13 +109,14 @@ export function PageFace({
   }
 
   if (page.kind === 'panel') {
-    const panel = mission.comicPanels.find((p) => p.panelNumber === page.panelNumber)!;
+    const list = mission.longPanels?.length ? mission.longPanels : mission.comicPanels;
+    const panel = list.find((p) => p.panelNumber === page.panelNumber)!;
     return (
       <div className="page page--paper page--panel">
         <p className="page__kicker">
           {mission.issueTitle} · {panel.beat ?? ''}
         </p>
-        <ComicPanel panel={panel} mission={mission} total={mission.comicPanels.length} size="lg" priority={live || eager} />
+        <ComicPanel panel={panel} mission={mission} total={list.length} size="lg" priority={live || eager} />
         {folio}
       </div>
     );
@@ -121,7 +125,9 @@ export function PageFace({
   return (
     <div className="page page--back" data-theme={mission.theme}>
       <p className="page__kicker">Chapter III</p>
-      <p className="page-back__lede">Panels 1 and 2 are told. The hardware is waiting.</p>
+      <p className="page-back__lede">
+        {mission.longPanels?.length ? 'The story is told.' : 'Panels 1 and 2 are told.'} The hardware is waiting.
+      </p>
       {live ? (
         <button type="button" className="btn-primary page-back__cta" onClick={onInspect}>
           Inspect the hardware <IconArrowRight size={18} />
