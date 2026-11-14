@@ -1,10 +1,12 @@
-import { useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import type { ComicPanel as Panel, MissionData } from '../../data/types';
+import { getPanelLines } from '../../lib/missions';
 import { useAppStore, type StoryMode } from '../../store/useAppStore';
 import { dur, ease } from '../../lib/motion';
 import { useReducedMotion } from '../../lib/useReducedMotion';
 import { IconExternal } from '../ui/Icons';
+
+export { getPanelLines };
 
 /** Irregular frames give each panel real comic grammar (no two the same). */
 const FRAMES = [
@@ -45,35 +47,6 @@ export function ImageLabel({
   );
 }
 
-/** Pulsing marker on an illustration; opens a sourced "From the archive" note. */
-function ArchiveNote({ note }: { note: NonNullable<Panel['notes']>[number] }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <span className="archive-note" style={{ left: `${note.x}%`, top: `${note.y}%` }} data-open={open || undefined}>
-      <button
-        type="button"
-        className="archive-note__dot"
-        aria-expanded={open}
-        aria-label={`From the archive: ${note.label}`}
-        onClick={(e) => {
-          e.stopPropagation();
-          setOpen((o) => !o);
-        }}
-        onBlur={(e) => !e.currentTarget.parentElement?.contains(e.relatedTarget as Node) && setOpen(false)}
-      />
-      {open && (
-        <span className="archive-note__card" role="note">
-          <span className="archive-note__kicker">From the archive · {note.label}</span>
-          {note.fact}{' '}
-          <a href={note.source} target="_blank" rel="noreferrer noopener" className="credit-link">
-            Source<span className="sr-only"> (opens in a new tab)</span>
-          </a>
-        </span>
-      )}
-    </span>
-  );
-}
-
 export function ModeToggle() {
   const mode = useAppStore((s) => s.storyMode);
   const set = useAppStore((s) => s.setStoryMode);
@@ -110,6 +83,9 @@ export function ComicPanel({
   const archival = mode === 'archival';
   const frame = FRAMES[(panel.panelNumber - 1 + mission.issueNumber) % FRAMES.length];
   const aspect = size === 'lg' ? 'aspect-[16/10]' : size === 'sm' ? 'aspect-[16/9]' : 'aspect-[16/10]';
+  const lines = getPanelLines(panel, `${mission.id}-p${panel.panelNumber}`);
+  const captions = lines.filter((l) => l.kind === 'caption');
+  const speeches = lines.filter((l) => l.kind === 'speech');
 
   return (
     <figure className="comic-panel" data-beat={panel.beat}>
@@ -128,6 +104,8 @@ export function ComicPanel({
             <img
               src={archival ? panel.realNasaImage : panel.comicImage}
               alt={archival ? panel.nasaImageCaption : (panel.comicAlt ?? '')}
+              width={1280}
+              height={720}
               className={`absolute inset-0 h-full w-full ${archival ? 'archival-photo object-contain' : 'object-cover'}`}
               style={!archival && panel.comicFocus ? { objectPosition: panel.comicFocus } : undefined}
               loading={priority ? 'eager' : 'lazy'}
@@ -136,20 +114,21 @@ export function ComicPanel({
           </motion.div>
         </AnimatePresence>
 
-        {panel.caption && !archival && (
-          <p className="caption-box comic-caption">
-            <span className="sr-only">Caption: </span>
-            {panel.caption}
-          </p>
-        )}
-        {!archival && panel.dialogue && (
-          <p className="balloon comic-balloon" data-side={panel.panelNumber % 2 ? 'right' : 'left'}>
-            <span className="comic-speaker">{panel.speaker}</span>
-            <span className="sr-only"> says (fictionalized): </span>
-            {panel.dialogue}
-          </p>
-        )}
-        {!archival && panel.notes?.map((n, i) => <ArchiveNote key={i} note={n} />)}
+        {!archival &&
+          captions.map((line) => (
+            <p key={line.id} className="caption-box comic-caption">
+              <span className="sr-only">Caption: </span>
+              {line.text}
+            </p>
+          ))}
+        {!archival &&
+          speeches.map((line) => (
+            <p key={line.id} className="balloon comic-balloon" data-side={panel.panelNumber % 2 ? 'right' : 'left'}>
+              {line.speaker && <span className="comic-speaker">{line.speaker}</span>}
+              <span className="sr-only"> says (fictionalized): </span>
+              {line.text}
+            </p>
+          ))}
         <span className="comic-panel__num" aria-hidden="true">
           PANEL {panel.panelNumber} / {total}
         </span>
@@ -159,12 +138,13 @@ export function ComicPanel({
           href={archival ? panel.nasaImageSource : undefined}
         />
       </div>
-      {archival && panel.caption && (
-        <p className="caption-box comic-caption comic-caption--below">
-          <span className="sr-only">Caption: </span>
-          {panel.caption}
-        </p>
-      )}
+      {archival &&
+        captions.map((line) => (
+          <p key={line.id} className="caption-box comic-caption comic-caption--below">
+            <span className="sr-only">Caption: </span>
+            {line.text}
+          </p>
+        ))}
       {archival && (
         <figcaption className="comic-credit">
           <span className="text-fg-2">{panel.nasaImageCaption}</span>{' '}
@@ -192,3 +172,4 @@ export function ComicPanel({
     </figure>
   );
 }
+

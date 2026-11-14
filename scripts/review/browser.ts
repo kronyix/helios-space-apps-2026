@@ -9,11 +9,17 @@ import { homedir } from 'node:os';
 import { join } from 'node:path';
 
 function cachedChrome(): string | undefined {
-  const root = join(homedir(), '.cache/ms-playwright');
-  if (!existsSync(root)) return undefined;
-  for (const d of readdirSync(root).filter((x) => /^chromium-\d+$/.test(x)).sort().reverse()) {
-    const p = join(root, d, 'chrome-linux64/chrome');
-    if (existsSync(p)) return p;
+  for (const root of ['/ms-playwright', join(homedir(), '.cache/ms-playwright')]) {
+    if (!existsSync(root)) continue;
+    for (const d of readdirSync(root)
+      .filter((x) => /^(chromium|chromium_headless_shell)-\d+$/.test(x))
+      .sort()
+      .reverse()) {
+      for (const rel of ['chrome-linux64/chrome', 'chrome-headless-shell-linux64/chrome-headless-shell']) {
+        const p = join(root, d, rel);
+        if (existsSync(p)) return p;
+      }
+    }
   }
   return undefined;
 }

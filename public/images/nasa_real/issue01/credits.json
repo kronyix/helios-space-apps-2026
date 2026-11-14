@@ -1,0 +1,240 @@
+[
+  {
+    "id": "pia04995",
+    "panelId": "p01",
+    "credit": "NASA/JPL/Cornell",
+    "sourceUrl": "https://photojournal.jpl.nasa.gov/catalog/PIA04995",
+    "trimmed": true,
+    "width": 928,
+    "height": 944
+  },
+  {
+    "id": "pia05015",
+    "panelId": "p01",
+    "credit": "NASA/JPL/Cornell",
+    "sourceUrl": "https://photojournal.jpl.nasa.gov/catalog/PIA05015",
+    "trimmed": true,
+    "width": 1072,
+    "height": 453
+  },
+  {
+    "id": "pia05117",
+    "panelId": "p01",
+    "credit": "NASA/JPL-Caltech/Cornell",
+    "sourceUrl": "https://photojournal.jpl.nasa.gov/catalog/PIA05117",
+    "trimmed": false,
+    "width": 1600,
+    "height": 1128,
+    "demotedReason": "Cylindrical mosaic retains warped black side wedges after outer trim; demoted to gallery extra."
+  },
+  {
+    "id": "pia05755",
+    "panelId": "p02",
+    "credit": "NASA/JPL/Cornell",
+    "sourceUrl": "https://photojournal.jpl.nasa.gov/catalog/PIA05755",
+    "trimmed": false,
+    "width": 1600,
+    "height": 1200
+  },
+  {
+    "id": "pia05152",
+    "panelId": "p02",
+    "credit": "NASA/JPL/Cornell",
+    "sourceUrl": "https://photojournal.jpl.nasa.gov/catalog/PIA05152",
+    "trimmed": true,
+    "width": 1208,
+    "height": 447
+  },
+  {
+    "id": "pia21494",
+    "panelId": "p02",
+    "credit": "NASA/JPL-Caltech/Univ. of Arizona",
+    "sourceUrl": "https://photojournal.jpl.nasa.gov/catalog/PIA21494",
+    "trimmed": false,
+    "width": 1280,
+    "height": 1007
+  },
+  {
+    "id": "pia07997",
+    "panelId": "p03",
+    "credit": "NASA/JPL/Texas A&M/Cornell",
+    "sourceUrl": "https://photojournal.jpl.nasa.gov/catalog/PIA07997",
+    "trimmed": false,
+    "width": 1600,
+    "height": 899
+  },
+  {
+    "id": "pia12007",
+    "panelId": "p03",
+    "credit": "NASA/JPL-Caltech",
+    "sourceUrl": "https://photojournal.jpl.nasa.gov/catalog/PIA12007",
+    "trimmed": false,
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "id": "pia09403",
+    "panelId": "p04",
+    "credit": "NASA/JPL/Cornell",
+    "sourceUrl": "https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/science-highlights/",
+    "trimmed": false,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "id": "homeplate-bombsag",
+    "panelId": "p04",
+    "credit": "NASA/JPL-Caltech/USGS/Cornell",
+    "sourceUrl": "https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/science-highlights/",
+    "trimmed": false,
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "id": "comanche-falsecolor",
+    "panelId": "p04",
+    "credit": "NASA/JPL-Caltech/Cornell University",
+    "sourceUrl": "https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/science-highlights/",
+    "trimmed": false,
+    "width": 907,
+    "height": 678
+  },
+  {
+    "id": "pia11758",
+    "panelId": "p04",
+    "credit": "NASA/JPL-Caltech/Cornell",
+    "sourceUrl": "https://photojournal.jpl.nasa.gov/catalog/PIA11758",
+    "trimmed": true,
+    "width": 1277,
+    "height": 570,
+    "demotedReason": "Multi-frame trench mosaic retains stair-stepped black corners after trim; demoted to gallery-only extra."
+  },
+  {
+    "id": "pia19113",
+    "panelId": "p05",
+    "credit": "NASA/JPL-Caltech/Cornell/USGS",
+    "sourceUrl": "https://photojournal.jpl.nasa.gov/catalog/PIA19113",
+    "trimmed": false,
+    "width": 1077,
+    "height": 1077
+  },
+  {
+    "id": "pia05584",
+    "panelId": "p05",
+    "credit": "NASA/JPL/Cornell",
+    "sourceUrl": "https://photojournal.jpl.nasa.gov/catalog/PIA05584",
+    "trimmed": false,
+    "width": 895,
+    "height": 726
+  },
+  {
+    "id": "pia05479",
+    "panelId": "p05",
+    "credit": "NASA/JPL/Cornell",
+    "sourceUrl": "https://photojournal.jpl.nasa.gov/catalog/PIA05479",
+    "trimmed": true,
+    "width": 1178,
+    "height": 780
+  },
+  {
+    "id": "pia15033",
+    "panelId": "p06",
+    "credit": "NASA/JPL-Caltech/Cornell/ASU",
+    "sourceUrl": "https://photojournal.jpl.nasa.gov/catalog/PIA15033",
+    "trimmed": false,
+    "width": 1022,
+    "height": 512
+  },
+  {
+    "id": "pia18393",
+    "panelId": "p06",
+    "credit": "NASA/JPL-Caltech/Cornell Univ./Arizona State Univ.",
+    "sourceUrl": "https://photojournal.jpl.nasa.gov/catalog/PIA18393",
+    "trimmed": true,
+    "width": 1075,
+    "height": 218
+  },
+  {
+    "id": "merb-endurance",
+    "panelId": "p06",
+    "credit": "NASA/JPL",
+    "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/mars/mars_exploration_rovers/merb_images.html",
+    "trimmed": true,
+    "width": 2174,
+    "height": 750
+  },
+  {
+    "id": "pia18079-clean",
+    "panelId": "p07",
+    "credit": "NASA/JPL-Caltech/Cornell Univ./Arizona State Univ.",
+    "sourceUrl": "https://photojournal.jpl.nasa.gov/catalog/PIA18079",
+    "trimmed": true,
+    "width": 693,
+    "height": 319
+  },
+  {
+    "id": "pia17759",
+    "panelId": "p07",
+    "credit": "NASA/JPL-Caltech/Cornell Univ./Arizona State Univ.",
+    "sourceUrl": "https://photojournal.jpl.nasa.gov/catalog/PIA17759",
+    "trimmed": true,
+    "width": 1600,
+    "height": 763
+  },
+  {
+    "id": "pia18079-mosaic",
+    "panelId": "p07",
+    "credit": "NASA/JPL-Caltech/Cornell Univ./Arizona State Univ.",
+    "sourceUrl": "https://photojournal.jpl.nasa.gov/catalog/PIA18079",
+    "trimmed": false,
+    "width": 1238,
+    "height": 968,
+    "demotedReason": "Full Pancam vertical-projection deck mosaic has jagged black outer corners; demoted to gallery extra."
+  },
+  {
+    "id": "pia22521",
+    "panelId": "p08",
+    "credit": "NASA/JPL-Caltech/TAMU",
+    "sourceUrl": "https://photojournal.jpl.nasa.gov/catalog/PIA22521",
+    "trimmed": false,
+    "width": 1280,
+    "height": 853
+  },
+  {
+    "id": "mer-bythenumbers",
+    "panelId": "p08",
+    "credit": "NASA/JPL-Caltech",
+    "sourceUrl": "https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/",
+    "trimmed": false,
+    "width": 1600,
+    "height": 1167
+  },
+  {
+    "id": "pia22329",
+    "panelId": "p08",
+    "credit": "NASA/JPL-Caltech/MSSS",
+    "sourceUrl": "https://photojournal.jpl.nasa.gov/catalog/PIA22329",
+    "trimmed": false,
+    "width": 1280,
+    "height": 640,
+    "demotedReason": "Orbital swath mosaic includes black inter-orbit gores and date stamp; demoted to gallery extra."
+  },
+  {
+    "id": "pia19154",
+    "panelId": "p09",
+    "credit": "NASA/JPL-Caltech/MSSS/NMMNHS",
+    "sourceUrl": "https://photojournal.jpl.nasa.gov/catalog/PIA19154",
+    "trimmed": false,
+    "width": 1600,
+    "height": 1208
+  },
+  {
+    "id": "driving-distance-record-2026",
+    "panelId": "p09",
+    "credit": "NASA/JPL-Caltech",
+    "sourceUrl": "https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/",
+    "trimmed": false,
+    "width": 1600,
+    "height": 2844
+  }
+]

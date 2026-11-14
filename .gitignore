@@ -29,3 +29,13 @@ review/**/*.webm
 # review screenshots are large; keep locally (regenerate with scripts/review/capture.ts)
 review/**/*.png
 review/**/video/
+
+# Local environment & agent storage
+.env
+.env.*
+.aistudio
+.antigravity
+bun.lock
+public/assets/
+
+

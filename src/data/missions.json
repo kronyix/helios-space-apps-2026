@@ -112,22 +112,13 @@
         "dialogue": "I bounced across the red plains wrapped in giant airbags!",
         "speaker": "OPPORTUNITY",
         "nasaImageFile": "https://nssdc.gsfc.nasa.gov/planetary/image/merb_pan09.jpg",
-        "imageKind": "illustration",
-        "notes": [
-          {
-            "x": 50,
-            "y": 48,
-            "label": "Airbags",
-            "fact": "Opportunity bounced to rest inside \"Eagle Crater,\" a small crater about 22 meters (72 feet) across. Its lander is still visible there in orbital and rover images.",
-            "source": "https://nssdc.gsfc.nasa.gov/planetary/mars/mars_exploration_rovers/merb_images.html"
-          }
-        ]
+        "imageKind": "illustration"
       },
       {
         "panelNumber": 2,
         "beat": "struggle",
-        "comicImage": "/images/comics/oppy_bold_spirit_wheel_drag.jpg",
-        "comicAlt": "Illustration: Spirit crossing the plains of Gusev Crater, one wheel dragging a furrow through the reddish soil.",
+        "comicImage": "/images/comics/oppy_p2.svg",
+        "comicAlt": "Illustration: a rover driving backward, one front wheel dragging a furrow in the soil.",
         "realNasaImage": "/images/nasa_real/pia12007.jpg",
         "nasaImageCaption": "Spirit's wheels partly buried in soft soil at \"Troy\", sol 1,899 (May 6, 2009). Its right-front wheel had been dead since 2006.",
         "nasaImageCredit": "NASA/JPL-Caltech",
@@ -426,16 +417,7 @@
         "dialogue": "Four days to the Moon. About twenty-one hours on it.",
         "speaker": "EAGLE",
         "comicFocus": "30% 50%",
-        "imageKind": "illustration",
-        "notes": [
-          {
-            "x": 30,
-            "y": 62,
-            "label": "Descent stage",
-            "fact": "Eagle's descent stage was left behind as the launch platform for the ascent stage. It still stands at Tranquility Base.",
-            "source": "https://www.nasa.gov/mission/apollo-11/"
-          }
-        ]
+        "imageKind": "illustration"
       },
       {
         "panelNumber": 2,
@@ -677,16 +659,7 @@
         "caption": "Mars's air is about 1% as dense as Earth's. To lift off, Ingenuity's rotors had to spin at about 2,537 RPM.",
         "dialogue": "Thin air. Freezing nights. One chance at a first flight.",
         "speaker": "INGENUITY",
-        "imageKind": "illustration",
-        "notes": [
-          {
-            "x": 50,
-            "y": 42,
-            "label": "Thin air",
-            "fact": "Mars's atmosphere is about 1% as dense as Earth's, so Ingenuity's rotors had to spin very fast to lift its 1.8 kg.",
-            "source": "https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/"
-          }
-        ]
+        "imageKind": "illustration"
       },
       {
         "panelNumber": 3,

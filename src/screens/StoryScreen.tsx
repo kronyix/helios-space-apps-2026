@@ -1,13 +1,11 @@
-import { useState } from 'react';
 import type { MissionData } from '../data/types';
-import { useReducedMotion } from '../lib/useReducedMotion';
-import { pad2 } from '../lib/missions';
+import { formatCoord, pad2, panelsForStage } from '../lib/missions';
 import { useAppStore } from '../store/useAppStore';
 import { AccentTitle, ScreenFrame } from '../components/ui/Layout';
-import { ModeToggle } from '../components/comic/ComicPage';
-import { IconCalendar, IconClock, IconPin, IconSignal, IconWeight } from '../components/ui/Icons';
+import { ScrollComic } from '../components/comic/ScrollComic';
+import { IssueComic } from '../components/comic/IssueComic';
+import { IconArrowRight, IconCalendar, IconClock, IconPin, IconSignal, IconWeight } from '../components/ui/Icons';
 import { ChapterNav } from './ChapterNav';
-import Book from '../components/book/Book';
 import { FieldArchive } from '../components/comic/FieldArchive';
 import { hasWebGL } from '../lib/device';
 
@@ -48,9 +46,20 @@ export function MissionFile({ mission }: { mission: MissionData }) {
 
 export default function StoryScreen({ mission }: { mission: MissionData }) {
   const go = useAppStore((s) => s.go);
-  const setHardwareEntry = useAppStore((s) => s.setHardwareEntry);
-  const reduced = useReducedMotion();
-  const [leaving, setLeaving] = useState(false);
+
+  if (mission.issueNumber === 1) {
+    return (
+      <IssueComic
+        onContinue={() => {
+          prefetch(mission.modelPath);
+          go('hardware');
+        }}
+      />
+    );
+  }
+
+  const panels = panelsForStage(mission, 'story');
+  const t = mission.telemetry;
 
   return (
     <ScreenFrame
@@ -59,7 +68,7 @@ export default function StoryScreen({ mission }: { mission: MissionData }) {
       status={`Chapter II · The Story`}
       background={
         <div className="story-bg" aria-hidden="true">
-          <img src={mission.comicPanels[2].comicImage} alt="" />
+          <img src={mission.comicPanels[2].comicImage} alt="" width={1280} height={720} decoding="async" />
         </div>
       }
       footer={
@@ -72,24 +81,62 @@ export default function StoryScreen({ mission }: { mission: MissionData }) {
         />
       }
     >
-      <div className={`story-reader ${leaving ? 'is-leaving' : ''}`}>
-        <div className="story-reader__bar">
-          <ModeToggle />
-          <p className="font-mono text-[11px] tracking-[0.12em] text-fg-3">{mission.fictionNotice}</p>
-        </div>
-        <Book
-          mission={mission}
-          onInspect={() => {
-            prefetch(mission.modelPath);
-            if (reduced) return go('hardware');
-            // The book falls away and darkens, then the diorama dollies in (HardwareViewer).
-            setHardwareEntry('book');
-            setLeaving(true);
-            window.setTimeout(() => go('hardware'), 420);
-          }}
-        />
-      </div>
+      <ScrollComic
+        mission={mission}
+        panels={panels}
+        header={
+          <div className="scroll-comic__brief">
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <p className="kicker">{mission.hardwareName}</p>
+              <span className="font-mono text-[11px] tracking-[0.14em] text-fg-3">
+                {mission.coordinates.locationName} · {formatCoord(mission.coordinates.lat, mission.coordinates.lng)}
+              </span>
+            </div>
+            <p className="mt-2 text-[15.5px] leading-relaxed text-fg-2">{mission.logline}</p>
+            <dl className="scroll-comic__telemetry">
+              <div>
+                <dt>Launched</dt>
+                <dd>{t.launchDate}</dd>
+              </div>
+              <div>
+                <dt>Landed</dt>
+                <dd>{t.landingDate}</dd>
+              </div>
+              <div>
+                <dt>Planned</dt>
+                <dd>{t.plannedLifespan}</dd>
+              </div>
+              <div>
+                <dt>Actual</dt>
+                <dd>{t.actualLifespan}</dd>
+              </div>
+            </dl>
+          </div>
+        }
+        footer={
+          <div className="scroll-comic__cta-card">
+            <div>
+              <p className="kicker">Chapter III · Hardware</p>
+              <p className="scroll-comic__cta-lede">Panels 1 and 2 are told. The hardware is waiting.</p>
+            </div>
+            <button
+              type="button"
+              className="btn-primary"
+              aria-label="Inspect the hardware — Explore the hardware"
+              onMouseEnter={() => prefetch(mission.modelPath)}
+              onFocus={() => prefetch(mission.modelPath)}
+              onClick={() => {
+                prefetch(mission.modelPath);
+                go('hardware');
+              }}
+            >
+              Inspect the hardware <IconArrowRight size={18} />
+            </button>
+          </div>
+        }
+      />
       {mission.fieldArchive && <FieldArchive archive={mission.fieldArchive} />}
     </ScreenFrame>
   );
 }
+

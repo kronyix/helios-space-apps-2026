@@ -1,5 +1,5 @@
 import raw from '../data/missions.json';
-import type { MissionData } from '../data/types';
+import type { ComicPanel, ComicPanelLine, MissionData } from '../data/types';
 
 /** Typed, validated view of src/data/missions.json (the single source of truth). */
 // JSON arrays widen to number[]; the dev checks below guard the shape.
@@ -31,3 +31,29 @@ export const panelsForStage = (m: MissionData, stage: 'story' | 'hardware' | 're
   const map = { story: [1, 2], hardware: [3], reward: [4, 5] } as const;
   return m.comicPanels.filter((p) => (map[stage] as readonly number[]).includes(p.panelNumber));
 };
+
+/**
+ * Pure helper that returns `panel.lines` if present, otherwise derives lines[]
+ * from the existing caption/dialogue/speaker fields with stable ids (`${panelId}-c1`, `${panelId}-s1`).
+ */
+export function getPanelLines(panel: ComicPanel, panelId = `p${panel.panelNumber}`): ComicPanelLine[] {
+  if (panel.lines && panel.lines.length > 0) return panel.lines;
+  const derived: ComicPanelLine[] = [];
+  if (panel.caption) {
+    derived.push({
+      id: `${panelId}-c1`,
+      kind: 'caption',
+      text: panel.caption,
+    });
+  }
+  if (panel.dialogue) {
+    derived.push({
+      id: `${panelId}-s1`,
+      kind: 'speech',
+      speaker: panel.speaker,
+      text: panel.dialogue,
+    });
+  }
+  return derived;
+}
+
