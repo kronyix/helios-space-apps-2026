@@ -2043,3 +2043,24 @@ a.image-label:hover {
   position: relative;
   container-type: normal;
 }
+
+/* In-panel archive notes */
+.archive-note { position: absolute; z-index: 4; translate: -50% -50%; }
+.archive-note__dot {
+  width: 28px; height: 28px; border-radius: 999px; padding: 0;
+  border: 2px solid #fff; background: rgb(var(--accent-rgb) / 0.85);
+  box-shadow: 0 0 0 0 rgb(var(--accent-rgb) / 0.6); animation: note-pulse 2.2s infinite;
+}
+.archive-note__dot::before { content: ''; position: absolute; inset: -8px; } /* 44px hit area */
+.archive-note__card {
+  position: absolute; left: 50%; top: calc(100% + 8px); translate: -50% 0; width: min(260px, 70cqw);
+  padding: 10px 12px; background: #fffaf0; color: #1a140e; border-radius: 4px;
+  font-size: 12.5px; line-height: 1.4; box-shadow: 0 10px 28px -10px rgb(0 0 0 / 0.8);
+}
+.archive-note__kicker { display: block; margin-bottom: 4px; font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: #8a5a2b; }
+@keyframes note-pulse { 0% { box-shadow: 0 0 0 0 rgb(var(--accent-rgb) / 0.6); } 70%, 100% { box-shadow: 0 0 0 12px rgb(var(--accent-rgb) / 0); } }
+@media (prefers-reduced-motion: reduce) { .archive-note__dot { animation: none; } }
+
+/* Back cover → hardware: the book tips away and darkens before the diorama dollies in. */
+.story-reader { transition: transform 420ms var(--ease-in-out), opacity 420ms var(--ease-in-out), filter 420ms; transform-origin: 50% 100%; }
+.story-reader.is-leaving { transform: perspective(1400px) rotateX(28deg) translateY(60px) scale(0.92); opacity: 0; filter: brightness(0.3); }

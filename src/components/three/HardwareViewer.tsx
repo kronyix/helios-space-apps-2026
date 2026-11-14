@@ -160,6 +160,19 @@ function CameraDirector({
   const rot = useMemo(() => new THREE.Matrix4().makeRotationY(scene.rotationY), [scene.rotationY]);
   const toWorld = (v: Vec3) => new THREE.Vector3(...v).applyMatrix4(rot);
 
+  // Arriving from the book's back cover: start far out and dolly in over dur.cinematic.
+  const entryDolly = useRef(false);
+  useEffect(() => {
+    const st = useAppStore.getState();
+    if (st.hardwareEntry !== 'book') return;
+    st.setHardwareEntry(null);
+    if (reduced) return;
+    const t = new THREE.Vector3(...scene.target);
+    camera.position.copy(t).add(new THREE.Vector3(...scene.camera).sub(t).multiplyScalar(2.4));
+    entryDolly.current = true;
+    // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     const h = hotspots.find((x) => x.id === active);
     const to = h?.cameraPosition ? toWorld(h.cameraPosition) : new THREE.Vector3(...scene.camera);
@@ -176,7 +189,8 @@ function CameraDirector({
   useFrame((_, dt) => {
     const tw = tween.current;
     if (!tw || !controls) return;
-    tw.t = reduced ? 1 : Math.min(1, tw.t + dt / (dur.slow * 1.6));
+    tw.t = reduced ? 1 : Math.min(1, tw.t + dt / (entryDolly.current ? dur.cinematic : dur.slow * 1.6));
+    if (tw.t >= 1) entryDolly.current = false;
     const k = easeInOutCubic(tw.t);
     camera.position.lerpVectors(tw.from, tw.to, k);
     controls.target.lerpVectors(tw.fromT, tw.toT, k);

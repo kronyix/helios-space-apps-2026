@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import type { MissionData } from '../data/types';
+import { useReducedMotion } from '../lib/useReducedMotion';
 import { pad2 } from '../lib/missions';
 import { useAppStore } from '../store/useAppStore';
 import { AccentTitle, ScreenFrame } from '../components/ui/Layout';
@@ -46,6 +48,9 @@ export function MissionFile({ mission }: { mission: MissionData }) {
 
 export default function StoryScreen({ mission }: { mission: MissionData }) {
   const go = useAppStore((s) => s.go);
+  const setHardwareEntry = useAppStore((s) => s.setHardwareEntry);
+  const reduced = useReducedMotion();
+  const [leaving, setLeaving] = useState(false);
 
   return (
     <ScreenFrame
@@ -67,7 +72,7 @@ export default function StoryScreen({ mission }: { mission: MissionData }) {
         />
       }
     >
-      <div className="story-reader">
+      <div className={`story-reader ${leaving ? 'is-leaving' : ''}`}>
         <div className="story-reader__bar">
           <ModeToggle />
           <p className="font-mono text-[11px] tracking-[0.12em] text-fg-3">{mission.fictionNotice}</p>
@@ -76,7 +81,11 @@ export default function StoryScreen({ mission }: { mission: MissionData }) {
           mission={mission}
           onInspect={() => {
             prefetch(mission.modelPath);
-            go('hardware');
+            if (reduced) return go('hardware');
+            // The book falls away and darkens, then the diorama dollies in (HardwareViewer).
+            setHardwareEntry('book');
+            setLeaving(true);
+            window.setTimeout(() => go('hardware'), 420);
           }}
         />
       </div>

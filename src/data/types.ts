@@ -67,6 +67,8 @@ export interface ComicPanel {
   comicAlt?: string;
   /** ext: what `comicImage` is. The UI labels it ILLUSTRATION (archival mode labels the NASA photo). */
   imageKind?: 'illustration' | 'archival';
+  /** ext: "From the archive" notes pinned on the illustration (x/y in % of the frame). */
+  notes?: { x: number; y: number; label: string; fact: string; source: string }[];
   /** ext: CSS object-position for the illustration crop (e.g. "30% 50%") */
   comicFocus?: string;
 }

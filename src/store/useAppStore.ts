@@ -27,6 +27,9 @@ interface AppState extends Progress {
   storyMode: StoryMode;
   /** Comic book reader: `page` is the first visible page (0 = cover); layout-independent. */
   narrative: { page: number; turning: boolean };
+  /** How the hardware state was entered (the book's back cover triggers a camera dolly-in). */
+  hardwareEntry: 'book' | null;
+  setHardwareEntry: (e: 'book' | null) => void;
   activeHotspot: string | null;
   gamePhase: GamePhase;
   lastScore: number | null;
@@ -125,6 +128,8 @@ export const useAppStore = create<AppState>()(
       focusedMissionId: null,
       divingTo: null,
       narrative: { page: 0, turning: false },
+      hardwareEntry: null,
+      setHardwareEntry: (hardwareEntry) => set({ hardwareEntry }),
       ...fromUrl,
 
       go: (stage, missionId) => {

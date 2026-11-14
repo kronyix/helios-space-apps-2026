@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import type { ComicPanel as Panel, MissionData } from '../../data/types';
 import { useAppStore, type StoryMode } from '../../store/useAppStore';
@@ -40,6 +41,35 @@ export function ImageLabel({
   return (
     <span className="image-label" data-kind={kind}>
       {text}
+    </span>
+  );
+}
+
+/** Pulsing marker on an illustration; opens a sourced "From the archive" note. */
+function ArchiveNote({ note }: { note: NonNullable<Panel['notes']>[number] }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <span className="archive-note" style={{ left: `${note.x}%`, top: `${note.y}%` }} data-open={open || undefined}>
+      <button
+        type="button"
+        className="archive-note__dot"
+        aria-expanded={open}
+        aria-label={`From the archive: ${note.label}`}
+        onClick={(e) => {
+          e.stopPropagation();
+          setOpen((o) => !o);
+        }}
+        onBlur={(e) => !e.currentTarget.parentElement?.contains(e.relatedTarget as Node) && setOpen(false)}
+      />
+      {open && (
+        <span className="archive-note__card" role="note">
+          <span className="archive-note__kicker">From the archive · {note.label}</span>
+          {note.fact}{' '}
+          <a href={note.source} target="_blank" rel="noreferrer noopener" className="credit-link">
+            Source<span className="sr-only"> (opens in a new tab)</span>
+          </a>
+        </span>
+      )}
     </span>
   );
 }
@@ -119,6 +149,7 @@ export function ComicPanel({
             {panel.dialogue}
           </p>
         )}
+        {!archival && panel.notes?.map((n, i) => <ArchiveNote key={i} note={n} />)}
         <span className="comic-panel__num" aria-hidden="true">
           PANEL {panel.panelNumber} / {total}
         </span>
