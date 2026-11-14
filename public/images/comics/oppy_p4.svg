@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600">
+<defs>
+  <linearGradient id="sky-x" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9a777"/><stop offset="1" stop-color="#f0cfa4"/></linearGradient>
+  <pattern id="dots-x" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(18)"><circle cx="2.4" cy="2.4" r="1.5" fill="#5a2410" opacity=".55"/></pattern>
+  <pattern id="dotsL-x" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(18)"><circle cx="2" cy="2" r="1.1" fill="#fff" opacity=".35"/></pattern>
+  <filter id="grain-x"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="4"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .22 0"/><feComposite in2="SourceGraphic" operator="in"/></filter>
+</defs>
+<rect width="960" height="600" fill="#a8502a"/>
+<rect width="960" height="600" fill="url(#dots-x)"/>
+<path d="M-20 420 C 200 380, 420 330, 640 300 L 660 360 C 430 400, 220 450, -20 500 Z" fill="#f7f2e6" stroke="#16100c" stroke-width="3"/>
+<path d="M40 440 C 220 405, 420 360, 600 330" fill="none" stroke="#d8d0c0" stroke-width="3" stroke-dasharray="14 10"/>
+<g transform="translate(720 300)" stroke="#16100c" stroke-width="4">
+  <circle r="110" fill="#3a3532"/>
+  <rect x="-8" y="-118" width="16" height="16" fill="#6a625c" transform="rotate(0)"/><rect x="-8" y="-118" width="16" height="16" fill="#6a625c" transform="rotate(22.5)"/><rect x="-8" y="-118" width="16" height="16" fill="#6a625c" transform="rotate(45)"/><rect x="-8" y="-118" width="16" height="16" fill="#6a625c" transform="rotate(67.5)"/><rect x="-8" y="-118" width="16" height="16" fill="#6a625c" transform="rotate(90)"/><rect x="-8" y="-118" width="16" height="16" fill="#6a625c" transform="rotate(112.5)"/><rect x="-8" y="-118" width="16" height="16" fill="#6a625c" transform="rotate(135)"/><rect x="-8" y="-118" width="16" height="16" fill="#6a625c" transform="rotate(157.5)"/><rect x="-8" y="-118" width="16" height="16" fill="#6a625c" transform="rotate(180)"/><rect x="-8" y="-118" width="16" height="16" fill="#6a625c" transform="rotate(202.5)"/><rect x="-8" y="-118" width="16" height="16" fill="#6a625c" transform="rotate(225)"/><rect x="-8" y="-118" width="16" height="16" fill="#6a625c" transform="rotate(247.5)"/><rect x="-8" y="-118" width="16" height="16" fill="#6a625c" transform="rotate(270)"/><rect x="-8" y="-118" width="16" height="16" fill="#6a625c" transform="rotate(292.5)"/><rect x="-8" y="-118" width="16" height="16" fill="#6a625c" transform="rotate(315)"/><rect x="-8" y="-118" width="16" height="16" fill="#6a625c" transform="rotate(337.5)"/>
+  <circle r="36" fill="#aaa"/>
+</g>
+<text x="560" y="560" font-family="IBM Plex Mono, monospace" font-size="34" font-weight="600" fill="#f7f2e6">SiO₂ ≈ 90%</text>
+<rect width="960" height="600" filter="url(#grain-x)" opacity=".9"/>
+</svg>

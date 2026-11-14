@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600">
+<defs>
+  <linearGradient id="sky-x" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c8a27e"/><stop offset="1" stop-color="#e6cfae"/></linearGradient>
+  <pattern id="dots-x" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(18)"><circle cx="2.4" cy="2.4" r="1.5" fill="#5b3d22" opacity=".55"/></pattern>
+  <pattern id="dotsL-x" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(18)"><circle cx="2" cy="2" r="1.1" fill="#fff" opacity=".35"/></pattern>
+  <filter id="grain-x"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="4"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .22 0"/><feComposite in2="SourceGraphic" operator="in"/></filter>
+</defs>
+<rect width="960" height="600" fill="#b88a5f"/>
+<path d="M0 30 Q 240 10 480 30 T 960 30" fill="none" stroke="#8c6340" stroke-width="5" opacity=".55"/><path d="M0 80 Q 240 60 480 80 T 960 80" fill="none" stroke="#8c6340" stroke-width="5" opacity=".55"/><path d="M0 130 Q 240 110 480 130 T 960 130" fill="none" stroke="#8c6340" stroke-width="5" opacity=".55"/><path d="M0 180 Q 240 160 480 180 T 960 180" fill="none" stroke="#8c6340" stroke-width="5" opacity=".55"/><path d="M0 230 Q 240 210 480 230 T 960 230" fill="none" stroke="#8c6340" stroke-width="5" opacity=".55"/><path d="M0 280 Q 240 260 480 280 T 960 280" fill="none" stroke="#8c6340" stroke-width="5" opacity=".55"/><path d="M0 330 Q 240 310 480 330 T 960 330" fill="none" stroke="#8c6340" stroke-width="5" opacity=".55"/><path d="M0 380 Q 240 360 480 380 T 960 380" fill="none" stroke="#8c6340" stroke-width="5" opacity=".55"/><path d="M0 430 Q 240 410 480 430 T 960 430" fill="none" stroke="#8c6340" stroke-width="5" opacity=".55"/><path d="M0 480 Q 240 460 480 480 T 960 480" fill="none" stroke="#8c6340" stroke-width="5" opacity=".55"/><path d="M0 530 Q 240 510 480 530 T 960 530" fill="none" stroke="#8c6340" stroke-width="5" opacity=".55"/><path d="M0 580 Q 240 560 480 580 T 960 580" fill="none" stroke="#8c6340" stroke-width="5" opacity=".55"/>
+<g transform="translate(470 300) rotate(-14)" fill="#2a1c10" opacity=".75">
+  <rect x="-40" y="-30" width="80" height="60"/>
+  <path d="M-300 -8 Q0 -16 300 -8 L300 8 Q0 16 -300 8Z"/>
+  <path d="M-12 -240 Q-16 0 -12 140 L12 140 Q16 0 12 -240Z" transform="rotate(64)"/>
+  <path d="M-12 -110 Q-16 0 -12 300 L12 300 Q16 0 12 -110Z" transform="rotate(-38)"/>
+</g>
+<circle cx="560" cy="210" r="30" fill="none" stroke="#9fd0ff" stroke-width="3" stroke-dasharray="6 6"/>
+<rect width="960" height="600" filter="url(#grain-x)" opacity=".9"/>
+</svg>

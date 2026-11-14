@@ -1,0 +1,151 @@
+/**
+ * Types for the master data contract in src/data/missions.json.
+ * Blueprint fields (Technical Blueprint §6) must never be renamed or removed.
+ * Fields marked `ext` are additive extensions used by this build.
+ */
+
+export type CelestialBody = 'mars' | 'moon';
+export type MiniGameType = 'spectrometer_scan' | 'laser_bounce' | 'rpm_throttle';
+export type Vec3 = [number, number, number];
+export type StoryBeat = 'setup' | 'struggle' | 'hardware' | 'discovery' | 'legacy';
+
+export interface Coordinates {
+  lat: number;
+  lng: number;
+  locationName: string;
+}
+
+export interface Telemetry {
+  launchDate: string;
+  landingDate: string;
+  lastContact: string;
+  plannedLifespan: string;
+  actualLifespan: string;
+  massKg: number;
+  /** ext: what the mass figure refers to */
+  massNote?: string;
+  /** ext: UI label for `lastContact` when "last contact" is not literal */
+  lastContactLabel?: string;
+}
+
+export interface HotspotData {
+  id: string;
+  position: Vec3;
+  label: string;
+  engineeringFact: string;
+  scienceDiscovery: string;
+  /** ext: short label for chips */
+  shortLabel?: string;
+  /** ext: instrument / part designation shown in mono */
+  designation?: string;
+  /** ext: camera position used to frame this part */
+  cameraPosition?: Vec3;
+  /** ext: attribution note (e.g. "This is Spirit's story") */
+  attribution?: string;
+}
+
+export interface ComicPanel {
+  panelNumber: number;
+  comicImage: string;
+  realNasaImage: string;
+  nasaImageCaption: string;
+  dialogue: string;
+  speaker: string;
+  /** ext */
+  beat?: StoryBeat;
+  /** ext: narrator caption box (historical fact) */
+  caption?: string;
+  /** ext: image credit line */
+  nasaImageCredit?: string;
+  /** ext: link to the source record */
+  nasaImageSource?: string;
+  /** ext: date of the archival image */
+  nasaImageDate?: string;
+  /** ext: direct link to the full-resolution file */
+  nasaImageFile?: string;
+  /** ext: alt text for the illustration */
+  comicAlt?: string;
+  /** ext: credit for the illustration (e.g. AI-generated art) */
+  comicCredit?: string;
+  /** ext: CSS object-position for the illustration crop (e.g. "30% 50%") */
+  comicFocus?: string;
+}
+
+export interface MiniGame {
+  type: MiniGameType;
+  targetValue: string;
+  /** ext */
+  title?: string;
+  tagline?: string;
+  instructions?: string[];
+  controls?: string;
+  science?: string;
+  durationSec?: number;
+  successThreshold?: number;
+  badgeThreshold?: number;
+  params?: Record<string, number>;
+}
+
+export interface Artifact {
+  name: string;
+  designation: string;
+  description: string;
+  badgeId: string;
+  badgeName: string;
+  badgeCriteria: string;
+}
+
+export interface Source {
+  label: string;
+  url: string;
+}
+
+/** ext: how the hardware diorama frames the model. */
+export interface SceneConfig {
+  environment: CelestialBody;
+  /** Largest horizontal extent of the model after normalization (scene units). */
+  fitSize: number;
+  rotationY: number;
+  camera: Vec3;
+  target: Vec3;
+  /** Hide model parts whose centre sits above this height (e.g. Apollo's ascent stage, which left). */
+  hideAboveY?: number;
+}
+
+/** ext: side-by-side official catalog (e.g. NSSDC Spirit / Opportunity images). */
+export interface FieldArchiveItem {
+  image: string;
+  file: string;
+  when: string;
+  caption: string;
+}
+export interface FieldArchive {
+  title: string;
+  note: string;
+  rovers: { rover: string; name: string; designation: string; site: string; catalog: string; items: FieldArchiveItem[] }[];
+}
+
+export interface MissionData {
+  id: string;
+  issueNumber: number;
+  title: string;
+  hardwareName: string;
+  celestialBody: CelestialBody;
+  coordinates: Coordinates;
+  modelPath: string;
+  /** ext */
+  scene: SceneConfig;
+  telemetry: Telemetry;
+  hotspots: HotspotData[];
+  comicPanels: ComicPanel[];
+  miniGame: MiniGame;
+  /** ext */
+  issueTitle: string;
+  shortName: string;
+  theme: 'rust' | 'silver' | 'jezero';
+  logline: string;
+  fictionNotice?: string;
+  artifact: Artifact;
+  sources: Source[];
+  fieldArchive?: FieldArchive;
+}

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600">
+<defs>
+  <linearGradient id="sky-x" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000000"/><stop offset="1" stop-color="#0b0b0d"/></linearGradient>
+  <pattern id="dots-x" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(18)"><circle cx="2.4" cy="2.4" r="1.5" fill="#2a2a2a" opacity=".55"/></pattern>
+  <pattern id="dotsL-x" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(18)"><circle cx="2" cy="2" r="1.1" fill="#fff" opacity=".35"/></pattern>
+  <filter id="grain-x"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="4"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .22 0"/><feComposite in2="SourceGraphic" operator="in"/></filter>
+</defs>
+<rect width="960" height="600" fill="#0e0f12"/>
+<ellipse cx="480" cy="330" rx="330" ry="210" fill="#e9c46a" opacity=".08"/>
+<g stroke="#16100c" stroke-width="4">
+  <path d="M260 260 L700 260 L740 300 L740 470 L220 470 L220 300 Z" fill="#c9c9c4"/>
+  <rect x="220" y="300" width="520" height="170" fill="url(#dotsL-x)" stroke="none"/>
+  <path d="M220 300 H740" stroke-width="3"/>
+  <rect x="440" y="320" width="80" height="40" fill="#8f8c86"/>
+  <path d="M300 300 L320 230 M660 300 L640 230" stroke-width="6"/>
+</g>
+<g fill="#e9c46a" opacity=".85"><ellipse cx="380" cy="240" rx="34" ry="20" stroke="#16100c" stroke-width="3"/><ellipse cx="470" cy="228" rx="34" ry="20" stroke="#16100c" stroke-width="3"/><ellipse cx="560" cy="240" rx="34" ry="20" stroke="#16100c" stroke-width="3"/></g>
+<text x="290" y="540" font-family="IBM Plex Mono, monospace" font-size="30" fill="#e8e8e2">21.55 kg</text>
+<rect width="960" height="600" filter="url(#grain-x)" opacity=".9"/>
+</svg>

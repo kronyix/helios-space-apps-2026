@@ -1,0 +1,748 @@
+[
+  {
+    "id": "opportunity",
+    "issueNumber": 1,
+    "title": "The 90-Day Rover That Lived for 15 Years",
+    "issueTitle": "The 90-Day Rovers",
+    "shortName": "Opportunity & Spirit",
+    "hardwareName": "MER-A Spirit & MER-B Opportunity",
+    "celestialBody": "mars",
+    "theme": "rust",
+    "logline": "Two rovers built for 90 sols. One explored for over 14 years, the other found hot-spring silica with a broken wheel.",
+    "fictionNotice": "Speech balloons are fictionalized first-person narration. Caption boxes are documented history.",
+    "coordinates": {
+      "lat": -1.9462,
+      "lng": 354.4734,
+      "locationName": "Meridiani Planum, Mars"
+    },
+    "modelPath": "/models/opportunity.glb",
+    "scene": {
+      "environment": "mars",
+      "fitSize": 2.4,
+      "rotationY": 0.6,
+      "camera": [
+        3.6,
+        1.9,
+        4.4
+      ],
+      "target": [
+        0,
+        0.45,
+        0
+      ]
+    },
+    "telemetry": {
+      "launchDate": "July 7, 2003",
+      "landingDate": "January 25, 2004",
+      "lastContact": "June 10, 2018",
+      "plannedLifespan": "90 Sols",
+      "actualLifespan": "5,352 Sols (landing to mission end, Feb 13, 2019)",
+      "massKg": 185,
+      "massNote": "Rover mass"
+    },
+    "hotspots": [
+      {
+        "id": "arm",
+        "shortLabel": "Robotic arm",
+        "designation": "INSTRUMENT DEPLOYMENT DEVICE",
+        "position": [
+          0.1,
+          0.55,
+          0.9
+        ],
+        "cameraPosition": [
+          1.7,
+          1.0,
+          2.7
+        ],
+        "label": "Robotic Arm & Spectrometers",
+        "engineeringFact": "The arm carried four tools: a Microscopic Imager, a Mössbauer spectrometer, an Alpha Particle X-ray Spectrometer and the Rock Abrasion Tool.",
+        "scienceDiscovery": "At Meridiani Planum, Opportunity's Mössbauer spectrometer showed that the small \"blueberry\" spherules are rich in hematite, an iron oxide that typically forms in water."
+      },
+      {
+        "id": "wheel",
+        "shortLabel": "Spirit's wheel",
+        "designation": "RIGHT-FRONT WHEEL · SPIRIT",
+        "position": [
+          -0.64,
+          0.17,
+          0.02
+        ],
+        "cameraPosition": [
+          -2.3,
+          0.55,
+          1.7
+        ],
+        "label": "Machined Aluminum Wheel",
+        "attribution": "This is Spirit's story. The twin rovers shared one design, so this model stands in for both.",
+        "engineeringFact": "When Spirit's right-front wheel stopped turning in 2006, engineers drove the rover backward, dragging the dead wheel behind it.",
+        "scienceDiscovery": "In 2007 the dragging wheel scraped away the reddish topsoil near \"Home Plate\" in Gusev Crater and exposed soil about 90% pure silica, evidence of ancient hot springs or steam vents."
+      },
+      {
+        "id": "arrays",
+        "shortLabel": "Dusty arrays",
+        "designation": "SOLAR ARRAY · DECK",
+        "position": [
+          -0.3,
+          0.68,
+          -0.6
+        ],
+        "cameraPosition": [
+          -1.5,
+          2.5,
+          0.9
+        ],
+        "label": "Dust-Covered Solar Arrays",
+        "engineeringFact": "Both rovers ran on solar power. Settling dust cut their energy, but Martian winds sometimes blew the panels clean, restoring power and stretching the mission far past 90 sols.",
+        "scienceDiscovery": "In June 2018 a planet-encircling dust storm blocked so much sunlight that Opportunity could no longer charge its batteries. Its last contact was June 10, 2018."
+      }
+    ],
+    "comicPanels": [
+      {
+        "panelNumber": 1,
+        "beat": "setup",
+        "comicImage": "/images/comics/oppy_airbag_landing.jpg",
+        "comicAlt": "Illustration: a parachute drifts away as a cluster of airbags slams into red Martian plains in a spray of dust.",
+        "realNasaImage": "/images/nasa_real/nssdc_merb_pan09.jpg",
+        "nasaImageCaption": "Opportunity in \"Eagle Crater,\" approximately 22 meters (72 feet) in diameter. \"Opportunity's lander is visible in the center of the image. Track marks reveal the rover's progress.\" Mosaic from sols 33, 35 and 36.",
+        "nasaImageCredit": "NASA/JPL (images and captions courtesy NASA/JPL, via NSSDC)",
+        "nasaImageSource": "https://nssdc.gsfc.nasa.gov/planetary/mars/mars_exploration_rovers/merb_images.html",
+        "nasaImageDate": "Sols 33–36, 2004",
+        "caption": "Summer 2003. NASA launches twin rovers toward Mars, Spirit and Opportunity, each built to last just 90 sols.",
+        "dialogue": "I bounced across the red plains wrapped in giant airbags!",
+        "speaker": "OPPORTUNITY",
+        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery.",
+        "nasaImageFile": "https://nssdc.gsfc.nasa.gov/planetary/image/merb_pan09.jpg"
+      },
+      {
+        "panelNumber": 2,
+        "beat": "struggle",
+        "comicImage": "/images/comics/oppy_p2.svg",
+        "comicAlt": "Illustration: a rover driving backward, one front wheel dragging a furrow in the soil.",
+        "realNasaImage": "/images/nasa_real/pia12007.jpg",
+        "nasaImageCaption": "Spirit's wheels partly buried in soft soil at \"Troy\", sol 1,899 (May 6, 2009). Its right-front wheel had been dead since 2006.",
+        "nasaImageCredit": "NASA/JPL-Caltech",
+        "nasaImageSource": "https://images.nasa.gov/details/PIA12007",
+        "nasaImageDate": "2009-05-11",
+        "caption": "2006, Gusev Crater. Spirit's right-front wheel stops turning. The team drives her backward, dragging the dead wheel like a plough.",
+        "dialogue": "Backward it is. I'll pull my broken wheel behind me.",
+        "speaker": "SPIRIT"
+      },
+      {
+        "panelNumber": 3,
+        "beat": "hardware",
+        "comicImage": "/images/comics/oppy_arm_blueberries.jpg",
+        "comicAlt": "Illustration: Opportunity's robotic arm hovers over a layered rock outcrop scattered with small grey hematite spherules.",
+        "realNasaImage": "/images/nasa_real/nssdc_merb_spheres.jpg",
+        "nasaImageCaption": "Taken by the microscopic imager on Opportunity's \"arm,\" this image \"reveals shiny, spherical objects embedded within the trench wall at Meridiani Planum, Mars.\" The area shown is approximately 3 centimeters (1.2 inches) across.",
+        "nasaImageCredit": "NASA/JPL (images and captions courtesy NASA/JPL, via NSSDC)",
+        "nasaImageSource": "https://nssdc.gsfc.nasa.gov/planetary/mars/mars_exploration_rovers/merb_images.html",
+        "nasaImageDate": "2004",
+        "caption": "185 kilograms of compromise between weight, power and survival. Inspect the parts that made the story.",
+        "dialogue": "Look closer. Every scratch on me is a field note.",
+        "speaker": "OPPORTUNITY",
+        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery.",
+        "nasaImageFile": "https://nssdc.gsfc.nasa.gov/planetary/image/merb_spheres.jpg"
+      },
+      {
+        "panelNumber": 4,
+        "beat": "discovery",
+        "comicImage": "/images/comics/oppy_wheel_drag_silica.jpg",
+        "comicAlt": "Illustration: Spirit drives away from the viewer, its locked wheel dragging a trench that exposes bright white soil.",
+        "realNasaImage": "/images/nasa_real/pia09491.jpg",
+        "nasaImageCaption": "Bright, silica-rich soil churned up by Spirit's dragging wheel, 2007.",
+        "nasaImageCredit": "NASA/JPL/Cornell",
+        "nasaImageSource": "https://images.nasa.gov/details/PIA09491",
+        "nasaImageDate": "2007-05-21",
+        "caption": "2007. The dead wheel scrapes up bright soil that is about 90% silica. Hot water once moved through this ground.",
+        "dialogue": "My broken wheel found what my working ones never could.",
+        "speaker": "SPIRIT",
+        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery."
+      },
+      {
+        "panelNumber": 5,
+        "beat": "legacy",
+        "comicImage": "/images/comics/oppy_final_dust_storm.jpg",
+        "comicAlt": "Illustration: a lone rover on a crater-valley slope under a hazy orange sky with a dim sun.",
+        "realNasaImage": "/images/nasa_real/pia22908.jpg",
+        "nasaImageCaption": "Opportunity's last 360° panorama, sols 5,084–5,111, finished just before the 2018 dust storm.",
+        "nasaImageCredit": "NASA/JPL-Caltech/Cornell/ASU",
+        "nasaImageSource": "https://images.nasa.gov/details/PIA22908",
+        "nasaImageDate": "2019-03-12",
+        "caption": "June 10, 2018. A global dust storm darkens the sky over Perseverance Valley. Opportunity has driven more than 45 km, and it sends its final signal.",
+        "dialogue": "Ninety sols was the plan. Fourteen years was the journey.",
+        "speaker": "OPPORTUNITY",
+        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery."
+      }
+    ],
+    "miniGame": {
+      "type": "spectrometer_scan",
+      "targetValue": "Fe2O3_Hematite",
+      "title": "Spectrometer Scan",
+      "tagline": "Lock the crosshair on hematite \"blueberry\" spikes in the soil.",
+      "instructions": [
+        "A stylized soil spectrum scrolls past. The ghost trace shows hematite's reference pattern.",
+        "Move the crosshair over a spike that matches the reference, then lock it.",
+        "Find all three hematite features in 15 seconds. Wrong locks cost points."
+      ],
+      "controls": "Mouse or touch: move and tap to lock · Keyboard: ← → move, Space/Enter lock",
+      "science": "Minerals absorb and emit energy at their own characteristic positions, which gives each one a spectral fingerprint. Opportunity's Mössbauer spectrometer and its thermal-infrared Mini-TES both identified hematite at Meridiani, a mineral that usually forms with water. The spectrum in this game is simplified for play.",
+      "durationSec": 15,
+      "successThreshold": 67,
+      "badgeThreshold": 80,
+      "params": {
+        "targets": 3,
+        "decoys": 4,
+        "tolerance": 0.022,
+        "missPenalty": 15
+      }
+    },
+    "artifact": {
+      "name": "Hematite \"Blueberry\"",
+      "designation": "SPHERULE · MERIDIANI PLANUM · Fe₂O₃",
+      "description": "A BB-sized concretion rich in grey hematite. Thousands littered Opportunity's landing site, small evidence that water once soaked these rocks.",
+      "badgeId": "spectral-eye",
+      "badgeName": "Spectral Eye",
+      "badgeCriteria": "Score 80% or more on the Spectrometer Scan."
+    },
+    "sources": [
+      {
+        "label": "NSSDCA: Mars Rover \"Spirit\" Images (MER-A) · official hackathon data source",
+        "url": "https://nssdc.gsfc.nasa.gov/planetary/mars/mars_exploration_rovers/mera_images.html"
+      },
+      {
+        "label": "NSSDCA: Mars Rover \"Opportunity\" Images (MER-B) · official hackathon data source",
+        "url": "https://nssdc.gsfc.nasa.gov/planetary/mars/mars_exploration_rovers/merb_images.html"
+      },
+      {
+        "label": "NASA Science: Mars Exploration Rovers Spirit and Opportunity",
+        "url": "https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/"
+      },
+      {
+        "label": "NASA/JPL Photojournal: PIA09491 Silica-Rich Soil Found by Spirit",
+        "url": "https://photojournal.jpl.nasa.gov/catalog/PIA09491"
+      },
+      {
+        "label": "NASA/JPL Photojournal: PIA22908 Opportunity Legacy Pan",
+        "url": "https://photojournal.jpl.nasa.gov/catalog/PIA22908"
+      },
+      {
+        "label": "NASA/JPL Photojournal: PIA21494 Rover Landing Hardware at Eagle Crater",
+        "url": "https://photojournal.jpl.nasa.gov/catalog/PIA21494"
+      }
+    ],
+    "fieldArchive": {
+      "title": "NSSDC field archive",
+      "note": "Official image catalogs from NASA's National Space Science Data Center (NSSDCA). They cover the rovers' first months on Mars in 2004. Captions are quoted from the catalog pages.",
+      "rovers": [
+        {
+          "rover": "spirit",
+          "name": "Spirit",
+          "designation": "MER-A",
+          "site": "Gusev Crater",
+          "catalog": "https://nssdc.gsfc.nasa.gov/planetary/mars/mars_exploration_rovers/mera_images.html",
+          "items": [
+            {
+              "image": "/images/nasa_real/nssdc_mera_lander_med.jpg",
+              "file": "https://nssdc.gsfc.nasa.gov/planetary/image/mera_lander_med.jpg",
+              "when": "Sol 16 · Jan. 18/19, 2004",
+              "caption": "Spirit's landing site, the Columbia Memorial Station, at Gusev Crater. \"A portion of Spirit's solar panels appear in the foreground.\""
+            },
+            {
+              "image": "/images/nasa_real/nssdc_mera_arm_adirondack.jpg",
+              "file": "https://nssdc.gsfc.nasa.gov/planetary/image/mera_arm_adirondack.jpg",
+              "when": "2004",
+              "caption": "\"Image of the rock nicknamed 'Adirondack' and an image of the rover arm moving towards it.\""
+            },
+            {
+              "image": "/images/nasa_real/nssdc_mera_trench.jpg",
+              "file": "https://nssdc.gsfc.nasa.gov/planetary/image/mera_trench.jpg",
+              "when": "2004",
+              "caption": "A trench dug by Spirit on its way toward the \"Columbia Hills.\" Sulfur and magnesium in the soil suggest a magnesium-sulfate salt; \"one possible explanation ... is that water percolated through underground material.\""
+            }
+          ]
+        },
+        {
+          "rover": "opportunity",
+          "name": "Opportunity",
+          "designation": "MER-B",
+          "site": "Meridiani Planum",
+          "catalog": "https://nssdc.gsfc.nasa.gov/planetary/mars/mars_exploration_rovers/merb_images.html",
+          "items": [
+            {
+              "image": "/images/nasa_real/nssdc_merb_pan09.jpg",
+              "file": "https://nssdc.gsfc.nasa.gov/planetary/image/merb_pan09.jpg",
+              "when": "Sols 33, 35, 36 · 2004",
+              "caption": "\"Eagle Crater,\" about 22 meters (72 feet) across, where Opportunity landed. \"Opportunity's lander is visible in the center of the image.\""
+            },
+            {
+              "image": "/images/nasa_real/nssdc_merb_spheres.jpg",
+              "file": "https://nssdc.gsfc.nasa.gov/planetary/image/merb_spheres.jpg",
+              "when": "2004",
+              "caption": "The microscopic imager on Opportunity's arm \"reveals shiny, spherical objects embedded within the trench wall at Meridiani Planum.\" Area about 3 cm across."
+            },
+            {
+              "image": "/images/nasa_real/nssdc_merb_endurance.jpg",
+              "file": "https://nssdc.gsfc.nasa.gov/planetary/image/merb_endurance.jpg",
+              "when": "Sol 131 · June 6, 2004",
+              "caption": "Opportunity at the edge of \"Endurance\" crater. \"The gradual, 'blueberry'-strewn slope before the rover contains an exposed dark layer of rock.\""
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "apollo11",
+    "issueNumber": 2,
+    "title": "The Weight Trade",
+    "issueTitle": "The Weight Trade",
+    "shortName": "Apollo 11",
+    "hardwareName": "Apollo 11 Lunar Module Eagle · Descent Stage",
+    "celestialBody": "moon",
+    "theme": "silver",
+    "logline": "To bring the Moon home, Eagle had to leave half of itself behind.",
+    "fictionNotice": "Speech balloons are fictionalized first-person narration. Caption boxes are documented history.",
+    "coordinates": {
+      "lat": 0.6741,
+      "lng": 23.473,
+      "locationName": "Mare Tranquillitatis, Moon"
+    },
+    "modelPath": "/models/apollo_lm.glb",
+    "scene": {
+      "environment": "moon",
+      "fitSize": 2.3,
+      "rotationY": 0.0,
+      "camera": [
+        3.4,
+        1.7,
+        4.8
+      ],
+      "target": [
+        0,
+        0.6,
+        0.2
+      ],
+      "hideAboveY": 0.95
+    },
+    "telemetry": {
+      "launchDate": "July 16, 1969",
+      "landingDate": "July 20, 1969",
+      "lastContact": "Retroreflector still in use",
+      "lastContactLabel": "Still answering",
+      "plannedLifespan": "~21.5 hours on the surface",
+      "actualLifespan": "Descent stage still at Tranquility Base",
+      "massKg": 21.55,
+      "massNote": "Lunar samples returned"
+    },
+    "hotspots": [
+      {
+        "id": "kapton",
+        "shortLabel": "Kapton blanket",
+        "designation": "THERMAL BLANKET · DESCENT STAGE",
+        "position": [
+          0.0,
+          0.6,
+          0.86
+        ],
+        "cameraPosition": [
+          0.5,
+          1.0,
+          3.0
+        ],
+        "label": "Gold Kapton Blanket",
+        "engineeringFact": "The descent stage was wrapped in thin, crinkled layers of metal-coated Kapton and Mylar film. The blankets reflected sunlight and slowed heat loss, protecting the propellant tanks through lunar day and shadow.",
+        "scienceDiscovery": "Leaving this heavy stage behind was always the plan. It became the launch platform for the much lighter ascent stage, and it still stands at Tranquility Base."
+      },
+      {
+        "id": "lrrr",
+        "shortLabel": "Retroreflector",
+        "designation": "LRRR · 100 CORNER CUBES",
+        "position": [
+          1.75,
+          0.12,
+          0.9
+        ],
+        "cameraPosition": [
+          3.4,
+          1.0,
+          2.8
+        ],
+        "label": "Laser Ranging Retroreflector (LRRR)",
+        "engineeringFact": "A panel of 100 fused-silica corner-cube prisms. A corner cube sends light straight back toward wherever it came from.",
+        "scienceDiscovery": "Observatories on Earth still fire lasers at it. Timing the roughly 2.5-second round trip measures the Earth–Moon distance very precisely and shows the Moon slowly drifting away from Earth, about 3.8 cm per year."
+      },
+      {
+        "id": "psep",
+        "shortLabel": "Seismometer",
+        "designation": "PSEP · PASSIVE SEISMIC",
+        "position": [
+          -1.7,
+          0.18,
+          1.0
+        ],
+        "cameraPosition": [
+          -3.4,
+          1.1,
+          2.8
+        ],
+        "label": "Passive Seismic Experiment Package",
+        "engineeringFact": "A solar-powered seismometer with two panels of solar cells, built to listen for moonquakes and meteorite impacts.",
+        "scienceDiscovery": "It returned data for about three weeks in 1969, the first seismic readings from another world, and led to the longer-lived seismic network of later Apollo missions."
+      }
+    ],
+    "comicPanels": [
+      {
+        "panelNumber": 1,
+        "beat": "setup",
+        "comicImage": "/images/comics/apollo_lm_tranquility.jpg",
+        "comicAlt": "Illustration (stylized): a lunar module stands on grey plains under a black sky, with Earth hanging over the horizon.",
+        "realNasaImage": "/images/nasa_real/6900556.jpg",
+        "nasaImageCaption": "The Saturn V carrying Apollo 11 climbs away from Kennedy Space Center, July 16, 1969.",
+        "nasaImageCredit": "NASA",
+        "nasaImageSource": "https://images.nasa.gov/details/6900556",
+        "nasaImageDate": "1969-07-16",
+        "caption": "July 16, 1969. A Saturn V lifts Apollo 11 off the pad. Four days later, on July 20, the lunar module Eagle lands at Tranquility Base.",
+        "dialogue": "Four days to the Moon. About twenty-one hours on it.",
+        "speaker": "EAGLE",
+        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery.",
+        "comicFocus": "30% 50%"
+      },
+      {
+        "panelNumber": 2,
+        "beat": "struggle",
+        "comicImage": "/images/comics/apollo_ascent_liftoff.jpg",
+        "comicAlt": "Illustration: the ascent stage blasts off, leaving the gold-foiled descent stage behind on the surface.",
+        "realNasaImage": "/images/nasa_real/6900992.jpg",
+        "nasaImageCaption": "Eagle in lunar orbit after separating from the command module Columbia, July 20, 1969. Its gold-foiled descent stage would never leave the Moon.",
+        "nasaImageCredit": "NASA",
+        "nasaImageSource": "https://images.nasa.gov/details/6900992",
+        "nasaImageDate": "1969-07-16",
+        "caption": "Every kilogram lifted off the Moon needs fuel, and that fuel must be lifted too. That is the rocket equation. To carry rocks home, the crew left things behind: boots, backpacks, cameras and the whole descent stage.",
+        "dialogue": "So I give up my lower half. Take the rocks home.",
+        "speaker": "EAGLE",
+        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery."
+      },
+      {
+        "panelNumber": 3,
+        "beat": "hardware",
+        "comicImage": "/images/comics/apollo_lrrr_psep.jpg",
+        "comicAlt": "Illustration: a laser retroreflector panel and a seismometer with solar wings stand on the regolith, the lunar module behind them.",
+        "realNasaImage": "/images/nasa_real/as11-40-5948.jpg",
+        "nasaImageCaption": "Buzz Aldrin beside the newly deployed seismometer (foreground) and laser retroreflector (beyond), with Eagle at far right. AS11-40-5948.",
+        "nasaImageCredit": "NASA",
+        "nasaImageSource": "https://images.nasa.gov/details/as11-40-5948",
+        "nasaImageDate": "1969-07-20",
+        "caption": "What stayed behind was not junk. It was the first science station on another world.",
+        "dialogue": "They left me with two instruments. One of them still listens for Earth.",
+        "speaker": "EAGLE",
+        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery."
+      },
+      {
+        "panelNumber": 4,
+        "beat": "discovery",
+        "comicImage": "/images/comics/apollo_sample_box.jpg",
+        "comicAlt": "Illustration: gloved hands hold an open metal sample box filled with grey rocks.",
+        "realNasaImage": "/images/nasa_real/s69-39996.jpg",
+        "nasaImageCaption": "The first Apollo 11 sample return container is unloaded at the Lunar Receiving Laboratory, July 25, 1969.",
+        "nasaImageCredit": "NASA",
+        "nasaImageSource": "https://images.nasa.gov/details/S69-39996",
+        "nasaImageDate": "1969-07-25",
+        "caption": "July 24, 1969. Columbia splashes down in the Pacific carrying 21.55 kg of lunar rock and soil, the first samples brought back from another world.",
+        "dialogue": "Twenty-one kilograms of Moon. Worth every gram I left.",
+        "speaker": "EAGLE",
+        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery."
+      },
+      {
+        "panelNumber": 5,
+        "beat": "legacy",
+        "comicImage": "/images/comics/apollo_laser_ranging.jpg",
+        "comicAlt": "Illustration: an observatory on Earth fires a thin green laser beam toward the Moon.",
+        "realNasaImage": "/images/nasa_real/as11-40-5899.jpg",
+        "nasaImageCaption": "The plaque on Eagle's descent-stage ladder: \"We came in peace for all mankind.\" AS11-40-5899.",
+        "nasaImageCredit": "NASA",
+        "nasaImageSource": "https://images.nasa.gov/details/as11-40-5899",
+        "nasaImageDate": "1969-07-20",
+        "caption": "The descent stage still stands at Tranquility Base, its plaque facing the empty plain. Laser pulses from Earth still find the mirrors placed beside it.",
+        "dialogue": "Fire your laser. I will send the light back.",
+        "speaker": "EAGLE",
+        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery."
+      }
+    ],
+    "miniGame": {
+      "type": "laser_bounce",
+      "targetValue": "LRRR_return_2.5s",
+      "title": "Laser Bounce",
+      "tagline": "Aim a laser at Tranquility Base and time the light's return.",
+      "instructions": [
+        "The Moon drifts across your telescope's field of view. The retroreflector is a tiny target.",
+        "Adjust the aim angle until the reticle sits on the LRRR, then fire.",
+        "Light needs about 2.5 seconds to reach the Moon and return. Get one clean return within 15 seconds."
+      ],
+      "controls": "Slider or ← → to aim · Space/Enter or the Fire button to send a pulse",
+      "science": "Light travels at about 299,792 km per second. The Moon is roughly 384,400 km away on average, so a pulse makes the round trip in about 2.5 seconds. Halve the round-trip time and multiply by the speed of light, and you have the distance. Lunar laser ranging has used Apollo 11's reflector since 1969.",
+      "durationSec": 15,
+      "successThreshold": 60,
+      "badgeThreshold": 80,
+      "params": {
+        "toleranceDeg": 0.6,
+        "driftDegPerSec": 0.35,
+        "rangeDeg": 12,
+        "missPenalty": 12,
+        "speedOfLightKmS": 299792.458,
+        "minDistanceKm": 363300,
+        "maxDistanceKm": 405500
+      }
+    },
+    "artifact": {
+      "name": "Corner-Cube Prism",
+      "designation": "LRRR · FUSED SILICA · 1 OF 100",
+      "description": "One of the 100 prisms in Apollo 11's retroreflector. More than fifty years later, it still returns laser light to observatories on Earth.",
+      "badgeId": "laser-ranger",
+      "badgeName": "Laser Ranger",
+      "badgeCriteria": "Score 80% or more on the Laser Bounce."
+    },
+    "sources": [
+      {
+        "label": "NASA: Apollo 11 Mission Overview",
+        "url": "https://www.nasa.gov/mission/apollo-11/"
+      },
+      {
+        "label": "NASA Image Library: AS11-40-5948 (EASEP deployed)",
+        "url": "https://images.nasa.gov/details/as11-40-5948"
+      },
+      {
+        "label": "NASA NSSDCA: Apollo 11 Lunar Module / EASEP",
+        "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-059C"
+      },
+      {
+        "label": "NASA Image Library: AS11-40-5899 (plaque)",
+        "url": "https://images.nasa.gov/details/as11-40-5899"
+      }
+    ]
+  },
+  {
+    "id": "ingenuity",
+    "issueNumber": 3,
+    "title": "Flight 72",
+    "issueTitle": "Flight 72",
+    "shortName": "Ingenuity",
+    "hardwareName": "Ingenuity Mars Helicopter",
+    "celestialBody": "mars",
+    "theme": "jezero",
+    "logline": "Built to try five flights. It flew seventy-two, then stayed on as a stationary data logger.",
+    "fictionNotice": "Speech balloons are fictionalized first-person narration. Caption boxes are documented history.",
+    "coordinates": {
+      "lat": 18.4447,
+      "lng": 77.4508,
+      "locationName": "Jezero Crater, Mars"
+    },
+    "modelPath": "/models/ingenuity.glb",
+    "scene": {
+      "environment": "mars",
+      "fitSize": 1.1,
+      "rotationY": 0.4,
+      "camera": [
+        1.5,
+        0.85,
+        1.8
+      ],
+      "target": [
+        0,
+        0.3,
+        0
+      ]
+    },
+    "telemetry": {
+      "launchDate": "July 30, 2020",
+      "landingDate": "February 18, 2021",
+      "lastContact": "Flight 72 · Jan 18, 2024",
+      "lastContactLabel": "Final flight",
+      "plannedLifespan": "Up to 5 flights in 30 sols",
+      "actualLifespan": "72 flights in nearly 3 years",
+      "massKg": 1.8,
+      "massNote": "Helicopter mass"
+    },
+    "hotspots": [
+      {
+        "id": "blades",
+        "shortLabel": "Damaged blades",
+        "designation": "COAXIAL ROTORS · CARBON FIBER",
+        "position": [
+          0.38,
+          0.43,
+          0.12
+        ],
+        "cameraPosition": [
+          1.15,
+          0.9,
+          0.95
+        ],
+        "label": "Damaged Carbon-Fiber Blades",
+        "engineeringFact": "Two stacked rotors, each 1.2 m tip to tip, spin in opposite directions. They have to spin far faster than a helicopter's rotors on Earth to grip air only about 1% as dense.",
+        "scienceDiscovery": "Images taken after Flight 72 on January 18, 2024 showed a damaged rotor blade. Ingenuity could no longer fly, and NASA ended its flight mission on January 25, 2024."
+      },
+      {
+        "id": "avionics",
+        "shortLabel": "Processor & panel",
+        "designation": "SNAPDRAGON 801 · SOLAR PANEL",
+        "position": [
+          0.0,
+          0.5,
+          0.0
+        ],
+        "cameraPosition": [
+          0.45,
+          1.3,
+          0.55
+        ],
+        "label": "Snapdragon Processor & Solar Panel",
+        "engineeringFact": "A Qualcomm Snapdragon 801, from the same chip family once used in smartphones, ran the flight software. The solar panel on top recharged six lithium-ion battery cells.",
+        "scienceDiscovery": "Grounded but still powered by its solar panel, Ingenuity stayed on as a stationary testbed, logging weather and avionics data from Jezero Crater."
+      },
+      {
+        "id": "navcam",
+        "shortLabel": "Navigation camera",
+        "designation": "NAV CAMERA · DOWNWARD",
+        "position": [
+          0.06,
+          0.12,
+          0.0
+        ],
+        "cameraPosition": [
+          0.75,
+          0.3,
+          0.7
+        ],
+        "label": "Navigation Camera",
+        "engineeringFact": "A downward-facing black-and-white camera tracked surface features many times per second, so the helicopter could estimate its own motion.",
+        "scienceDiscovery": "NASA's investigation found that on Flight 72 the navigation system struggled over smooth, featureless sand ripples, which likely led to the hard landing."
+      }
+    ],
+    "comicPanels": [
+      {
+        "panelNumber": 1,
+        "beat": "setup",
+        "comicImage": "/images/comics/ingy_with_perseverance.jpg",
+        "comicAlt": "Illustration: a small helicopter sits on tan Martian ground with a large rover in the background.",
+        "realNasaImage": "/images/nasa_real/pia24424.jpg",
+        "nasaImageCaption": "Ingenuity still attached to the belly of the Perseverance rover, seen by the WATSON camera, March 2021.",
+        "nasaImageCredit": "NASA/JPL-Caltech/MSSS",
+        "nasaImageSource": "https://images.nasa.gov/details/PIA24424",
+        "nasaImageDate": "2021-03-30",
+        "caption": "February 18, 2021. Tucked under Perseverance's belly, a 1.8 kg helicopter arrives at Jezero Crater. In early April the rover sets it down on the surface.",
+        "dialogue": "Nobody had ever flown on another planet. I was built to try five times.",
+        "speaker": "INGENUITY",
+        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery."
+      },
+      {
+        "panelNumber": 2,
+        "beat": "struggle",
+        "comicImage": "/images/comics/ingy_first_flight.jpg",
+        "comicAlt": "Illustration: the helicopter hovers above the ground, rotors blurred, its shadow on the sand below.",
+        "realNasaImage": "/images/nasa_real/pia24586.jpg",
+        "nasaImageCaption": "Perseverance's Navcam watches Ingenuity hover on April 19, 2021, the first powered, controlled flight on another planet.",
+        "nasaImageCredit": "NASA/JPL-Caltech",
+        "nasaImageSource": "https://images.nasa.gov/details/PIA24586",
+        "nasaImageDate": "2021-04-19",
+        "caption": "Mars's air is about 1% as dense as Earth's. To lift off, Ingenuity's rotors had to spin at about 2,537 RPM.",
+        "dialogue": "Thin air. Freezing nights. One chance at a first flight.",
+        "speaker": "INGENUITY",
+        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery."
+      },
+      {
+        "panelNumber": 3,
+        "beat": "hardware",
+        "comicImage": "/images/comics/ingy_closeup.jpg",
+        "comicAlt": "Illustration: a close-up of the helicopter, showing its body, legs, solar panel and stacked rotors.",
+        "realNasaImage": "/images/nasa_real/pia24542.jpg",
+        "nasaImageCaption": "Perseverance takes a selfie with Ingenuity, about 3.9 m away, April 2021.",
+        "nasaImageCredit": "NASA/JPL-Caltech/MSSS",
+        "nasaImageSource": "https://images.nasa.gov/details/PIA24542",
+        "nasaImageDate": "2021-04-07",
+        "caption": "1.8 kilograms, two rotors, one smartphone-class processor. Inspect what let it fly.",
+        "dialogue": "Small body, loud ideas.",
+        "speaker": "INGENUITY",
+        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery."
+      },
+      {
+        "panelNumber": 4,
+        "beat": "discovery",
+        "comicImage": "/images/comics/ingy_over_dunes.jpg",
+        "comicAlt": "Illustration: the helicopter flies over dunes and a crater rim in low sunlight.",
+        "realNasaImage": "/images/nasa_real/pia25890.jpg",
+        "nasaImageCaption": "\"Castell Henllys\" in Jezero Crater, photographed by Ingenuity during its 48th flight, March 21, 2023.",
+        "nasaImageCredit": "NASA/JPL-Caltech",
+        "nasaImageSource": "https://images.nasa.gov/details/PIA25890",
+        "nasaImageDate": "2023-05-26",
+        "caption": "Five planned flights became seventy-two. Ingenuity went from technology demo to aerial scout, photographing terrain ahead of Perseverance.",
+        "dialogue": "Five was the test. Seventy-two was the proof.",
+        "speaker": "INGENUITY",
+        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery."
+      },
+      {
+        "panelNumber": 5,
+        "beat": "legacy",
+        "comicImage": "/images/comics/ingy_grounded_broken_blade.jpg",
+        "comicAlt": "Illustration: the grounded helicopter on rippled sand, one rotor blade tip visibly broken.",
+        "realNasaImage": "/images/nasa_real/pia26243.jpg",
+        "nasaImageCaption": "After Flight 72, Ingenuity photographs the shadow of its own damaged rotor blade, January 2024.",
+        "nasaImageCredit": "NASA/JPL-Caltech",
+        "nasaImageSource": "https://images.nasa.gov/details/PIA26243",
+        "nasaImageDate": "2024-01-25",
+        "caption": "January 18, 2024. Flight 72 ends with a damaged blade. Grounded but still powered, Ingenuity stays on as a stationary data logger on Mars.",
+        "dialogue": "I can't fly anymore. I can still listen to the weather.",
+        "speaker": "INGENUITY",
+        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery."
+      }
+    ],
+    "miniGame": {
+      "type": "rpm_throttle",
+      "targetValue": "2537_RPM",
+      "title": "RPM Throttle",
+      "tagline": "Spin the rotors to 2,537 RPM without draining the battery.",
+      "instructions": [
+        "Hold the throttle to spin up. The rotors have inertia, so they lag behind your input.",
+        "Keep the rotors inside the lift band around 2,537 RPM for 3 seconds to lift off.",
+        "Power use climbs steeply with RPM. Overspeed drains the battery fast, so feather the throttle."
+      ],
+      "controls": "Hold the Throttle button, Space or ↑ to power up · release or ↓ to ease off",
+      "science": "Lift depends on air density and blade speed. Mars's air is about 1% as dense as Earth's, so Ingenuity's blades had to spin very fast to lift 1.8 kg. The power a rotor needs rises steeply with speed, so every extra RPM costs battery. The power curve in this game is simplified.",
+      "durationSec": 15,
+      "successThreshold": 60,
+      "badgeThreshold": 80,
+      "params": {
+        "targetRpm": 2537,
+        "bandRpm": 70,
+        "holdSec": 3,
+        "maxRpm": 3000,
+        "spinUpPerSec": 900,
+        "spinDownPerSec": 650,
+        "drainAtTargetPerSec": 4.5,
+        "overspeedRpm": 2700
+      }
+    },
+    "artifact": {
+      "name": "Rotor Blade Fragment",
+      "designation": "CARBON FIBER · JEZERO CRATER",
+      "description": "A blade built to grip air about 1% as dense as Earth's. Flight 72 broke it, but by then it had carried a helicopter 72 times on another planet.",
+      "badgeId": "thin-air-pilot",
+      "badgeName": "Thin-Air Pilot",
+      "badgeCriteria": "Score 80% or more on the RPM Throttle."
+    },
+    "sources": [
+      {
+        "label": "NASA Science: Ingenuity Mars Helicopter",
+        "url": "https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/"
+      },
+      {
+        "label": "NASA/JPL Photojournal: PIA26243 Shadow of Damaged Rotor Blade",
+        "url": "https://photojournal.jpl.nasa.gov/catalog/PIA26243"
+      },
+      {
+        "label": "NASA/JPL Photojournal: PIA24586 Navcam View of First Flight",
+        "url": "https://photojournal.jpl.nasa.gov/catalog/PIA24586"
+      }
+    ]
+  }
+]
