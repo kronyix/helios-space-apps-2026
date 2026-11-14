@@ -65,8 +65,8 @@ export interface ComicPanel {
   nasaImageFile?: string;
   /** ext: alt text for the illustration */
   comicAlt?: string;
-  /** ext: credit for the illustration (e.g. AI-generated art) */
-  comicCredit?: string;
+  /** ext: what `comicImage` is. The UI labels it ILLUSTRATION (archival mode labels the NASA photo). */
+  imageKind?: 'illustration' | 'archival';
   /** ext: CSS object-position for the illustration crop (e.g. "30% 50%") */
   comicFocus?: string;
 }
@@ -131,7 +131,6 @@ export interface Epilogue {
   image: string;
   alt: string;
   caption: string;
-  credit: string;
   source: Source;
 }
 

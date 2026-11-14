@@ -111,8 +111,8 @@
         "caption": "Summer 2003. NASA launches twin rovers toward Mars, Spirit and Opportunity, each built to last just 90 sols.",
         "dialogue": "I bounced across the red plains wrapped in giant airbags!",
         "speaker": "OPPORTUNITY",
-        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery.",
-        "nasaImageFile": "https://nssdc.gsfc.nasa.gov/planetary/image/merb_pan09.jpg"
+        "nasaImageFile": "https://nssdc.gsfc.nasa.gov/planetary/image/merb_pan09.jpg",
+        "imageKind": "illustration"
       },
       {
         "panelNumber": 2,
@@ -126,7 +126,8 @@
         "nasaImageDate": "2009-05-11",
         "caption": "2006, Gusev Crater. Spirit's right-front wheel stops turning. The team drives her backward, dragging the dead wheel like a plough.",
         "dialogue": "Backward it is. I'll pull my broken wheel behind me.",
-        "speaker": "SPIRIT"
+        "speaker": "SPIRIT",
+        "imageKind": "illustration"
       },
       {
         "panelNumber": 3,
@@ -141,8 +142,8 @@
         "caption": "185 kilograms of compromise between weight, power and survival. Inspect the parts that made the story.",
         "dialogue": "Look closer. Every scratch on me is a field note.",
         "speaker": "OPPORTUNITY",
-        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery.",
-        "nasaImageFile": "https://nssdc.gsfc.nasa.gov/planetary/image/merb_spheres.jpg"
+        "nasaImageFile": "https://nssdc.gsfc.nasa.gov/planetary/image/merb_spheres.jpg",
+        "imageKind": "illustration"
       },
       {
         "panelNumber": 4,
@@ -157,7 +158,7 @@
         "caption": "2007. The dead wheel scrapes up bright soil that is about 90% silica. Hot water once moved through this ground.",
         "dialogue": "My broken wheel found what my working ones never could.",
         "speaker": "SPIRIT",
-        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery."
+        "imageKind": "illustration"
       },
       {
         "panelNumber": 5,
@@ -172,7 +173,7 @@
         "caption": "June 10, 2018. A global dust storm darkens the sky over Perseverance Valley. Opportunity has driven more than 45 km, and it sends its final signal.",
         "dialogue": "Ninety sols was the plan. Fourteen years was the journey.",
         "speaker": "OPPORTUNITY",
-        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery."
+        "imageKind": "illustration"
       }
     ],
     "miniGame": {
@@ -296,7 +297,6 @@
       "image": "/images/comics/oppy_bold_future_explorer.jpg",
       "alt": "Imagined future, not a real event: an astronaut kneels beside a dusty rover at sunset and brushes off its solar panel. No human has been to Mars.",
       "caption": "No person has ever stood beside Spirit or Opportunity. But the rovers did get their panels cleaned: gusts of Martian wind sometimes blew the dust off, restoring power and helping both missions run far past 90 sols.",
-      "credit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery.",
       "source": {
         "label": "NASA Science: Mars Exploration Rovers Spirit and Opportunity",
         "url": "https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/"
@@ -416,8 +416,8 @@
         "caption": "July 16, 1969. A Saturn V lifts Apollo 11 off the pad. Four days later, on July 20, the lunar module Eagle lands at Tranquility Base.",
         "dialogue": "Four days to the Moon. About twenty-one hours on it.",
         "speaker": "EAGLE",
-        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery.",
-        "comicFocus": "30% 50%"
+        "comicFocus": "30% 50%",
+        "imageKind": "illustration"
       },
       {
         "panelNumber": 2,
@@ -432,7 +432,7 @@
         "caption": "Every kilogram lifted off the Moon needs fuel, and that fuel must be lifted too. That is the rocket equation. To carry rocks home, the crew left things behind: boots, backpacks, cameras and the whole descent stage.",
         "dialogue": "So I give up my lower half. Take the rocks home.",
         "speaker": "EAGLE",
-        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery."
+        "imageKind": "illustration"
       },
       {
         "panelNumber": 3,
@@ -447,7 +447,7 @@
         "caption": "What stayed behind was not junk. It was the first science station on another world.",
         "dialogue": "They left me with two instruments. One of them still listens for Earth.",
         "speaker": "EAGLE",
-        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery."
+        "imageKind": "illustration"
       },
       {
         "panelNumber": 4,
@@ -462,7 +462,7 @@
         "caption": "July 24, 1969. Columbia splashes down in the Pacific carrying 21.55 kg of lunar rock and soil, the first samples brought back from another world.",
         "dialogue": "Twenty-one kilograms of Moon. Worth every gram I left.",
         "speaker": "EAGLE",
-        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery."
+        "imageKind": "illustration"
       },
       {
         "panelNumber": 5,
@@ -477,7 +477,7 @@
         "caption": "The descent stage still stands at Tranquility Base, its plaque facing the empty plain. Laser pulses from Earth still find the mirrors placed beside it.",
         "dialogue": "Fire your laser. I will send the light back.",
         "speaker": "EAGLE",
-        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery."
+        "imageKind": "illustration"
       }
     ],
     "miniGame": {
@@ -644,7 +644,7 @@
         "caption": "February 18, 2021. Tucked under Perseverance's belly, a 1.8 kg helicopter arrives at Jezero Crater. In early April the rover sets it down on the surface.",
         "dialogue": "Nobody had ever flown on another planet. I was built to try five times.",
         "speaker": "INGENUITY",
-        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery."
+        "imageKind": "illustration"
       },
       {
         "panelNumber": 2,
@@ -659,7 +659,7 @@
         "caption": "Mars's air is about 1% as dense as Earth's. To lift off, Ingenuity's rotors had to spin at about 2,537 RPM.",
         "dialogue": "Thin air. Freezing nights. One chance at a first flight.",
         "speaker": "INGENUITY",
-        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery."
+        "imageKind": "illustration"
       },
       {
         "panelNumber": 3,
@@ -674,7 +674,7 @@
         "caption": "1.8 kilograms, two rotors, one smartphone-class processor. Inspect what let it fly.",
         "dialogue": "Small body, loud ideas.",
         "speaker": "INGENUITY",
-        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery."
+        "imageKind": "illustration"
       },
       {
         "panelNumber": 4,
@@ -689,7 +689,7 @@
         "caption": "Five planned flights became seventy-two. Ingenuity went from technology demo to aerial scout, photographing terrain ahead of Perseverance.",
         "dialogue": "Five was the test. Seventy-two was the proof.",
         "speaker": "INGENUITY",
-        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery."
+        "imageKind": "illustration"
       },
       {
         "panelNumber": 5,
@@ -704,7 +704,7 @@
         "caption": "January 18, 2024. Flight 72 ends with a damaged blade. Grounded but still powered, Ingenuity stays on as a stationary data logger on Mars.",
         "dialogue": "I can't fly anymore. I can still listen to the weather.",
         "speaker": "INGENUITY",
-        "comicCredit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery."
+        "imageKind": "illustration"
       }
     ],
     "miniGame": {

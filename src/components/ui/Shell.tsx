@@ -85,7 +85,17 @@ export function NavRail() {
         })}
       </ul>
 
-      <div className="mt-auto hidden flex-col items-center gap-2 pb-8 min-[900px]:flex">
+      <button
+        type="button"
+        onClick={() => {
+          navigate('badges');
+          window.setTimeout(() => document.getElementById('credits')?.scrollIntoView({ block: 'start' }), 450);
+        }}
+        className="mt-auto hidden min-h-[44px] font-mono text-[10px] tracking-[0.24em] text-fg-3 hover:text-fg min-[900px]:block"
+      >
+        CREDITS
+      </button>
+      <div className="hidden flex-col items-center gap-2 pb-8 min-[900px]:flex">
         <div
           aria-hidden="true"
           className="h-16 w-16 rounded-full"

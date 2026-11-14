@@ -6,7 +6,7 @@ import { useAppStore } from '../store/useAppStore';
 import { dur, ease } from '../lib/motion';
 import { useReducedMotion } from '../lib/useReducedMotion';
 import { ScreenFrame } from '../components/ui/Layout';
-import { ComicPanel, ModeToggle } from '../components/comic/ComicPage';
+import { ComicPanel, ImageLabel, ModeToggle } from '../components/comic/ComicPage';
 import ArtifactCard from '../components/comic/ArtifactCard';
 import { IconExternal } from '../components/ui/Icons';
 import { ChapterNav } from './ChapterNav';
@@ -104,7 +104,7 @@ export default function RewardScreen({ mission }: { mission: MissionData }) {
           <ArtifactCard mission={mission} unlocked={passed} />
           {mission.epilogue && (
             <figure className="epilogue">
-              <span className="epilogue__tag">{mission.epilogue.label}</span>
+              <ImageLabel kind="illustration" extra={mission.epilogue.label.toUpperCase()} />
               <img src={mission.epilogue.image} alt={mission.epilogue.alt} loading="lazy" decoding="async" />
               <figcaption className="mt-3 text-[13.5px] leading-relaxed text-fg-2">
                 {mission.epilogue.caption}{' '}
@@ -112,7 +112,6 @@ export default function RewardScreen({ mission }: { mission: MissionData }) {
                   Source <IconExternal size={12} />
                   <span className="sr-only"> ({mission.epilogue.source.label}, opens in a new tab)</span>
                 </a>
-                <span className="mt-1 block text-[12px] text-fg-3">{mission.epilogue.credit}</span>
               </figcaption>
             </figure>
           )}

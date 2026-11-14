@@ -14,6 +14,36 @@ const FRAMES = [
   'polygon(0 0, 99% 1.5%, 100% 98.5%, 1% 100%)',
 ];
 
+/**
+ * The one image label used everywhere: ILLUSTRATION, or ARCHIVAL · <exact credit>
+ * (linked to the source record). Rendered by the UI, never baked into the image.
+ */
+export function ImageLabel({
+  kind,
+  credit,
+  href,
+  extra,
+}: {
+  kind: 'illustration' | 'archival';
+  credit?: string;
+  href?: string;
+  extra?: string;
+}) {
+  const text = kind === 'archival' ? `ARCHIVAL · ${credit ?? 'NASA'}` : `ILLUSTRATION${extra ? ` · ${extra}` : ''}`;
+  if (kind === 'archival' && href)
+    return (
+      <a className="image-label" data-kind={kind} href={href} target="_blank" rel="noreferrer noopener">
+        {text}
+        <span className="sr-only"> (source record, opens in a new tab)</span>
+      </a>
+    );
+  return (
+    <span className="image-label" data-kind={kind}>
+      {text}
+    </span>
+  );
+}
+
 export function ModeToggle() {
   const mode = useAppStore((s) => s.storyMode);
   const set = useAppStore((s) => s.setStoryMode);
@@ -99,8 +129,12 @@ export function ComicPanel({
         <span className="comic-panel__num" aria-hidden="true">
           PANEL {panel.panelNumber} / {total}
         </span>
+        <ImageLabel
+          kind={archival ? 'archival' : (panel.imageKind ?? 'illustration')}
+          credit={panel.nasaImageCredit ?? 'NASA'}
+          href={archival ? panel.nasaImageSource : undefined}
+        />
       </div>
-      {!archival && panel.comicCredit && <figcaption className="comic-credit">{panel.comicCredit}</figcaption>}
       {archival && panel.caption && (
         <p className="caption-box comic-caption comic-caption--below">
           <span className="sr-only">Caption: </span>
@@ -110,10 +144,7 @@ export function ComicPanel({
       {archival && (
         <figcaption className="comic-credit">
           <span className="text-fg-2">{panel.nasaImageCaption}</span>{' '}
-          <span className="whitespace-nowrap">
-            Credit: {panel.nasaImageCredit ?? 'NASA'}
-            {panel.nasaImageDate ? ` · ${panel.nasaImageDate}` : ''}
-          </span>
+          {panel.nasaImageDate && <span className="whitespace-nowrap">{panel.nasaImageDate}</span>}
           {panel.nasaImageSource && (
             <>
               {' · '}

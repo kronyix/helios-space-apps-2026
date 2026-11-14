@@ -1,5 +1,6 @@
 import type { FieldArchive as FA } from '../../data/types';
 import { IconExternal } from '../ui/Icons';
+import { ImageLabel } from './ComicPage';
 
 /**
  * Side-by-side official image catalog (Issue 01: NSSDC Spirit vs Opportunity).
@@ -31,6 +32,7 @@ export function FieldArchive({ archive }: { archive: FA }) {
                   <figure className="m-0">
                     <a href={it.file} target="_blank" rel="noreferrer noopener" className="field-archive__img">
                       <img src={it.image} alt={it.caption} loading="lazy" decoding="async" />
+                      <ImageLabel kind="archival" credit="NASA/JPL" />
                       <span className="sr-only"> (full-resolution image at NSSDC, opens in a new tab)</span>
                     </a>
                     <figcaption className="mt-2 text-[13.5px] leading-relaxed text-fg-2">
