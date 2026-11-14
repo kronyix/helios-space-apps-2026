@@ -1525,3 +1525,29 @@ button:disabled {
     height: 64vh;
   }
 }
+
+/* Speculative epilogue art: always tagged so it can't be mistaken for history. */
+.epilogue {
+  position: relative;
+  margin: 0;
+}
+.epilogue img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border: 1px dashed rgb(var(--accent-rgb) / 0.6);
+}
+.epilogue__tag {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  padding: 4px 9px;
+  background: rgb(6 6 8 / 0.82);
+  border: 1px dashed var(--accent);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+}

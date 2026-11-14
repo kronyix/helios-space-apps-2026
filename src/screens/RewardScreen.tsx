@@ -102,6 +102,20 @@ export default function RewardScreen({ mission }: { mission: MissionData }) {
 
         <div className="flex flex-col gap-4">
           <ArtifactCard mission={mission} unlocked={passed} />
+          {mission.epilogue && (
+            <figure className="epilogue">
+              <span className="epilogue__tag">{mission.epilogue.label}</span>
+              <img src={mission.epilogue.image} alt={mission.epilogue.alt} loading="lazy" decoding="async" />
+              <figcaption className="mt-3 text-[13.5px] leading-relaxed text-fg-2">
+                {mission.epilogue.caption}{' '}
+                <a href={mission.epilogue.source.url} target="_blank" rel="noreferrer noopener" className="credit-link">
+                  Source <IconExternal size={12} />
+                  <span className="sr-only"> ({mission.epilogue.source.label}, opens in a new tab)</span>
+                </a>
+                <span className="mt-1 block text-[12px] text-fg-3">{mission.epilogue.credit}</span>
+              </figcaption>
+            </figure>
+          )}
           {!passed && (
             <button
               type="button"

@@ -101,8 +101,8 @@
       {
         "panelNumber": 1,
         "beat": "setup",
-        "comicImage": "/images/comics/oppy_airbag_landing.jpg",
-        "comicAlt": "Illustration: a parachute drifts away as a cluster of airbags slams into red Martian plains in a spray of dust.",
+        "comicImage": "/images/comics/oppy_bold_airbag_landing.jpg",
+        "comicAlt": "Stylized illustration: a rover wrapped in a cluster of airbags bounces across red plains in a burst of dust.",
         "realNasaImage": "/images/nasa_real/nssdc_merb_pan09.jpg",
         "nasaImageCaption": "Opportunity in \"Eagle Crater,\" approximately 22 meters (72 feet) in diameter. \"Opportunity's lander is visible in the center of the image. Track marks reveal the rover's progress.\" Mosaic from sols 33, 35 and 36.",
         "nasaImageCredit": "NASA/JPL (images and captions courtesy NASA/JPL, via NSSDC)",
@@ -131,8 +131,8 @@
       {
         "panelNumber": 3,
         "beat": "hardware",
-        "comicImage": "/images/comics/oppy_arm_blueberries.jpg",
-        "comicAlt": "Illustration: Opportunity's robotic arm hovers over a layered rock outcrop scattered with small grey hematite spherules.",
+        "comicImage": "/images/comics/oppy_bold_arm_trench_scan.jpg",
+        "comicAlt": "Stylized composite of the twin rovers' stories, not a single real scene: a rover's arm scans small grey spherules (Opportunity's hematite \"blueberries\") beside a bright churned trench (Spirit's silica find).",
         "realNasaImage": "/images/nasa_real/nssdc_merb_spheres.jpg",
         "nasaImageCaption": "Taken by the microscopic imager on Opportunity's \"arm,\" this image \"reveals shiny, spherical objects embedded within the trench wall at Meridiani Planum, Mars.\" The area shown is approximately 3 centimeters (1.2 inches) across.",
         "nasaImageCredit": "NASA/JPL (images and captions courtesy NASA/JPL, via NSSDC)",
@@ -162,8 +162,8 @@
       {
         "panelNumber": 5,
         "beat": "legacy",
-        "comicImage": "/images/comics/oppy_final_dust_storm.jpg",
-        "comicAlt": "Illustration: a lone rover on a crater-valley slope under a hazy orange sky with a dim sun.",
+        "comicImage": "/images/comics/oppy_bold_dust_storm.jpg",
+        "comicAlt": "Stylized illustration: a lone rover under a dark crimson, dust-filled sky with a dim sun.",
         "realNasaImage": "/images/nasa_real/pia22908.jpg",
         "nasaImageCaption": "Opportunity's last 360° panorama, sols 5,084–5,111, finished just before the 2018 dust storm.",
         "nasaImageCredit": "NASA/JPL-Caltech/Cornell/ASU",
@@ -290,6 +290,17 @@
           ]
         }
       ]
+    },
+    "epilogue": {
+      "label": "Imagined future",
+      "image": "/images/comics/oppy_bold_future_explorer.jpg",
+      "alt": "Imagined future, not a real event: an astronaut kneels beside a dusty rover at sunset and brushes off its solar panel. No human has been to Mars.",
+      "caption": "No person has ever stood beside Spirit or Opportunity. But the rovers did get their panels cleaned: gusts of Martian wind sometimes blew the dust off, restoring power and helping both missions run far past 90 sols.",
+      "credit": "AI-generated illustration (Google Gemini), art-directed by Team Helios. Not NASA imagery.",
+      "source": {
+        "label": "NASA Science: Mars Exploration Rovers Spirit and Opportunity",
+        "url": "https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/"
+      }
     }
   },
   {

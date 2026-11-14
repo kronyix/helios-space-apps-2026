@@ -125,6 +125,16 @@ export interface FieldArchive {
   rovers: { rover: string; name: string; designation: string; site: string; catalog: string; items: FieldArchiveItem[] }[];
 }
 
+/** ext: optional, clearly labelled speculative image (e.g. "Imagined future") paired with a real fact. */
+export interface Epilogue {
+  label: string;
+  image: string;
+  alt: string;
+  caption: string;
+  credit: string;
+  source: Source;
+}
+
 export interface MissionData {
   id: string;
   issueNumber: number;
@@ -148,4 +158,5 @@ export interface MissionData {
   artifact: Artifact;
   sources: Source[];
   fieldArchive?: FieldArchive;
+  epilogue?: Epilogue;
 }
