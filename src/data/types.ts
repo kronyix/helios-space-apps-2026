@@ -7,7 +7,23 @@
 export type CelestialBody = 'mars' | 'moon';
 export type MiniGameType = 'spectrometer_scan' | 'laser_bounce' | 'rpm_throttle';
 export type Vec3 = [number, number, number];
-export type StoryBeat = 'setup' | 'struggle' | 'hardware' | 'discovery' | 'legacy';
+export type StoryBeat =
+  | 'hook'
+  | 'stakes'
+  | 'turning_point'
+  | 'cost'
+  | 'legacy'
+  | 'setup'
+  | 'struggle'
+  | 'hardware'
+  | 'discovery';
+
+export interface ComicPanelLine {
+  id: string;
+  kind: 'caption' | 'speech';
+  speaker?: string;
+  text: string;
+}
 
 export interface Coordinates {
   lat: number;
@@ -53,6 +69,14 @@ export interface ComicPanel {
   speaker: string;
   /** ext */
   beat?: StoryBeat;
+  /** ext: structured caption and speech lines */
+  lines?: ComicPanelLine[];
+  // Phase 2/4
+  reveal?: Record<string, unknown>;
+  // Phase 2/4
+  camera?: Record<string, unknown>;
+  // Phase 2/4
+  evidence?: Record<string, unknown>;
   /** ext: narrator caption box (historical fact) */
   caption?: string;
   /** ext: image credit line */
@@ -67,8 +91,6 @@ export interface ComicPanel {
   comicAlt?: string;
   /** ext: what `comicImage` is. The UI labels it ILLUSTRATION (archival mode labels the NASA photo). */
   imageKind?: 'illustration' | 'archival';
-  /** ext: "From the archive" notes pinned on the illustration (x/y in % of the frame). */
-  notes?: { x: number; y: number; label: string; fact: string; source: string }[];
   /** ext: CSS object-position for the illustration crop (e.g. "30% 50%") */
   comicFocus?: string;
 }
