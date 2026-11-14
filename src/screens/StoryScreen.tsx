@@ -4,6 +4,11 @@ import { useAppStore } from '../store/useAppStore';
 import { AccentTitle, ScreenFrame } from '../components/ui/Layout';
 import { ScrollComic } from '../components/comic/ScrollComic';
 import { IssueComic } from '../components/comic/IssueComic';
+import { ISSUE_01, type ComicIssue } from '../data/comics/opportunity-spirit';
+import { ISSUE_02 } from '../data/comics/apollo11';
+import { ISSUE_03 } from '../data/comics/ingenuity';
+
+const MOTION_COMICS: Record<number, ComicIssue> = { 1: ISSUE_01, 2: ISSUE_02, 3: ISSUE_03 };
 import { IconArrowRight, IconCalendar, IconClock, IconPin, IconSignal, IconWeight } from '../components/ui/Icons';
 import { ChapterNav } from './ChapterNav';
 import { FieldArchive } from '../components/comic/FieldArchive';
@@ -47,9 +52,12 @@ export function MissionFile({ mission }: { mission: MissionData }) {
 export default function StoryScreen({ mission }: { mission: MissionData }) {
   const go = useAppStore((s) => s.go);
 
-  if (mission.issueNumber === 1) {
+  const motionComic = MOTION_COMICS[mission.issueNumber];
+  if (motionComic) {
     return (
       <IssueComic
+        key={mission.id}
+        issue={motionComic}
         onContinue={() => {
           prefetch(mission.modelPath);
           go('hardware');

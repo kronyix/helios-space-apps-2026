@@ -1,4 +1,5 @@
-export type RoverId = 'spirit' | 'opportunity' | 'both';
+/** Who the panel is about (rover, spacecraft or 'both'); free-form per issue. */
+export type RoverId = string;
 export type ImageNature = 'illustration' | 'imagined';
 export type PhotoKind = 'photo' | 'falsecolor' | 'infographic' | 'map';
 export type PhotoFit = 'cover' | 'pan' | 'contain';
@@ -914,3 +915,18 @@ export const ISSUE_01_PANELS: ComicPanel[] = [
     ],
   },
 ];
+
+export interface ComicIssueMeta {
+  issueCode: string;
+  title: string;
+  disclaimer: string;
+  creditsNote: string;
+  sources: readonly string[];
+}
+
+export interface ComicIssue {
+  meta: ComicIssueMeta;
+  panels: ComicPanel[];
+}
+
+export const ISSUE_01: ComicIssue = { meta: ISSUE_01_META, panels: ISSUE_01_PANELS };

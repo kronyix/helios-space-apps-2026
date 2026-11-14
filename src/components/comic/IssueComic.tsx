@@ -2,10 +2,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, useMotionTemplate, useScroll, useTransform, type MotionValue } from 'motion/react';
 import {
-  ISSUE_01_META,
-  ISSUE_01_PANELS,
   getPanelBreakpoints,
   getStagePhotos,
+  type ComicIssue,
   type ComicPanel,
   type Line,
   type PanelBreakpoints,
@@ -16,6 +15,7 @@ import { useReducedMotion } from '../../lib/useReducedMotion';
 import { IconArrowLeft, IconArrowRight, IconClose } from '../ui/Icons';
 
 export interface IssueComicProps {
+  issue: ComicIssue;
   onContinue: () => void;
 }
 
@@ -323,7 +323,9 @@ function PanelSection({
   onOpenGallery,
   onContinue,
   registerRef,
+  creditsNote,
 }: {
+  creditsNote: string;
   panel: ComicPanel;
   index: number;
   total: number;
@@ -559,7 +561,7 @@ function PanelSection({
                       </div>
                     ))}
                   </div>
-                  <span className="issue-credits-note">{ISSUE_01_META.creditsNote}</span>
+                  <span className="issue-credits-note">{creditsNote}</span>
                 </motion.div>
               )}
 
@@ -988,9 +990,9 @@ function PhotoGalleryModal({
   );
 }
 
-export function IssueComic({ onContinue }: IssueComicProps) {
+export function IssueComic({ issue, onContinue }: IssueComicProps) {
   const reduced = useReducedMotion();
-  const panels = ISSUE_01_PANELS;
+  const panels = issue.panels;
   const total = panels.length;
 
   const [playing, setPlaying] = useState(false);
@@ -1334,6 +1336,7 @@ export function IssueComic({ onContinue }: IssueComicProps) {
             onOpenGallery={handleOpenGallery}
             onContinue={idx === total - 1 ? onContinue : undefined}
             registerRef={registerRef}
+            creditsNote={issue.meta.creditsNote}
           />
           {panel.id === 'p05' && (
             /* TODO(handoff): game entry point */
