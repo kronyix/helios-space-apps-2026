@@ -62,22 +62,28 @@ export function ComicPanel({
     <figure className="comic-panel" data-beat={panel.beat}>
       <div className={`comic-panel__frame ${aspect}`} style={{ clipPath: frame }}>
         <AnimatePresence initial={false} mode="sync">
-          <motion.img
+          <motion.div
             key={archival ? 'a' : 'i'}
-            src={archival ? panel.realNasaImage : panel.comicImage}
-            alt={archival ? panel.nasaImageCaption : (panel.comicAlt ?? '')}
-            className={`absolute inset-0 h-full w-full object-cover ${archival ? 'archival-photo' : ''}`}
-            style={!archival && panel.comicFocus ? { objectPosition: panel.comicFocus } : undefined}
-            loading={priority ? 'eager' : 'lazy'}
-            decoding="async"
+            className="absolute inset-0"
             initial={{ opacity: 0, scale: reduced ? 1 : 1.03 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: dur.slow, ease: ease.out }}
-          />
+          >
+            {/* Archival photos are shown whole (never cropped) over a blurred copy of themselves. */}
+            {archival && <img src={panel.realNasaImage} alt="" aria-hidden="true" className="archival-backdrop" decoding="async" />}
+            <img
+              src={archival ? panel.realNasaImage : panel.comicImage}
+              alt={archival ? panel.nasaImageCaption : (panel.comicAlt ?? '')}
+              className={`absolute inset-0 h-full w-full ${archival ? 'archival-photo object-contain' : 'object-cover'}`}
+              style={!archival && panel.comicFocus ? { objectPosition: panel.comicFocus } : undefined}
+              loading={priority ? 'eager' : 'lazy'}
+              decoding="async"
+            />
+          </motion.div>
         </AnimatePresence>
 
-        {panel.caption && (
+        {panel.caption && !archival && (
           <p className="caption-box comic-caption">
             <span className="sr-only">Caption: </span>
             {panel.caption}
@@ -95,6 +101,12 @@ export function ComicPanel({
         </span>
       </div>
       {!archival && panel.comicCredit && <figcaption className="comic-credit">{panel.comicCredit}</figcaption>}
+      {archival && panel.caption && (
+        <p className="caption-box comic-caption comic-caption--below">
+          <span className="sr-only">Caption: </span>
+          {panel.caption}
+        </p>
+      )}
       {archival && (
         <figcaption className="comic-credit">
           <span className="text-fg-2">{panel.nasaImageCaption}</span>{' '}

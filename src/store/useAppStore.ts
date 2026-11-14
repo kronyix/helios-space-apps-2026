@@ -47,6 +47,34 @@ interface AppState extends Progress {
   resetProgress: () => void;
 }
 
+/**
+ * Deep links: ?stage=hardware&mission=apollo11&hotspot=lrrr&game=intro&mode=archival
+ * Read once at startup (sharing a chapter, review captures). Invalid values are ignored.
+ */
+function initialFromUrl(): Partial<Pick<AppState, 'stage' | 'missionId' | 'activeHotspot' | 'gamePhase' | 'storyMode'>> {
+  try {
+    const q = new URLSearchParams(window.location.search);
+    const out: Partial<Pick<AppState, 'stage' | 'missionId' | 'activeHotspot' | 'gamePhase' | 'storyMode'>> = {};
+    const stage = q.get('stage') as Stage | null;
+    if (stage && ['archive', 'story', 'hardware', 'reward', 'badges'].includes(stage)) out.stage = stage;
+    const m = missions.find((x) => x.id === q.get('mission'));
+    if (m) out.missionId = m.id;
+    if (out.stage && ['story', 'hardware', 'reward'].includes(out.stage) && !out.missionId) out.missionId = missions[0].id;
+    const mm = missions.find((x) => x.id === out.missionId);
+    if (out.stage === 'hardware' && mm) {
+      const h = q.get('hotspot');
+      if (h && mm.hotspots.some((x) => x.id === h)) out.activeHotspot = h;
+      if (q.get('game') === 'intro') out.gamePhase = 'intro';
+    }
+    const mode = q.get('mode');
+    if (mode === 'archival' || mode === 'illustrated') out.storyMode = mode;
+    return out;
+  } catch {
+    return {};
+  }
+}
+const fromUrl = typeof window !== 'undefined' ? initialFromUrl() : {};
+
 const emptyProgress: Progress = {
   issuesOpened: [],
   hotspotsSeen: {},
@@ -85,6 +113,7 @@ export const useAppStore = create<AppState>()(
       soundOn: false,
       focusedMissionId: null,
       divingTo: null,
+      ...fromUrl,
 
       go: (stage, missionId) => {
         const id = missionId === undefined ? get().missionId : missionId;
@@ -148,6 +177,7 @@ export const useAppStore = create<AppState>()(
     {
       name: 'helios-progress-v1',
       storage: safeStorage,
+      merge: (persisted, current) => ({ ...current, ...(persisted as object), ...(fromUrl.storyMode ? { storyMode: fromUrl.storyMode } : {}) }),
       partialize: (s) => ({
         issuesOpened: s.issuesOpened,
         hotspotsSeen: s.hotspotsSeen,

@@ -3,6 +3,8 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { ContactShadows, OrbitControls, useGLTF } from '@react-three/drei';
 import { AnchorProjector } from './AnchorProjector';
 import * as THREE from 'three';
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import { registerRenderer } from '../../lib/debug';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import type { CelestialBody, HotspotData, SceneConfig, Vec3 } from '../../data/types';
 import { dur, easeInOutCubic } from '../../lib/motion';
@@ -25,6 +27,46 @@ export interface HardwareViewerProps {
 }
 
 const DRACO = '/draco/';
+
+/**
+ * Bakes transforms and merges static meshes that share a material (and attribute
+ * layout) into one mesh each. The Apollo LM ships as 134 meshes; this cuts draw calls
+ * without touching the asset. Hidden meshes are dropped.
+ */
+function mergeStatic(root: THREE.Object3D): THREE.Object3D {
+  root.updateMatrixWorld(true);
+  const buckets = new Map<string, { material: THREE.Material; geos: THREE.BufferGeometry[] }>();
+  const keep: THREE.Object3D[] = [];
+  root.traverse((o) => {
+    const m = o as THREE.Mesh;
+    if (!m.isMesh || !m.visible) return;
+    const g = m.geometry.clone().applyMatrix4(m.matrixWorld);
+    if (Array.isArray(m.material) || (m as unknown as THREE.SkinnedMesh).isSkinnedMesh) {
+      const c = new THREE.Mesh(g, m.material);
+      keep.push(c);
+      return;
+    }
+    const key = `${m.material.uuid}|${Object.keys(g.attributes).sort().join(',')}|${g.index ? 'i' : 'n'}`;
+    const b = buckets.get(key) ?? { material: m.material, geos: [] };
+    b.geos.push(g);
+    buckets.set(key, b);
+  });
+  const out = new THREE.Group();
+  for (const { material, geos } of buckets.values()) {
+    const merged = geos.length > 1 ? mergeGeometries(geos, false) : geos[0];
+    if (merged) out.add(new THREE.Mesh(merged, material));
+    else geos.forEach((g) => out.add(new THREE.Mesh(g, material)));
+  }
+  keep.forEach((k) => out.add(k));
+  out.traverse((o) => {
+    const mesh = o as THREE.Mesh;
+    if (mesh.isMesh) {
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+    }
+  });
+  return out;
+}
 
 /** Loads a GLB, scales it so its largest horizontal extent equals `fitSize`, and sets it on the ground. */
 function Model({ path, fitSize, hideAboveY }: { path: string; fitSize: number; hideAboveY?: number }) {
@@ -57,7 +99,9 @@ function Model({ path, fitSize, hideAboveY }: { path: string; fitSize: number; h
         }
       }
     });
-    return root;
+    let meshCount = 0;
+    root.traverse((o) => void ((o as THREE.Mesh).isMesh && meshCount++));
+    return meshCount > 30 ? mergeStatic(root) : root;
   }, [scene, fitSize, hideAboveY]);
   return <primitive object={object} />;
 }
@@ -245,6 +289,7 @@ export default function HardwareViewer(props: HardwareViewerProps) {
         camera={{ fov: 35, position: props.scene.camera, near: 0.05, far: 200 }}
         gl={{ antialias: true, powerPreference: 'high-performance', toneMappingExposure: props.scene.environment === 'moon' ? 0.95 : 1.05 }}
         aria-label={`3D model of the ${props.missionId} hardware. Drag to orbit.`}
+          onCreated={({ gl }) => registerRenderer(gl)}
       >
         <Suspense fallback={null}>
           <Diorama {...props} reduced={reduced} compact={compact} anchorEls={anchorEls} />

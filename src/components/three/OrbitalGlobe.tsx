@@ -3,6 +3,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Stars, useTexture } from '@react-three/drei';
 import { AnchorProjector } from './AnchorProjector';
 import * as THREE from 'three';
+import { registerRenderer } from '../../lib/debug';
 import type { MissionData } from '../../data/types';
 import { latLngToVector3, yawToFace } from '../../lib/geo';
 import { formatCoord, pad2 } from '../../lib/missions';
@@ -204,6 +205,7 @@ function CameraRig({
   marsOffset,
   moonPos: MOON_POS,
   camZ,
+  portrait,
   divePoint,
   onDiveDone,
   reduced,
@@ -212,6 +214,7 @@ function CameraRig({
   marsOffset: THREE.Vector3;
   moonPos: THREE.Vector3;
   camZ: number;
+  portrait: boolean;
   divePoint: React.RefObject<THREE.Vector3 | null>;
   onDiveDone: () => void;
   reduced: boolean;
@@ -267,11 +270,14 @@ function CameraRig({
     const drift = reduced ? 0 : 1;
     const px = pointer.current.x * 0.25 * drift + Math.sin(time * 0.05) * 0.15 * drift;
     const py = -pointer.current.y * 0.18 * drift;
+    // Portrait: look below the Moon so it sits in the upper part of the frame, above the headline.
+    const mx = portrait ? 0 : -0.3;
+    const my = portrait ? -0.62 : -0.05;
     const goal =
       selectedBody === 'moon'
-        ? new THREE.Vector3(MOON_POS.x - 0.3 + px * 0.3, MOON_POS.y - 0.1 + py * 0.3, MOON_POS.z + 2.4)
+        ? new THREE.Vector3(MOON_POS.x + mx + px * 0.3, MOON_POS.y + my + py * 0.3, MOON_POS.z + (portrait ? 3.4 : 2.4))
         : new THREE.Vector3(px, py, camZ);
-    const lookGoal = selectedBody === 'moon' ? new THREE.Vector3(MOON_POS.x - 0.3, MOON_POS.y - 0.05, MOON_POS.z) : new THREE.Vector3(0, 0, 0);
+    const lookGoal = selectedBody === 'moon' ? new THREE.Vector3(MOON_POS.x + mx, MOON_POS.y + my, MOON_POS.z) : new THREE.Vector3(0, 0, 0);
     const k = reduced ? 1 : 1 - Math.exp(-dt * 2.2);
     camera.position.lerp(goal, k);
     look.current.lerp(lookGoal, k);
@@ -290,11 +296,11 @@ function Scene(props: OrbitalGlobeProps & { reduced: boolean; compact: boolean; 
   const halfH = TAN_HALF_FOV * camZ;
   // Wide: Mars sits right of the title lockup. Portrait: upper part of the frame, above the headline.
   const marsOffset = useMemo(
-    () => new THREE.Vector3(wide ? 1.05 : 0, wide ? -0.15 : halfH * 0.36, 0),
+    () => new THREE.Vector3(wide ? 1.05 : -0.25, wide ? -0.15 : -halfH * 0.08, 0),
     [wide, halfH],
   );
   const MOON_POS = useMemo(
-    () => marsOffset.clone().add(wide ? new THREE.Vector3(-0.95, 3.2, -1.4) : new THREE.Vector3(1.7, 2.75, -1.4)),
+    () => marsOffset.clone().add(wide ? new THREE.Vector3(-0.95, 3.2, -1.4) : new THREE.Vector3(1.75, 2.35, -1.4)),
     [marsOffset, wide],
   );
 
@@ -441,6 +447,7 @@ function Scene(props: OrbitalGlobeProps & { reduced: boolean; compact: boolean; 
         marsOffset={marsOffset}
         moonPos={MOON_POS}
         camZ={camZ}
+        portrait={aspect < 0.9}
         divePoint={divePoint}
         reduced={reduced}
         onDiveDone={() => divingTo && onDiveComplete?.(divingTo)}
@@ -467,6 +474,7 @@ export default function OrbitalGlobe(props: OrbitalGlobeProps) {
           dpr={compact ? [1, 1.5] : [1, 2]}
           camera={{ fov: 34, position: [0, 0, 12.4], near: 0.05, far: 200 }}
           gl={{ antialias: true, powerPreference: 'high-performance' }}
+          onCreated={({ gl }) => registerRenderer(gl)}
         >
           <Suspense fallback={null}>
             <Scene {...props} reduced={reduced} compact={compact} anchorEls={anchorEls} />

@@ -25,3 +25,7 @@ dist-ssr
 
 # review artifacts (videos are large)
 review/**/*.webm
+
+# review screenshots are large; keep locally (regenerate with scripts/review/capture.ts)
+review/**/*.png
+review/**/video/

@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useAppStore } from './store/useAppStore';
 import { getMission } from './lib/missions';
@@ -30,6 +30,7 @@ const TITLES = { archive: 'Archive', story: 'Story', hardware: 'Hardware', rewar
 /** State router: Archive → Story → Hardware → Transmission (+ Badges). One live canvas per state. */
 export default function App() {
   const stage = useAppStore((s) => s.stage);
+  const [initialStage] = useState(stage);
   const missionId = useAppStore((s) => s.missionId);
   const reduced = useReducedMotion();
   const mission = getMission(missionId);
@@ -86,7 +87,7 @@ export default function App() {
           </motion.div>
         </AnimatePresence>
       </main>
-      <Loader />
+      <Loader gatesScene={initialStage === 'archive' || initialStage === 'hardware'} />
     </div>
   );
 }

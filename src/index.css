@@ -910,7 +910,15 @@ button:disabled {
   clip-path: inherit;
 }
 .archival-photo {
-  filter: sepia(0.18) contrast(1.05);
+  filter: sepia(0.12) contrast(1.04);
+}
+.archival-backdrop {
+  position: absolute;
+  inset: -8%;
+  width: 116%;
+  height: 116%;
+  object-fit: cover;
+  filter: blur(22px) brightness(0.35) saturate(0.7);
 }
 .comic-caption {
   position: absolute;
@@ -1449,4 +1457,71 @@ button:disabled {
 }
 .field-archive__img:hover img {
   transform: scale(1.03);
+}
+
+/* Labels flip to the left of their marker near the right frame edge (AnchorProjector sets data-side). */
+.anchor[data-side='left'] .beacon-label,
+.anchor[data-side='left'] .hotspot-label {
+  left: auto;
+  right: 44px;
+  align-items: flex-end;
+  border-left: 0;
+  border-right: 1px solid var(--accent);
+  text-align: right;
+}
+.anchor[data-side='left'] .hotspot-label {
+  right: 52px;
+}
+
+/* Portrait archive: protect the headline over the globe. */
+@media (max-width: 899px) {
+  .archive-vignette {
+    background:
+      linear-gradient(0deg, rgb(5 5 7 / 0.96) 0%, rgb(5 5 7 / 0.82) 42%, rgb(5 5 7 / 0.2) 62%, transparent 75%),
+      radial-gradient(ellipse 90% 50% at 50% 30%, transparent 50%, rgb(5 5 7 / 0.5) 100%);
+  }
+}
+
+/* One ruled annotation strip instead of three boxed cards (desktop rows). */
+@media (min-width: 900px) {
+  .archive-cards,
+  .hardware-cards {
+    gap: 0;
+    border-top: 1px solid var(--color-line-2);
+    border-bottom: 1px solid var(--color-line-2);
+    background: linear-gradient(180deg, rgb(10 10 13 / 0.88), rgb(6 6 8 / 0.92));
+  }
+  .archive-cards .plate,
+  .hardware-cards .plate {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    padding: 16px 22px;
+  }
+  .archive-cards .plate + .plate,
+  .hardware-cards .plate + .plate {
+    border-left: 1px solid var(--color-line);
+  }
+  .archive-cards .plate::before,
+  .archive-cards .plate::after,
+  .hardware-cards .plate::before,
+  .hardware-cards .plate::after {
+    display: none;
+  }
+}
+
+/* Archival mode: the NASA photo stays unobstructed; the narrative caption moves beneath it. */
+.comic-caption--below {
+  position: static;
+  max-width: none;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* Portrait archive: the globe scrolls with the page (above the headline) instead of staying fixed behind it. */
+@media (max-width: 899px) {
+  .screen__bg:has(.archive-vignette) {
+    position: absolute;
+    height: 64vh;
+  }
 }

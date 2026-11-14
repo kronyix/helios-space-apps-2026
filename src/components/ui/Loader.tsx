@@ -10,10 +10,11 @@ import { HeliosMark } from './HeliosMark';
  * "Transmission acquisition" loader driven by real asset progress (drei useProgress).
  * Signal noise resolves as progress climbs; it dismisses once loading settles.
  */
-export function Loader() {
+export function Loader({ gatesScene }: { gatesScene: boolean }) {
   const { progress, active, total } = useProgress();
   const reduced = useReducedMotion();
-  const [visible, setVisible] = useState(true);
+  // Only the first 3D screen (archive globe or a hardware deep link) is worth gating.
+  const [visible, setVisible] = useState(() => gatesScene && hasWebGL());
   const started = useRef(performance.now());
   const canvas = useRef<HTMLCanvasElement>(null);
   const progressRef = useRef(0);
@@ -23,17 +24,18 @@ export function Loader() {
   if (active) sawActive.current = true;
 
   useEffect(() => {
-    if (active) return;
-    // The globe chunk loads lazily, so "nothing loading yet" is not "done": wait for a
-    // real load cycle, or fall through after a grace period (e.g. everything cached).
-    const settled = !hasWebGL() || (sawActive.current && (progress >= 100 || total === 0));
-    const grace = settled ? 0 : 2600;
-    const wait = Math.max(grace, (reduced ? 200 : 1100)) - (performance.now() - started.current);
-    const id = window.setTimeout(() => {
-      if (!useProgress.getState().active) setVisible(false);
-    }, Math.max(0, wait));
+    if (!visible) return;
+    // Done = a load cycle reached 100% (drei can report `active` a little longer while
+    // it settles, so 100% is the signal). The 3D chunk loads lazily, so "nothing
+    // loading yet" only counts as done after a grace period (everything cached).
+    const done = sawActive.current && progress >= 100;
+    const idle = !active && total === 0;
+    if (!done && !idle) return;
+    const minShow = reduced ? 200 : 900;
+    const wait = Math.max(done ? 0 : 2200, minShow) - (performance.now() - started.current);
+    const id = window.setTimeout(() => setVisible(false), Math.max(0, wait));
     return () => window.clearTimeout(id);
-  }, [active, progress, total, reduced]);
+  }, [active, progress, total, reduced, visible]);
 
   // Safety: never trap the user behind the loader.
   useEffect(() => {

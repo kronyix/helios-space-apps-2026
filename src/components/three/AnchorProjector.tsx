@@ -48,6 +48,9 @@ export function AnchorProjector({
       const x = ((v.p.x + 1) / 2) * size.width;
       const y = ((1 - v.p.y) / 2) * size.height;
       el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`;
+      // Labels sit to the right of their marker unless that would cross the frame edge.
+      const side = x > size.width - 240 ? 'left' : 'right';
+      if (el.dataset.side !== side) el.dataset.side = side;
       el.style.opacity = String(vis);
       el.style.visibility = vis < 0.01 ? 'hidden' : 'visible';
       el.style.pointerEvents = vis > 0.5 ? 'auto' : 'none';
