@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="public/brand/helios-wordmark.svg" />
+    <img src="public/brand/helios-wordmark-dark.svg" alt="Team Helios" width="300" />
+  </picture>
+</p>
+
 # Chronicles of the Silent Pioneers
 
 **Team Helios · NASA Space Apps Challenge 2026 · "Abandoned but Not Forgotten"**
@@ -14,17 +21,19 @@ Flow: **I · Archive** (3D globe) → **II · Story** (comic panels with an illu
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173
-npm run build    # type-check + production build
+npm run dev          # http://localhost:3000
+npm run build        # type-check + production build
 npm run preview
+npm run review:rover # Signal Delay Playwright E2E + perf sweep
 ```
 
-Add `?nowebgl` to the URL to see the no-WebGL fallback.
+Add `?nowebgl` to force the 2D fallback map, `?fps` for live frame/draw-call telemetry, or `?quality=high|med|low` to lock the 3D quality tier.
 
 ## Data & credits
 
 - All mission content lives in `src/data/missions.json`, with a source link for every fact and image.
 - Archival images: NASA, NASA/JPL-Caltech and partner institutions. Issue 01 uses the official NSSDCA Spirit (MER-A) and Opportunity (MER-B) image catalogs.
+- 3D hardware models: Courtesy NASA/JPL-Caltech (NASA 3D Resources, `public/models/opportunity.glb`), optimized and art-directed by Team Helios (`docs/ASSETS.md`).
 - Comic art: art-directed by Team Helios (see *Use of AI*). Every image in the app is labelled **ILLUSTRATION** or **ARCHIVAL · credit**.
 - Not affiliated with or endorsed by NASA.
 

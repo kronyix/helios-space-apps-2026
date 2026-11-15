@@ -1,13 +1,12 @@
 import { lazy, Suspense, useState } from 'react';
 import { motion } from 'motion/react';
-import { useShallow } from 'zustand/react/shallow';
 import { missions, pad2, formatCoord } from '../lib/missions';
-import { useAppStore, selectBadges } from '../store/useAppStore';
+import { useAppStore } from '../store/useAppStore';
 import { hasWebGL } from '../lib/device';
 import { dur, ease, stagger } from '../lib/motion';
 import { useReducedMotion } from '../lib/useReducedMotion';
 import { ScreenFrame } from '../components/ui/Layout';
-import { IconArrowRight, IconLock, IconPlay, IconTrophy } from '../components/ui/Icons';
+import { IconArrowRight, IconPlay } from '../components/ui/Icons';
 import { blip } from '../lib/audio';
 
 const OrbitalGlobe = lazy(() => import('../components/three/OrbitalGlobe'));
@@ -54,25 +53,10 @@ export default function ArchiveScreen() {
   const focused = useAppStore((s) => s.focusedMissionId);
   const setFocused = useAppStore((s) => s.setFocused);
   const opened = useAppStore((s) => s.issuesOpened);
-  const artifacts = useAppStore((s) => s.artifacts);
-  const progress = useAppStore(
-    useShallow((s) => ({
-      issuesOpened: s.issuesOpened,
-      hotspotsSeen: s.hotspotsSeen,
-      gameResults: s.gameResults,
-      artifacts: s.artifacts,
-      transmissionsRead: s.transmissionsRead,
-      roverResult: s.roverResult,
-    })),
-  );
   const reduced = useReducedMotion();
   const [body, setBody] = useState<'mars' | 'moon'>('mars');
   const [flash, setFlash] = useState(false);
   const gl = hasWebGL();
-
-  const badges = selectBadges(progress);
-  const nextBadge = badges.find((b) => !b.earned);
-  const pct = Math.round(((opened.length + artifacts.length) / (missions.length * 2)) * 100);
 
   const select = (id: string) => {
     if (divingTo) return;
@@ -134,12 +118,12 @@ export default function ArchiveScreen() {
           <h2 className="archive-headline">
             Abandoned.
             <br />
-            Not <span className="text-[var(--accent)]">forgotten.</span>
+            Not <span className="text-[#F6B96D]">forgotten.</span>
           </h2>
           <p className="archive-lede">They were left behind. Their discoveries moved humanity forward.</p>
           <span className="hairline mt-5 block w-24" aria-hidden="true" />
           <div className="mt-6 flex flex-wrap items-center gap-4">
-            <button type="button" className="btn-primary h-14 px-8 text-[17px]" onClick={begin}>
+            <button type="button" className="btn-primary h-14 px-8 text-[16px]" onClick={begin}>
               <IconPlay size={16} /> Begin the journey <IconArrowRight size={18} />
             </button>
           </div>
@@ -159,8 +143,8 @@ export default function ArchiveScreen() {
             <h2 id="issues-h" className="label-caps !text-fg-2">
               The issues
             </h2>
-            <span className="font-mono text-[11px] tracking-[0.18em] text-fg-3">
-              {opened.length} / {missions.length} READ
+            <span className="font-pixel text-[12px] text-fg-3">
+              {opened.length} / {missions.length} read
             </span>
           </div>
           <ul className="flex flex-col gap-2.5">
@@ -190,13 +174,13 @@ export default function ArchiveScreen() {
                 >
                   <img src={m.comicPanels[2].comicImage} alt="" className="issue-row__thumb" loading="lazy" />
                   <span className="min-w-0 flex-1 text-left">
-                    <span className="block font-mono text-[10.5px] tracking-[0.18em] text-[var(--accent)]">
-                      ISSUE {pad2(m.issueNumber)}
-                      {opened.includes(m.id) && <span className="ml-2 text-fg-3">· READ</span>}
+                    <span className="block font-pixel text-[12px] uppercase text-[var(--accent)]">
+                      Issue {pad2(m.issueNumber)}
+                      {opened.includes(m.id) && <span className="ml-2 text-fg-3">· read</span>}
                     </span>
-                    <span className="mt-0.5 block font-display text-[18px] font-semibold leading-tight text-fg">{m.shortName}</span>
+                    <span className="mt-0.5 block font-pixel text-[16px] leading-tight text-fg">{m.shortName}</span>
                     <span className="block text-[13px] text-fg-2">{m.issueTitle}</span>
-                    <span className="mt-1 block font-mono text-[10px] tracking-[0.08em] text-fg-3">
+                    <span className="issue-row__coord mt-1 block font-pixel text-[12px] text-fg-3">
                       {formatCoord(m.coordinates.lat, m.coordinates.lng)}
                     </span>
                   </span>
@@ -211,46 +195,6 @@ export default function ArchiveScreen() {
           Mars · 2 issues / Moon · 1 issue / not to scale
         </p>
 
-        <div className="archive-cards">
-          <div className="plate">
-            <p className="kicker">Field tests</p>
-            <h3 className="plate__title">Three 15-second trials</h3>
-            <p className="plate__text">Scan for hematite, bounce a laser off the Moon, spin rotors in thin air.</p>
-            <svg viewBox="0 0 260 60" className="plate__spark" aria-hidden="true">
-              <path
-                d="M0 50 L40 48 L55 30 L65 49 L110 47 L120 38 L128 49 L170 46 L182 6 L194 48 L230 47 L238 36 L246 49 L260 48"
-                fill="none"
-                stroke="var(--accent)"
-                strokeWidth="1.5"
-              />
-              <circle cx="182" cy="6" r="6" fill="none" stroke="var(--accent)" />
-            </svg>
-          </div>
-          <div className="plate flex items-center gap-5">
-            <div className="progress-ring" style={{ ['--p' as string]: pct }} role="img" aria-label={`Expedition ${pct}% complete`}>
-              <span>{pct}%</span>
-            </div>
-            <div>
-              <p className="kicker">Your expedition</p>
-              <p className="mt-2 text-[15px] text-fg-2">
-                Issues read <b className="font-mono font-normal text-fg">{opened.length}/{missions.length}</b>
-              </p>
-              <p className="text-[15px] text-fg-2">
-                Artifacts recovered <b className="font-mono font-normal text-fg">{artifacts.length}/{missions.length}</b>
-              </p>
-            </div>
-          </div>
-          <div className="plate plate--dashed flex items-center gap-5">
-            <span className="badge-orb" aria-hidden="true">
-              {nextBadge ? <IconLock size={22} /> : <IconTrophy size={22} />}
-            </span>
-            <div>
-              <p className="kicker">{nextBadge ? 'Next badge' : 'All badges earned'}</p>
-              <h3 className="plate__title">{nextBadge?.name ?? 'Archivist'}</h3>
-              <p className="plate__text">{nextBadge?.criteria ?? 'Every artifact is recovered.'}</p>
-            </div>
-          </div>
-        </div>
       </div>
     </ScreenFrame>
   );

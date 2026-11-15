@@ -1,65 +1,64 @@
 /**
- * Signal Delay — full-screen rover drive game. DOM HUD + command dock over the
- * 3D scene (or the 2D map). Copy comes from missions.json `extraGame`.
+ * Signal Delay — orchestrator for the full-screen rover drive game.
+ * Combines the 3D/2D stage, virtual presentation playhead & audio mixer, keyboard handler, and ui/* modules.
  */
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
+import { useShallow } from 'zustand/react/shallow';
 import type { ExtraGame } from '../../data/types';
 import { useAppStore } from '../../store/useAppStore';
 import { hasWebGL } from '../../lib/device';
 import { dur, ease } from '../../lib/motion';
 import { useReducedMotion } from '../../lib/useReducedMotion';
-import { blip, motorHum, setSoundEnabled, uplinkStatic, winChime } from '../../lib/audio';
-import { distToTarget, RULES, score } from '../../games/roverDrive/engine';
 import {
-  clockProgress,
-  poseAt,
-  resetRoverSession,
-  UPLINK_SEC,
-  usePrediction,
-  useRoverStore,
-} from '../../games/roverDrive/store';
-import type { Command, SimEvent, SolReport } from '../../games/roverDrive/types';
-import { IconClose, IconMute, IconRetry, IconSound, IconTrophy } from '../ui/Icons';
+  blip,
+  lostSignalTone,
+  rockThunk,
+  scanPing,
+  setMasterVolume,
+  setRoverAmbientActive,
+  setSoundEnabled,
+  startRoverDriveAudio,
+  triggerHaptic,
+  uplinkStatic,
+  winChime,
+} from '../../lib/audio';
+import { score } from '../../games/roverDrive/engine';
+import { poseAt, resetRoverSession, useRoverStore } from '../../games/roverDrive/store';
+import type { Command } from '../../games/roverDrive/types';
+import { IntroScreen } from '../../games/roverDrive/ui/IntroScreen';
+import { HowToSheet } from '../../games/roverDrive/ui/HowToSheet';
+import { Hud } from '../../games/roverDrive/ui/Hud';
+import { CommandDock } from '../../games/roverDrive/ui/CommandDock';
+import { CoachMarks } from '../../games/roverDrive/ui/CoachMarks';
+import { Toasts } from '../../games/roverDrive/ui/Toasts';
+import { Captions } from '../../games/roverDrive/ui/Captions';
+import { ExecutingChip, SolStartCard, UplinkOverlay } from '../../games/roverDrive/ui/UplinkOverlay';
+import { DownlinkReport } from '../../games/roverDrive/ui/DownlinkReport';
+import { EndScreen } from '../../games/roverDrive/ui/EndScreen';
+import { PauseMenu } from '../../games/roverDrive/ui/PauseMenu';
+import {
+  advanceExecClock,
+  consumeSkipExec,
+  describeSolReport,
+  getExecProgress,
+  nudgePlanOrbit,
+  requestSkipExec,
+  resetExecPlayhead,
+  resetPlanOrbit,
+  triggerTipoverSlowMo,
+  useRoverUiStore,
+} from '../../games/roverDrive/ui/uiStore';
 import './roverDrive.css';
 
 const RoverDriveScene = lazy(() => import('../three/RoverDriveScene'));
 const RoverDrive2D = lazy(() => import('./RoverDrive2D'));
 
-// ---------------------------------------------------------------------------
-// Helpers
-
-const cmdLabel = (c: Command) => {
-  switch (c.type) {
-    case 'forward':
-      return `Forward ${c.m} m`;
-    case 'back':
-      return `Back ${c.m} m`;
-    case 'turn':
-      return `Turn ${c.deg > 0 ? 'left' : 'right'} ${Math.abs(c.deg)}°`;
-    case 'scan':
-      return 'SCAN';
-  }
-};
-
-const cmdGlyph = (c: Command) =>
-  c.type === 'forward' ? '↑' : c.type === 'back' ? '↓' : c.type === 'turn' ? (c.deg > 0 ? '↶' : '↷') : '◎';
-
-const EVENT_PRIORITY: (SimEvent | 'clean')[] = ['scan_ok', 'rock_stop', 'turn_blocked', 'tilt_stop', 'edge_stop', 'scan_range', 'slip', 'tilt_warning'];
-
-function whatHappened(r: SolReport, copy: ExtraGame) {
-  const e = EVENT_PRIORITY.find((k) => r.actual.events.includes(k as SimEvent));
-  return copy.events[(e ?? 'clean') as keyof ExtraGame['events']];
-}
-
-/** Re-render at ~10 Hz while the playback clock runs (HUD values during a drive). */
-function useTicker(active: boolean) {
-  const [, set] = useState(0);
-  useEffect(() => {
-    if (!active) return;
-    const id = window.setInterval(() => set((n) => n + 1), 100);
-    return () => window.clearInterval(id);
-  }, [active]);
+export interface RoverExitOutcome {
+  won: boolean;
+  stars: number;
+  points: number;
+  sols: number;
 }
 
 function useFps(enabled: boolean) {
@@ -84,527 +83,218 @@ function useFps(enabled: boolean) {
   return fps;
 }
 
-/** Drives the uplink/playback clock and the phase side effects (audio, results, announcements). */
-function useFlow(copy: ExtraGame, announce: (s: string) => void) {
-  const phase = useRoverStore((s) => s.phase);
-  const paused = useRoverStore((s) => s.pausedAt !== null);
+/** Drives uplink/execution clock (with 1x/2x/slow-mo/skip), layered audio cues, and ARIA live announcements. */
+function useGameFlow(copy: ExtraGame, announce: (s: string) => void, tabHidden: boolean) {
+  const { phase, paused } = useRoverStore(
+    useShallow((s) => ({
+      phase: s.phase,
+      paused: s.pausedAt !== null,
+    })),
+  );
   const recordRover = useAppStore((s) => s.recordRover);
   const stopSound = useRef<() => void>(() => {});
+  const driveAudio = useRef<ReturnType<typeof startRoverDriveAudio> | null>(null);
 
   useEffect(() => {
-    if ((phase !== 'uplink' && phase !== 'executing') || paused) return;
+    if ((phase !== 'uplink' && phase !== 'executing') || paused || tabHidden) return;
     let raf = 0;
+    let prevReal = performance.now();
+    let prevX = 0;
+    let prevZ = 0;
+    let hasPrevPos = false;
+    let tipoverSlowFired = false;
+
     const loop = (t: number) => {
-      useRoverStore.getState().tick(t);
+      const realDtMs = Math.min(80, Math.max(0, t - prevReal));
+      prevReal = t;
+      const st = useRoverStore.getState();
+
+      if (st.phase === 'uplink') {
+        st.tick(t);
+      } else if (st.phase === 'executing' && st.clock) {
+        const ui = useRoverUiStore.getState();
+        if (consumeSkipExec()) {
+          st.tick(st.clock.start + st.clock.dur * 1000 + 25);
+          return;
+        }
+        const vNow = advanceExecClock(st.clock.start, realDtMs, t, ui.execSpeed);
+        if (st.report) {
+          const u = getExecProgress(st, vNow);
+          if (!tipoverSlowFired && st.report.actual.events.includes('tipover') && u >= 0.78) {
+            tipoverSlowFired = true;
+            triggerTipoverSlowMo(t);
+          }
+          if (driveAudio.current) {
+            const p = poseAt(st.report.actual.path, st.timeline, u);
+            const dtSec = Math.max(0.008, realDtMs / 1000);
+            const speed = hasPrevPos ? Math.hypot(p.x - prevX, p.z - prevZ) / dtSec : 0;
+            prevX = p.x;
+            prevZ = p.z;
+            hasPrevPos = true;
+            driveAudio.current.update(speed, p.sand);
+          }
+        }
+        st.tick(vNow);
+      }
       raf = requestAnimationFrame(loop);
     };
     raf = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(raf);
-  }, [phase, paused]);
+  }, [phase, paused, tabHidden]);
 
+  // Sol banner & ambient audio cues per phase
   useEffect(() => {
     stopSound.current();
     stopSound.current = () => {};
-    if (paused) return;
+    driveAudio.current?.stop();
+    driveAudio.current = null;
+
+    if (paused || tabHidden) return;
     if (phase === 'uplink') {
       stopSound.current = uplinkStatic();
       announce(`Uplink sent. ${copy.uplinkNote}.`);
     } else if (phase === 'executing') {
-      stopSound.current = motorHum();
+      const sol = useRoverStore.getState().report?.sol ?? useRoverStore.getState().game.rover.sol;
+      useRoverUiStore.getState().setSolBannerSol(sol);
+      const handle = startRoverDriveAudio();
+      driveAudio.current = handle;
+      stopSound.current = handle.stop;
     }
     return () => {
       stopSound.current();
       stopSound.current = () => {};
+      driveAudio.current = null;
     };
-  }, [phase, paused, copy, announce]);
+  }, [phase, paused, tabHidden, copy.uplinkNote, announce]);
 
+  // Phase transition SFX, haptics & ARIA announcements
   useEffect(() => {
     const st = useRoverStore.getState();
     const r = st.report;
+    const hapticsOn = useAppStore.getState().hapticsOn;
     if (!r) return;
+
     if (phase === 'downlink') {
-      const faults = r.actual.events.some((e) => e === 'rock_stop' || e === 'tilt_stop' || e === 'turn_blocked' || e === 'edge_stop');
-      blip(faults ? 'bad' : 'ok');
+      useRoverUiStore.getState().markDownlinkAt(performance.now());
+      const evs = r.actual.events;
+      const hitRock = evs.includes('rock_stop') || evs.includes('turn_blocked');
+      const scannedOk = evs.includes('scan_ok');
+      const scannedBad = evs.includes('scan_range');
+      const faults = hitRock || evs.includes('tilt_stop') || evs.includes('edge_stop');
+
+      if (hitRock) {
+        rockThunk();
+        triggerHaptic('rock', hapticsOn);
+      } else if (scannedOk || scannedBad) {
+        scanPing(scannedOk);
+      } else {
+        blip(faults ? 'bad' : 'ok');
+      }
+
       announce(
         `Downlink, sol ${r.sol}. Planned ${r.predicted.actualDistance.toFixed(1)} metres, drove ${r.actual.actualDistance.toFixed(1)}. ` +
-          `Slip ${Math.round(r.slip * 100)} percent. Battery ${Math.round(r.batteryAfterRecharge)} percent. ${whatHappened(r, copy)}`,
+          `Slip ${Math.round(r.slip * 100)} percent. Battery ${Math.round(r.batteryAfterRecharge)} percent. ${describeSolReport(r)}`,
       );
     } else if (phase === 'won' || phase === 'lost') {
+      useRoverUiStore.getState().markDownlinkAt(performance.now());
       const s = score(st.game.rover);
       recordRover(s.points, s.stars, phase === 'won');
       if (phase === 'won') {
+        scanPing(true);
         winChime();
         announce(`Mission complete. Score ${s.points}, ${s.stars} stars. ${copy.outcomes.won}`);
       } else {
-        blip('bad');
+        if (r.actual.events.includes('rock_stop')) rockThunk();
+        lostSignalTone();
         announce(`Mission lost. ${copy.outcomes[st.game.rover.loseReason ?? 'sols']}`);
       }
     }
-  }, [phase, copy, announce, recordRover]);
+  }, [phase, copy.outcomes, announce, recordRover]);
 }
 
-// ---------------------------------------------------------------------------
-// HUD pieces
-
-function TopBar({ copy }: { copy: ExtraGame }) {
-  const phase = useRoverStore((s) => s.phase);
-  const rover = useRoverStore((s) => s.game.rover);
-  const t = useRoverStore((s) => s.game.terrain);
-  useTicker(phase === 'executing');
-  const pred = usePrediction();
-  const st = useRoverStore.getState();
-  let battery = rover.battery;
-  let tilt = 0;
-  let x = rover.x;
-  let z = rover.z;
-  if (phase === 'executing' && st.report) {
-    const u = clockProgress(st);
-    const p = poseAt(st.report.actual.path, st.timeline, u);
-    battery = st.report.batteryBefore + (st.report.batteryAfterDrive - st.report.batteryBefore) * u;
-    tilt = p.tilt;
-    x = p.x;
-    z = p.z;
-  } else {
-    const path = st.report?.actual.path;
-    tilt = phase === 'planning' || !path ? (pred.path[0]?.tilt ?? 0) : (path[path.length - 1]?.tilt ?? 0);
-  }
-  const dist = distToTarget(t, x, z);
-  const low = battery < 20;
-  const tiltState = tilt > RULES.tiltStopDeg ? 'bad' : tilt > RULES.tiltWarnDeg ? 'warn' : 'ok';
-  return (
-    <div className="rd-top" role="group" aria-label="Rover status">
-      <div className="rd-stat">
-        <span className="rd-stat__k">Sol</span>
-        <span className="rd-stat__v">
-          {rover.sol}
-          <small>/{RULES.maxSols}</small>
-        </span>
-      </div>
-      <div className="rd-stat rd-stat--wide" data-state={low ? 'bad' : undefined}>
-        <span className="rd-stat__k">Battery</span>
-        <span className="rd-battery" aria-hidden="true">
-          <span style={{ width: `${Math.max(0, battery)}%` }} />
-        </span>
-        <span className="rd-stat__v">{Math.round(battery)}%</span>
-      </div>
-      <div className="rd-stat" data-state={tiltState}>
-        <span className="rd-stat__k">Tilt</span>
-        <span className="rd-tilt" aria-hidden="true" style={{ transform: `rotate(${Math.min(45, tilt)}deg)` }} />
-        <span className="rd-stat__v">{tilt.toFixed(0)}°</span>
-      </div>
-      <div className="rd-stat">
-        <span className="rd-stat__k">Target</span>
-        <span className="rd-stat__v">
-          {dist.toFixed(dist < 10 ? 1 : 0)}
-          <small> m</small>
-        </span>
-      </div>
-      <span className="sr-only">{copy.title}</span>
-    </div>
+export default function RoverDriveGame({
+  copy,
+  onExit,
+  exitLabel,
+}: {
+  copy: ExtraGame;
+  onExit: (outcome?: RoverExitOutcome) => void;
+  exitLabel: string;
+}) {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const { phase, cam, hud, menu, view } = useRoverStore(
+    useShallow((s) => ({
+      phase: s.phase,
+      cam: s.cam,
+      hud: s.hud,
+      menu: s.menu,
+      view: s.view,
+    })),
   );
-}
-
-function FaultLog() {
-  const faults = useRoverStore((s) => s.game.rover.faults);
-  const phase = useRoverStore((s) => s.phase);
-  if (!faults.length || phase === 'executing') return null;
-  const labels: Record<string, string> = {
-    rock: 'Rock hazard',
-    tilt: 'Tilt limit',
-    edge: 'Map edge',
-    turn_blocked: 'Turn blocked',
-    scan_range: 'Scan out of range',
-  };
-  return (
-    <div className="rd-faults">
-      <p className="rd-label">Fault log</p>
-      <ol>
-        {faults.slice(-4).map((f, i) => (
-          <li key={i}>
-            <span>Sol {f.sol}</span> {labels[f.code]}
-          </li>
-        ))}
-      </ol>
-    </div>
+  const howToOpen = useRoverUiStore((s) => s.howToOpen);
+  const perfStats = useRoverUiStore((s) => s.perfStats);
+  const qualityTier = useRoverUiStore((s) => s.qualityTier);
+  const { soundOn, masterVolume, setSound, setRoverView } = useAppStore(
+    useShallow((s) => ({
+      soundOn: s.soundOn,
+      masterVolume: s.masterVolume,
+      setSound: s.setSound,
+      setRoverView: s.setRoverView,
+    })),
   );
-}
 
-function Dock({ copy }: { copy: ExtraGame }) {
-  const queue = useRoverStore((s) => s.queue);
-  const dist = useRoverStore((s) => s.dist);
-  const { add, remove, move, clear, setDist, send } = useRoverStore.getState();
-  const pred = usePrediction();
-  const full = queue.length >= RULES.maxCommands;
-  const battEnd = pred.end.battery;
-  const warn =
-    pred.end.status === 'lost'
-      ? pred.end.loseReason === 'tipover'
-        ? 'Predicted: tip-over!'
-        : 'Predicted: battery runs out!'
-      : pred.events.includes('rock_stop')
-        ? 'Predicted: a rock stops the drive.'
-        : pred.events.includes('turn_blocked')
-          ? 'Predicted: a rock blocks a turn.'
-          : pred.events.includes('tilt_stop')
-            ? 'Predicted: tilt over 30°, rover will stop.'
-            : pred.maxTilt > RULES.tiltWarnDeg
-              ? `Predicted tilt ${pred.maxTilt.toFixed(0)}°.`
-              : pred.path.some((p) => p.sand > 0.5)
-                ? 'Route crosses soft sand: expect slip.'
-                : null;
-
-  const palette: { c: Command; label: string; key: string }[] = [
-    { c: { type: 'turn', deg: 45 }, label: 'Left 45°', key: 'Shift+A' },
-    { c: { type: 'turn', deg: 15 }, label: 'Left 15°', key: 'A' },
-    { c: { type: 'forward', m: dist }, label: `Forward ${dist} m`, key: 'W' },
-    { c: { type: 'turn', deg: -15 }, label: 'Right 15°', key: 'D' },
-    { c: { type: 'turn', deg: -45 }, label: 'Right 45°', key: 'Shift+D' },
-    { c: { type: 'back', m: 1 }, label: 'Back 1 m', key: 'S' },
-    { c: { type: 'scan' }, label: 'SCAN', key: 'Q' },
-  ];
-
-  return (
-    <div className="rd-dock" role="region" aria-label="Drive plan">
-      <div className="rd-dock__palette">
-        <div className="rd-seg" role="radiogroup" aria-label="Forward distance">
-          {([1, 2, 5] as const).map((m) => (
-            <button
-              key={m}
-              type="button"
-              role="radio"
-              aria-checked={dist === m}
-              className="rd-seg__btn"
-              onClick={() => setDist(m)}
-              title={`Key ${m}`}
-            >
-              {m} m
-            </button>
-          ))}
-        </div>
-        <div className="rd-cmds">
-          {palette.map(({ c, label, key }) => (
-            <button
-              key={label}
-              type="button"
-              className={`rd-cmd ${c.type === 'forward' ? 'rd-cmd--main' : ''} ${c.type === 'scan' ? 'rd-cmd--scan' : ''}`}
-              disabled={full}
-              onClick={() => {
-                add(c);
-                blip('tick');
-              }}
-              aria-keyshortcuts={key.replace('Shift+', 'Shift+')}
-            >
-              <span aria-hidden="true" className="rd-cmd__g">
-                {cmdGlyph(c)}
-              </span>
-              {label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="rd-dock__queue">
-        <div className="rd-dock__head">
-          <p className="rd-label">
-            Sol plan <span className="rd-count">{queue.length}/{RULES.maxCommands}</span>
-          </p>
-          <button type="button" className="rd-link" onClick={clear} disabled={!queue.length}>
-            Clear
-          </button>
-        </div>
-        {queue.length === 0 ? (
-          <p className="rd-empty">Add up to {RULES.maxCommands} commands. The dashed ghost path shows the predicted route.</p>
-        ) : (
-          <ol className="rd-queue" aria-label="Command queue">
-            {queue.map((c, i) => (
-              <li key={i} className="rd-queue__item" data-bad={pred.haltedAt === i || undefined}>
-                <span className="rd-queue__n">{i + 1}</span>
-                <span className="rd-queue__t">{cmdLabel(c)}</span>
-                <button type="button" className="rd-mini" onClick={() => move(i, -1)} disabled={i === 0} aria-label={`Move ${cmdLabel(c)} up`}>
-                  ▲
-                </button>
-                <button
-                  type="button"
-                  className="rd-mini"
-                  onClick={() => move(i, 1)}
-                  disabled={i === queue.length - 1}
-                  aria-label={`Move ${cmdLabel(c)} down`}
-                >
-                  ▼
-                </button>
-                <button type="button" className="rd-mini" onClick={() => remove(i)} aria-label={`Remove ${cmdLabel(c)}`}>
-                  ✕
-                </button>
-              </li>
-            ))}
-          </ol>
-        )}
-      </div>
-
-      <div className="rd-dock__send">
-        <p className="rd-predict">
-          <span className="rd-label">Predicted battery</span>
-          <span>
-            {Math.round(useRoverStore.getState().game.rover.battery)}% → <b data-low={battEnd < 20 || undefined}>{Math.round(battEnd)}%</b>
-          </span>
-        </p>
-        <p className="rd-warn" data-on={!!warn || undefined} aria-live="off">
-          {warn ?? `${pred.actualDistance.toFixed(1)} m planned`}
-        </p>
-        <button type="button" className="rd-send" onClick={send} disabled={!queue.length} aria-keyshortcuts="Enter">
-          Send uplink <span aria-hidden="true">⟶</span>
-        </button>
-        <p className="rd-hint">{copy.uplinkNote}</p>
-      </div>
-    </div>
-  );
-}
-
-function UplinkOverlay({ copy }: { copy: ExtraGame }) {
-  useTicker(true);
-  const st = useRoverStore.getState();
-  const u = clockProgress(st);
-  const left = Math.max(0, UPLINK_SEC * (1 - u));
-  return (
-    <div className="rd-center rd-uplink" role="status">
-      <p className="rd-label">Uplink in transit</p>
-      <p className="rd-uplink__t">{left.toFixed(1)}s</p>
-      <span className="rd-uplink__bar" aria-hidden="true">
-        <span style={{ width: `${u * 100}%` }} />
-      </span>
-      <p className="rd-hint">{copy.uplinkNote}</p>
-    </div>
-  );
-}
-
-function ExecutingChip() {
-  const sol = useRoverStore((s) => s.report?.sol);
-  return (
-    <div className="rd-chip" role="status">
-      <span className="rd-dot" aria-hidden="true" /> Executing sol {sol} · downlink pending
-    </div>
-  );
-}
-
-function Summary({ r, copy }: { r: SolReport; copy: ExtraGame }) {
-  const delta = r.batteryAfterDrive - r.batteryBefore;
-  return (
-    <dl className="rd-sum">
-      <div>
-        <dt>Planned</dt>
-        <dd>{r.predicted.actualDistance.toFixed(1)} m</dd>
-      </div>
-      <div>
-        <dt>Actual</dt>
-        <dd>{r.actual.actualDistance.toFixed(1)} m</dd>
-      </div>
-      <div>
-        <dt>Slip</dt>
-        <dd>{Math.round(r.slip * 100)}%</dd>
-      </div>
-      <div>
-        <dt>Battery</dt>
-        <dd>
-          {delta.toFixed(0)}%
-          {r.batteryAfterRecharge > r.batteryAfterDrive && (
-            <small className="rd-sum__sub">+{(r.batteryAfterRecharge - r.batteryAfterDrive).toFixed(0)}% overnight</small>
-          )}
-        </dd>
-      </div>
-      <p className="rd-sum__what">{whatHappened(r, copy)}</p>
-    </dl>
-  );
-}
-
-function DownlinkCard({ copy }: { copy: ExtraGame }) {
-  const r = useRoverStore((s) => s.report);
-  const sol = useRoverStore((s) => s.game.rover.sol);
-  const nextSol = useRoverStore((s) => s.nextSol);
-  const btn = useRef<HTMLButtonElement>(null);
-  useEffect(() => btn.current?.focus(), []);
-  if (!r) return null;
-  return (
-    <div className="rd-card rd-card--side" role="dialog" aria-label={`Downlink, sol ${r.sol}`}>
-      <p className="rd-label">Downlink · sol {r.sol}</p>
-      <Summary r={r} copy={copy} />
-      <button ref={btn} type="button" className="rd-send" onClick={nextSol}>
-        Plan sol {sol} <span aria-hidden="true">⟶</span>
-      </button>
-    </div>
-  );
-}
-
-function EndCard({ copy, onExit, exitLabel }: { copy: ExtraGame; onExit: () => void; exitLabel: string }) {
-  const phase = useRoverStore((s) => s.phase);
-  const rover = useRoverStore((s) => s.game.rover);
-  const r = useRoverStore((s) => s.report);
-  const restart = useRoverStore((s) => s.restart);
-  const wins = useAppStore((s) => s.roverResult?.wins ?? 0);
-  const btn = useRef<HTMLButtonElement>(null);
-  useEffect(() => btn.current?.focus(), []);
-  const won = phase === 'won';
-  const s = score(rover);
-  const firstWin = won && wins === 1;
-  return (
-    <div className="rd-center">
-      <div className="rd-card rd-card--end" role="dialog" aria-modal="true" aria-labelledby="rd-end-title">
-        <p className="rd-label">{won ? 'Mission complete' : 'Mission lost'}</p>
-        <h2 id="rd-end-title" className="rd-title">
-          {won ? 'Hematite confirmed' : { sand: 'Stuck in sand', battery: 'Out of power', tipover: 'Tipped over', sols: 'Out of sols' }[rover.loseReason ?? 'sols']}
-        </h2>
-        <p className="rd-body">{won ? copy.outcomes.won : copy.outcomes[rover.loseReason ?? 'sols']}</p>
-        {won && (
-          <div className="rd-score">
-            <span className="rd-stars" aria-label={`${s.stars} of 3 stars`}>
-              {[1, 2, 3].map((i) => (
-                <span key={i} data-on={i <= s.stars || undefined} aria-hidden="true">
-                  ★
-                </span>
-              ))}
-            </span>
-            <span className="rd-score__n">{s.points}</span>
-            <span className="rd-hint">
-              Sol {rover.sol} · {Math.round(rover.battery)}% battery · {rover.hazardFaults} hazard fault{rover.hazardFaults === 1 ? '' : 's'}
-            </span>
-          </div>
-        )}
-        {firstWin && (
-          <div className="rd-badge">
-            <span className="badge-orb" aria-hidden="true">
-              <IconTrophy size={20} />
-            </span>
-            <div>
-              <p className="rd-label">Badge unlocked</p>
-              <p className="rd-badge__n">{copy.badge.name}</p>
-            </div>
-          </div>
-        )}
-        {r && <Summary r={r} copy={copy} />}
-        <div className="rd-actions">
-          <button ref={btn} type="button" className="rd-send" onClick={restart} aria-keyshortcuts="R">
-            <IconRetry size={16} /> Retry
-          </button>
-          <button type="button" className="rd-ghost" onClick={onExit}>
-            {exitLabel}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Rules({ copy }: { copy: ExtraGame }) {
-  return (
-    <div className="rd-rules">
-      <p className="rd-label">{copy.rulesTitle}</p>
-      <ul>
-        {copy.rules.map((r) => (
-          <li key={r}>{r}</li>
-        ))}
-      </ul>
-      <p className="rd-hint">{copy.rulesNote}</p>
-    </div>
-  );
-}
-
-function Briefing({ copy, onExit }: { copy: ExtraGame; onExit: () => void }) {
-  const start = useRoverStore((s) => s.start);
-  const btn = useRef<HTMLButtonElement>(null);
-  useEffect(() => btn.current?.focus(), []);
-  return (
-    <div className="rd-brief">
-      <div className="rd-brief__inner">
-        <p className="rd-label">Issue 01 · {copy.kicker}</p>
-        <h1 className="rd-brief__title">{copy.title}</h1>
-        <div className="rd-brief__lines">
-          {copy.briefing.map((l) => (
-            <p key={l}>{l}</p>
-          ))}
-        </div>
-        <Rules copy={copy} />
-        <p className="rd-hint">{copy.timeNote}</p>
-        <div className="rd-actions">
-          <button ref={btn} type="button" className="rd-start" onClick={start}>
-            Start mission
-          </button>
-          <button type="button" className="rd-ghost" onClick={onExit}>
-            Back
-          </button>
-        </div>
-        <p className="rd-keys">W/S drive · A/D turn (Shift = 45°) · 1/2/5 distance · Q scan · Enter send · Backspace undo · C camera · H hide HUD · Esc pause</p>
-      </div>
-    </div>
-  );
-}
-
-function PauseMenu({ copy, onExit, exitLabel }: { copy: ExtraGame; onExit: () => void; exitLabel: string }) {
-  const menu = useRoverStore((s) => s.menu);
-  const { openMenu, restart } = useRoverStore.getState();
-  const first = useRef<HTMLButtonElement>(null);
-  useEffect(() => first.current?.focus(), [menu]);
-  return (
-    <div className="rd-center rd-scrim">
-      <div className="rd-card rd-card--menu" role="dialog" aria-modal="true" aria-label={menu === 'rules' ? copy.rulesTitle : 'Paused'}>
-        {menu === 'rules' ? (
-          <>
-            <Rules copy={copy} />
-            <button ref={first} type="button" className="rd-send" onClick={() => openMenu('pause')}>
-              Back
-            </button>
-          </>
-        ) : (
-          <>
-            <p className="rd-label">Paused</p>
-            <h2 className="rd-title">{copy.title}</h2>
-            <div className="rd-menu">
-              <button ref={first} type="button" className="rd-send" onClick={() => openMenu(null)}>
-                Resume
-              </button>
-              <button type="button" className="rd-ghost" onClick={restart}>
-                Restart
-              </button>
-              <button type="button" className="rd-ghost" onClick={() => openMenu('rules')}>
-                {copy.rulesTitle}
-              </button>
-              <button type="button" className="rd-ghost" onClick={onExit}>
-                {exitLabel}
-              </button>
-            </div>
-          </>
-        )}
-      </div>
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-
-export default function RoverDriveGame({ copy, onExit, exitLabel }: { copy: ExtraGame; onExit: () => void; exitLabel: string }) {
-  const root = useRef<HTMLDivElement>(null);
-  const phase = useRoverStore((s) => s.phase);
-  const cam = useRoverStore((s) => s.cam);
-  const hud = useRoverStore((s) => s.hud);
-  const menu = useRoverStore((s) => s.menu);
-  const view = useRoverStore((s) => s.view);
-  const soundOn = useAppStore((s) => s.soundOn);
-  const setSound = useAppStore((s) => s.setSound);
   const reduced = useReducedMotion();
   const gl = hasWebGL();
   const use3d = gl && view === '3d';
-  const [live, setLive] = useState('');
+  const [liveMsg, setLiveMsg] = useState('');
   const [fs, setFs] = useState(false);
-  const [rotateHint, setRotateHint] = useState(true);
-  const showFps = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('fps');
-  const fps = useFps(showFps);
+  const [tabHidden, setTabHidden] = useState(
+    () => typeof document !== 'undefined' && document.visibilityState === 'hidden',
+  );
 
-  const announce = useCallback((s: string) => setLive(s), []);
-  useFlow(copy, announce);
+  const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+  const showPerf = !!searchParams && (searchParams.has('perf') || searchParams.has('fps'));
+  const fps = useFps(showPerf && !use3d);
 
-  // Fresh session on mount; nothing leaks between visits.
+  const announce = useCallback((s: string) => setLiveMsg(s), []);
+  useGameFlow(copy, announce, tabHidden);
+
+  const handleExit = useCallback(() => {
+    const st = useRoverStore.getState();
+    if (st.phase === 'won' || st.phase === 'lost') {
+      const s = score(st.game.rover);
+      onExit({ won: st.phase === 'won', stars: s.stars, points: s.points, sols: st.game.rover.sol });
+    } else {
+      onExit();
+    }
+  }, [onExit]);
+
+  // Fresh game, audio bed & UI session on mount.
   useEffect(() => {
     resetRoverSession();
-    if (!gl) useRoverStore.getState().setView('2d');
+    resetPlanOrbit();
+    resetExecPlayhead();
+    const appState = useAppStore.getState();
+    setMasterVolume(appState.masterVolume);
+    setRoverAmbientActive(true);
+    useRoverStore.getState().setView(gl ? appState.roverView : '2d');
+    useRoverUiStore.getState().resetUiSession(!appState.roverTutorialSeen);
+    return () => {
+      setRoverAmbientActive(false);
+    };
   }, [gl]);
+
+  // Keep master volume synced when sound turns on/off
+  useEffect(() => {
+    setMasterVolume(masterVolume);
+  }, [masterVolume]);
+
+  // Pause 3D render loop & RAF playhead when browser tab is backgrounded
+  useEffect(() => {
+    const onVis = () => setTabHidden(document.visibilityState === 'hidden');
+    document.addEventListener('visibilitychange', onVis);
+    return () => document.removeEventListener('visibilitychange', onVis);
+  }, []);
 
   useEffect(() => {
     const onFs = () => setFs(!!document.fullscreenElement);
@@ -618,21 +308,51 @@ export default function RoverDriveGame({ copy, onExit, exitLabel }: { copy: Extr
   const canFs = typeof document !== 'undefined' && !!document.fullscreenEnabled;
   const toggleFs = useCallback(() => {
     if (document.fullscreenElement) void document.exitFullscreen().catch(() => {});
-    else void root.current?.requestFullscreen?.().catch(() => {});
+    else void rootRef.current?.requestFullscreen?.().catch(() => {});
   }, []);
 
   const toggleSound = useCallback(() => {
     const next = !useAppStore.getState().soundOn;
     setSound(next);
     setSoundEnabled(next);
+    if (next) setMasterVolume(useAppStore.getState().masterVolume);
   }, [setSound]);
 
-  // Keyboard
+  const toggleView = useCallback(() => {
+    if (!gl) return;
+    const next = useRoverStore.getState().view === '3d' ? '2d' : '3d';
+    useRoverStore.getState().setView(next);
+    setRoverView(next);
+  }, [gl, setRoverView]);
+
+  // Global keyboard shortcuts (including Space skip & Alt+Arrow / +- / 0 Plan orbit)
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.metaKey || e.ctrlKey) return;
+      if (useRoverUiStore.getState().howToOpen) return;
       const st = useRoverStore.getState();
       const k = e.key;
+
+      // Alt+Arrows orbit Plan view
+      if (e.altKey) {
+        if (use3d && st.cam === 'map' && st.phase !== 'briefing' && !st.menu) {
+          if (k === 'ArrowLeft') {
+            e.preventDefault();
+            nudgePlanOrbit(-0.14, 0, 1);
+          } else if (k === 'ArrowRight') {
+            e.preventDefault();
+            nudgePlanOrbit(0.14, 0, 1);
+          } else if (k === 'ArrowUp') {
+            e.preventDefault();
+            nudgePlanOrbit(0, 0.1, 1);
+          } else if (k === 'ArrowDown') {
+            e.preventDefault();
+            nudgePlanOrbit(0, -0.1, 1);
+          }
+        }
+        return;
+      }
+
       if (k === 'Escape') {
         e.preventDefault();
         if (document.fullscreenElement) return void document.exitFullscreen().catch(() => {});
@@ -644,7 +364,29 @@ export default function RoverDriveGame({ copy, onExit, exitLabel }: { copy: Extr
       const tag = (e.target as HTMLElement | null)?.tagName;
       const onButton = tag === 'BUTTON';
       const lower = k.toLowerCase();
+
+      if (k === ' ' && st.phase === 'executing' && !onButton) {
+        e.preventDefault();
+        requestSkipExec();
+        return;
+      }
+      if (use3d && st.cam === 'map' && st.phase !== 'briefing') {
+        if (k === '+' || k === '=') {
+          e.preventDefault();
+          return nudgePlanOrbit(0, 0, 0.88);
+        }
+        if (k === '-' || k === '_') {
+          e.preventDefault();
+          return nudgePlanOrbit(0, 0, 1.14);
+        }
+        if (k === '0') {
+          e.preventDefault();
+          return useRoverUiStore.getState().triggerResetOrbit();
+        }
+      }
+
       if (lower === 'h') return st.toggleHud();
+      if (lower === 'l' && st.phase !== 'briefing') return useRoverUiStore.getState().toggleHazardLens();
       if (lower === 'c' && use3d) return st.cycleCam();
       if (lower === 'm') return toggleSound();
       if (lower === 'f' && canFs) return toggleFs();
@@ -674,15 +416,22 @@ export default function RoverDriveGame({ copy, onExit, exitLabel }: { copy: Extr
     return () => window.removeEventListener('keydown', onKey);
   }, [use3d, toggleFs, toggleSound, canFs]);
 
-  const paused = menu !== null;
-  const showHud = hud && phase !== 'briefing';
+  const paused = menu !== null || howToOpen;
+  const showHudContent = hud && phase !== 'briefing';
   const ended = phase === 'won' || phase === 'lost';
+  const canOrbitCanvas = use3d && cam === 'map' && phase !== 'briefing' && !paused;
 
   return (
-    <div ref={root} className="rd" data-cam={use3d ? cam : 'map2d'} data-reduced={reduced || undefined}>
+    <div
+      ref={rootRef}
+      className="rd rd-root"
+      data-cam={use3d ? cam : 'map2d'}
+      data-orbit={canOrbitCanvas ? 'true' : undefined}
+      data-reduced={reduced || undefined}
+    >
       <div className="rd-stage">
         <Suspense fallback={<div className="rd-loading" role="status">Acquiring signal…</div>}>
-          {use3d ? <RoverDriveScene paused={paused && phase !== 'briefing'} /> : <RoverDrive2D />}
+          {use3d ? <RoverDriveScene paused={tabHidden || (paused && phase !== 'briefing')} /> : <RoverDrive2D />}
         </Suspense>
         {use3d && cam === 'hazcam' && phase !== 'briefing' && <div className="rd-hazcam" aria-hidden="true" />}
       </div>
@@ -693,76 +442,70 @@ export default function RoverDriveGame({ copy, onExit, exitLabel }: { copy: Extr
             key="brief"
             className="rd-layer"
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1, transition: { duration: reduced ? dur.fast : dur.slow, delay: reduced ? 0 : dur.base, ease: ease.out } }}
-            exit={{ opacity: 0, transition: { duration: dur.fast } }}
+            animate={{
+              opacity: 1,
+              transition: { duration: reduced ? dur.instant : dur.fast, ease: ease.out },
+            }}
+            exit={{ opacity: 0, transition: { duration: dur.instant } }}
           >
-            <Briefing copy={copy} onExit={onExit} />
+            <IntroScreen onExit={handleExit} />
           </motion.div>
         )}
       </AnimatePresence>
 
-      {showHud && (
+      <Hud
+        gl={gl}
+        use3d={use3d}
+        soundOn={soundOn}
+        fs={fs}
+        canFs={canFs}
+        exitLabel={exitLabel}
+        onToggleSound={toggleSound}
+        onToggleFs={toggleFs}
+        onToggleView={toggleView}
+        onExit={handleExit}
+      />
+
+      {showHudContent && (
         <>
-          <TopBar copy={copy} />
-          <FaultLog />
-          {phase === 'planning' && <Dock copy={copy} />}
-          {phase === 'uplink' && <UplinkOverlay copy={copy} />}
+          {phase === 'planning' && <CommandDock copy={copy} />}
+          {phase === 'uplink' && <UplinkOverlay />}
           {phase === 'executing' && <ExecutingChip />}
-          {phase === 'downlink' && <DownlinkCard copy={copy} />}
+          {phase === 'downlink' && <DownlinkReport />}
         </>
       )}
-      {!hud && phase !== 'briefing' && phase === 'downlink' && <DownlinkCard copy={copy} />}
-      {ended && <EndCard copy={copy} onExit={onExit} exitLabel={exitLabel} />}
 
-      <div className="rd-corner" role="toolbar" aria-label="Game controls">
-        {phase !== 'briefing' && gl && (
-          <button type="button" className="rd-icon" onClick={() => useRoverStore.getState().setView(view === '3d' ? '2d' : '3d')} aria-label={view === '3d' ? 'Switch to 2D map' : 'Switch to 3D view'}>
-            <span className="rd-l-full">{view === '3d' ? '2D map' : '3D view'}</span>
-            <span className="rd-l-short" aria-hidden="true">{view === '3d' ? '2D' : '3D'}</span>
-          </button>
-        )}
-        {phase !== 'briefing' && use3d && (
-          <button type="button" className="rd-icon" onClick={() => useRoverStore.getState().cycleCam()} aria-keyshortcuts="C" aria-label={`Camera: ${cam}. Switch camera`}>
-            <span className="rd-l-full">{cam === 'chase' ? 'Chase' : cam === 'hazcam' ? 'Hazcam' : 'Map'}</span>
-            <span className="rd-l-short" aria-hidden="true">{cam === 'chase' ? 'Chs' : cam === 'hazcam' ? 'Haz' : 'Map'}</span>
-          </button>
-        )}
-        {phase !== 'briefing' && (
-          <button type="button" className="rd-icon" onClick={() => useRoverStore.getState().toggleHud()} aria-label={hud ? 'Hide HUD' : 'Show HUD'} aria-keyshortcuts="H">
-            <span className="rd-l-full">{hud ? 'Hide HUD' : 'Show HUD'}</span>
-            <span className="rd-l-short" aria-hidden="true">HUD</span>
-          </button>
-        )}
-        <button type="button" className="rd-icon rd-icon--sq" onClick={toggleSound} aria-label={soundOn ? 'Mute sound' : 'Turn sound on'} aria-keyshortcuts="M">
-          {soundOn ? <IconSound size={18} /> : <IconMute size={18} />}
-        </button>
-        {canFs && (
-          <button type="button" className="rd-icon rd-icon--sq" onClick={toggleFs} aria-label={fs ? 'Exit fullscreen' : 'Fullscreen'} aria-keyshortcuts="F">
-            <span aria-hidden="true">{fs ? '⤡' : '⤢'}</span>
-          </button>
-        )}
-        {phase !== 'briefing' && (
-          <button type="button" className="rd-icon rd-icon--sq" onClick={() => useRoverStore.getState().openMenu('pause')} aria-label="Pause" aria-keyshortcuts="Escape">
-            <span aria-hidden="true">❚❚</span>
-          </button>
-        )}
-        <button type="button" className="rd-icon rd-icon--sq" onClick={onExit} aria-label={exitLabel}>
-          <IconClose size={18} />
-        </button>
-      </div>
+      {!hud && phase === 'downlink' && <DownlinkReport />}
 
-      {showFps && <div className="rd-fps">{fps} fps</div>}
+      <SolStartCard />
+      <Captions />
+      <Toasts />
+      <CoachMarks />
 
-      {rotateHint && (
-        <button type="button" className="rd-rotate" onClick={() => setRotateHint(false)}>
-          Rotate your device for the best view <span aria-hidden="true">✕</span>
-        </button>
+      {ended && <EndScreen copy={copy} onExit={handleExit} exitLabel={exitLabel} />}
+
+      {menu && (
+        <PauseMenu
+          copy={copy}
+          soundOn={soundOn}
+          onToggleSound={toggleSound}
+          onExit={handleExit}
+          exitLabel={exitLabel}
+        />
       )}
 
-      {menu && <PauseMenu copy={copy} onExit={onExit} exitLabel={exitLabel} />}
+      <HowToSheet copy={copy} />
+
+      {showPerf && (
+        <div className="rd-fps" aria-hidden="true">
+          {use3d
+            ? `${perfStats.fps} fps · ${perfStats.calls} calls · ${(perfStats.triangles / 1000).toFixed(1)}k tris · ${qualityTier}`
+            : `${fps} fps · 2D`}
+        </div>
+      )}
 
       <div className="sr-only" aria-live="polite" role="status">
-        {live}
+        {liveMsg}
       </div>
     </div>
   );

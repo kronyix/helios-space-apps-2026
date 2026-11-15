@@ -1,0 +1,130 @@
+{
+  "baseUrl": "http://localhost:4173",
+  "only": "bench",
+  "desktop": null,
+  "handoff": null,
+  "responsive": null,
+  "perf": [
+    {
+      "label": "plan-1280-high",
+      "tier": "high",
+      "viewport": "1280x800",
+      "throttled4x": false,
+      "fps": 2,
+      "p95FrameMs": 749.9,
+      "calls": 42,
+      "triangles": 96320,
+      "geometries": 27,
+      "textures": 8
+    },
+    {
+      "label": "exec-1280-high-4xcpu",
+      "tier": "high",
+      "viewport": "1280x800",
+      "throttled4x": true,
+      "fps": 1.5,
+      "p95FrameMs": 1449.9,
+      "calls": 56,
+      "triangles": 98724,
+      "geometries": 40,
+      "textures": 9
+    },
+    {
+      "label": "plan-1280-med",
+      "tier": "med",
+      "viewport": "1280x800",
+      "throttled4x": false,
+      "fps": 2.5,
+      "p95FrameMs": 649.9,
+      "calls": 42,
+      "triangles": 80208,
+      "geometries": 28,
+      "textures": 8
+    },
+    {
+      "label": "exec-1280-med-4xcpu",
+      "tier": "med",
+      "viewport": "1280x800",
+      "throttled4x": true,
+      "fps": 1.5,
+      "p95FrameMs": 1516.6,
+      "calls": 56,
+      "triangles": 82612,
+      "geometries": 40,
+      "textures": 9
+    },
+    {
+      "label": "plan-1280-low",
+      "tier": "low",
+      "viewport": "1280x800",
+      "throttled4x": false,
+      "fps": 4,
+      "p95FrameMs": 366.7,
+      "calls": 27,
+      "triangles": 50443,
+      "geometries": 25,
+      "textures": 3
+    },
+    {
+      "label": "exec-1280-low-4xcpu",
+      "tier": "low",
+      "viewport": "1280x800",
+      "throttled4x": true,
+      "fps": 2,
+      "p95FrameMs": 966.7,
+      "calls": 41,
+      "triangles": 52855,
+      "geometries": 38,
+      "textures": 4
+    },
+    {
+      "label": "plan-390-med",
+      "tier": "med",
+      "viewport": "390x844",
+      "throttled4x": false,
+      "fps": 4,
+      "p95FrameMs": 316.7,
+      "calls": 42,
+      "triangles": 80208,
+      "geometries": 27,
+      "textures": 8
+    },
+    {
+      "label": "exec-390-med-4xcpu",
+      "tier": "med",
+      "viewport": "390x844",
+      "throttled4x": true,
+      "fps": 2,
+      "p95FrameMs": 1100,
+      "calls": 56,
+      "triangles": 82620,
+      "geometries": 40,
+      "textures": 9
+    },
+    {
+      "label": "plan-390-low",
+      "tier": "low",
+      "viewport": "390x844",
+      "throttled4x": false,
+      "fps": 9,
+      "p95FrameMs": 150,
+      "calls": 27,
+      "triangles": 50443,
+      "geometries": 25,
+      "textures": 3
+    },
+    {
+      "label": "exec-390-low-4xcpu",
+      "tier": "low",
+      "viewport": "390x844",
+      "throttled4x": true,
+      "fps": 4,
+      "p95FrameMs": 449.9,
+      "calls": 39,
+      "triangles": 52883,
+      "geometries": 38,
+      "textures": 4
+    }
+  ],
+  "problems": []
+}

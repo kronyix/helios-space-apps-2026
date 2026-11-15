@@ -88,5 +88,16 @@
   "badge.inspector.criteria": "Inspecione todos os {n} pontos-chave nas três edições.",
   "badge.archivist.name": "Arquivista",
   "badge.archivist.criteria": "Recupere os três artefatos.",
-  "badges.issues": "Edições"
+  "badges.issues": "Edições",
+  "rover.caption.intro": "Seus comandos chegam a Marte minutos depois. Planeje um sol e envie.",
+  "rover.caption.firstUplink": "Sinal de rádio enviado a Meridiani Planum. Aguarde a telemetria.",
+  "rover.caption.firstSandSlip": "Areia fofa à frente — as rodas estão patinando na poeira.",
+  "rover.caption.rockStop": "A proteção contra perigos parou o rover antes de uma rocha.",
+  "rover.caption.lowBattery": "Bateria baixa. Faça um sol curto para recarregar os painéis.",
+  "rover.caption.win": "Mirtilos de hematita analisados! Água já moldou esta planície.",
+  "rover.caption.lose": "Sinal perdido antes da análise. Revise e tente novamente.",
+  "story.driveRover": "Dirigir o rover",
+  "story.continueStory": "Continuar história",
+  "story.roverWon": "Você analisou os mirtilos! Continue a história abaixo.",
+  "story.roverLost": "Até o Controle da Missão enfrenta imprevistos em Marte — continue abaixo."
 }

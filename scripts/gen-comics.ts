@@ -111,7 +111,7 @@ ${rocks(RUST, 3, 26, 450, 590)}
 </g>
 <path d="M560 420 q-30 30 -70 26 M660 420 q30 30 70 24" fill="none" stroke="${INK}" stroke-width="3"/>
 <ellipse cx="610" cy="452" rx="120" ry="12" fill="${RUST.ground2}" opacity=".7"/>
-<text x="120" y="400" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="64" fill="${RUST.light}" stroke="${INK}" stroke-width="3" transform="rotate(-8 120 400)">BOUNCE!</text>`);
+<text x="120" y="400" font-family="Luckiest Guy, sans-serif" font-weight="700" font-size="64" fill="${RUST.light}" stroke="${INK}" stroke-width="3" transform="rotate(-8 120 400)">BOUNCE!</text>`);
 
 out['oppy_p2'] = frame(RUST, 'x', `${sky('x')}
 ${ground(RUST, 'x', 380, 10)}
@@ -120,7 +120,7 @@ ${rocks(RUST, 9, 22, 400, 590)}
 <path d="M0 520 C 200 512, 380 505, 560 500" fill="none" stroke="${INK}" stroke-width="2" stroke-dasharray="4 10"/>
 ${rover(700, 512, 1.25, RUST, { drag: true })}
 <path d="M560 360 h-150 m0 0 l26 -18 m-26 18 l26 18" fill="none" stroke="${INK}" stroke-width="6" stroke-linecap="round"/>
-<text x="380" y="330" font-family="IBM Plex Mono, monospace" font-size="22" fill="${INK}">REVERSE</text>
+<text x="380" y="330" font-family="Silkscreen, monospace" font-size="22" fill="${INK}">REVERSE</text>
 <circle cx="819" cy="489" r="30" fill="none" stroke="${RUST.accent}" stroke-width="4" stroke-dasharray="6 6"/>`);
 
 out['oppy_p3'] = frame(RUST, 'x', `${sky('x')}
@@ -140,7 +140,7 @@ out['oppy_p4'] = frame(RUST, 'x', `<rect width="${W}" height="${H}" fill="${RUST
   ${Array.from({ length: 16 }, (_, i) => `<rect x="-8" y="-118" width="16" height="16" fill="#6a625c" transform="rotate(${i * 22.5})"/>`).join('')}
   <circle r="36" fill="#aaa"/>
 </g>
-<text x="560" y="560" font-family="IBM Plex Mono, monospace" font-size="34" font-weight="600" fill="#f7f2e6">SiO₂ ≈ 90%</text>`);
+<text x="560" y="560" font-family="Silkscreen, monospace" font-size="34" font-weight="600" fill="#f7f2e6">SiO₂ ≈ 90%</text>`);
 
 out['oppy_p5'] = frame(RUST, 'x', `<rect width="${W}" height="${H}" fill="#5e3020"/>
 <rect width="${W}" height="${H}" fill="#7a4228" opacity=".6"/>
@@ -183,7 +183,7 @@ out['apollo_p2'] = frame(SILVER, 'x', `<rect width="${W}" height="${H}" fill="#1
     <rect x="740" y="228" width="30" height="22" fill="${INK}"/><circle cx="755" cy="239" r="6" fill="#888"/>
   </g>
 </g>
-<text x="600" y="540" font-family="IBM Plex Mono, monospace" font-size="24" fill="${SILVER.accent}">Δv = vₑ ln(m₀ / m₁)</text>`);
+<text x="600" y="540" font-family="Silkscreen, monospace" font-size="24" fill="${SILVER.accent}">Δv = vₑ ln(m₀ / m₁)</text>`);
 
 out['apollo_p3'] = frame(SILVER, 'x', `<rect width="${W}" height="${H}" fill="#000"/>${starsSvg(40, 3)}
 ${ground(SILVER, 'x', 420, 6)}
@@ -202,7 +202,7 @@ out['apollo_p4'] = frame(SILVER, 'x', `<rect width="${W}" height="${H}" fill="#0
   <path d="M300 300 L320 230 M660 300 L640 230" stroke-width="6"/>
 </g>
 <g fill="${SILVER.accent}" opacity=".85">${[[380, 240], [470, 228], [560, 240]].map(([cx, cy]) => `<ellipse cx="${cx}" cy="${cy}" rx="34" ry="20" stroke="${INK}" stroke-width="3"/>`).join('')}</g>
-<text x="290" y="540" font-family="IBM Plex Mono, monospace" font-size="30" fill="#e8e8e2">21.55 kg</text>`);
+<text x="290" y="540" font-family="Silkscreen, monospace" font-size="30" fill="#e8e8e2">21.55 kg</text>`);
 
 out['apollo_p5'] = frame(SILVER, 'x', `<rect width="${W}" height="${H}" fill="#000"/>${starsSvg(60, 7)}
 <circle cx="150" cy="140" r="70" fill="#3d6fb3" stroke="${INK}" stroke-width="3"/>
@@ -231,8 +231,8 @@ ${Array.from({ length: 70 }, (_, i) => `<circle cx="${(i * 137) % W}" cy="${(i *
 ${ground(JEZERO, 'x', 500, 6)}
 ${heli(480, 380, 1.15, JEZERO, { blur: true })}
 <ellipse cx="480" cy="520" rx="150" ry="16" fill="${JEZERO.ground2}" opacity=".6"/>
-<text x="90" y="110" font-family="IBM Plex Mono, monospace" font-size="26" fill="${INK}">ρ ≈ 1% EARTH</text>
-<text x="640" y="110" font-family="IBM Plex Mono, monospace" font-size="26" fill="${INK}">−90 °C NIGHTS</text>`);
+<text x="90" y="110" font-family="Silkscreen, monospace" font-size="26" fill="${INK}">ρ ≈ 1% EARTH</text>
+<text x="640" y="110" font-family="Silkscreen, monospace" font-size="26" fill="${INK}">−90 °C NIGHTS</text>`);
 
 out['ingy_p3'] = frame(JEZERO, 'x', `${sky('x')}
 ${ground(JEZERO, 'x', 420, 12)}
@@ -247,7 +247,7 @@ out['ingy_p4'] = frame(JEZERO, 'x', `<rect width="${W}" height="${H}" fill="${JE
 <ellipse cx="300" cy="260" rx="140" ry="112" fill="${JEZERO.ground}" opacity=".7"/>
 <ellipse cx="760" cy="420" rx="90" ry="70" fill="${JEZERO.ground2}" stroke="${INK}" stroke-width="3"/>
 <path d="M80 520 C 220 470, 330 520, 470 420 S 700 260, 880 160" fill="none" stroke="${JEZERO.accent}" stroke-width="4" stroke-dasharray="2 12" stroke-linecap="round"/>
-${[[80, 520, 1], [300, 485, 12], [470, 420, 35], [640, 300, 48], [880, 160, 72]].map(([cx, cy, n]) => `<g transform="translate(${cx} ${cy})"><circle r="16" fill="#0d0d10" stroke="${JEZERO.accent}" stroke-width="3"/><text y="5" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#fff">${n}</text></g>`).join('')}`);
+${[[80, 520, 1], [300, 485, 12], [470, 420, 35], [640, 300, 48], [880, 160, 72]].map(([cx, cy, n]) => `<g transform="translate(${cx} ${cy})"><circle r="16" fill="#0d0d10" stroke="${JEZERO.accent}" stroke-width="3"/><text y="5" text-anchor="middle" font-family="Silkscreen, monospace" font-size="13" fill="#fff">${n}</text></g>`).join('')}`);
 
 out['ingy_p5'] = frame(JEZERO, 'x', `<rect width="${W}" height="${H}" fill="${JEZERO.ground}"/>
 ${Array.from({ length: 12 }, (_, i) => `<path d="M0 ${30 + i * 50} Q 240 ${10 + i * 50} 480 ${30 + i * 50} T 960 ${30 + i * 50}" fill="none" stroke="${JEZERO.ground2}" stroke-width="5" opacity=".55"/>`).join('')}

@@ -421,7 +421,7 @@ function Scene(props: OrbitalGlobeProps & { reduced: boolean; compact: boolean; 
 
   return (
     <>
-      <color attach="background" args={['#050507']} />
+      {/* Transparent clear: the warm space backdrop is CSS (--bg-space) behind the canvas. */}
       <ambientLight intensity={0.05} />
       <Sun reduced={reduced} />
       <Stars radius={70} depth={40} count={compact ? 1200 : 3000} factor={3.2} saturation={0} fade speed={reduced ? 0 : 0.4} />
@@ -441,7 +441,7 @@ function Scene(props: OrbitalGlobeProps & { reduced: boolean; compact: boolean; 
         ))}
       </Planet>
 
-      <AnchorProjector els={anchorEls} prefix="beacon-" facing />
+      <AnchorProjector els={anchorEls} prefix="beacon-" facing reserveRight={size.width >= 760 ? 380 : 0} />
       <CameraRig
         selectedBody={selectedBody}
         marsOffset={marsOffset}
@@ -473,7 +473,7 @@ export default function OrbitalGlobe(props: OrbitalGlobeProps) {
         <Canvas
           dpr={compact ? [1, 1.5] : [1, 2]}
           camera={{ fov: 34, position: [0, 0, 12.4], near: 0.05, far: 200 }}
-          gl={{ antialias: true, powerPreference: 'high-performance' }}
+          gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
           onCreated={({ gl }) => registerRenderer(gl)}
         >
           <Suspense fallback={null}>

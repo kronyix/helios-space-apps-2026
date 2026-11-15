@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useAppStore } from './store/useAppStore';
 import { getMission } from './lib/missions';
-import { setSoundEnabled } from './lib/audio';
+import { setMasterVolume, setSoundEnabled } from './lib/audio';
 import { dur, ease } from './lib/motion';
 import { useReducedMotion } from './lib/useReducedMotion';
 import { NavRail } from './components/ui/Shell';
@@ -81,7 +81,9 @@ export default function App() {
   // resume it on the first pointer/key press if it was left on.
   useEffect(() => {
     const resume = () => {
-      if (useAppStore.getState().soundOn) setSoundEnabled(true);
+      const s = useAppStore.getState();
+      setMasterVolume(s.masterVolume);
+      if (s.soundOn) setSoundEnabled(true);
     };
     const opts = { once: true, capture: true } as const;
     window.addEventListener('pointerdown', resume, opts);
@@ -126,7 +128,7 @@ export default function App() {
   else if (mission && stage === 'hardware') screen = <HardwareScreen mission={mission} />;
   else if (mission && stage === 'reward') screen = <RewardScreen mission={mission} />;
   // Full-screen game replaces the screen (its exit runs first, so only one canvas is ever live).
-  if (playCopy) screen = <RoverDriveGame copy={playCopy} onExit={closePlay} exitLabel={EXIT_LABELS[stage]} />;
+  if (playCopy) screen = <RoverDriveGame copy={playCopy} onExit={(outcome) => closePlay(outcome)} exitLabel={EXIT_LABELS[stage]} />;
 
   return (
     <div className="app grain">

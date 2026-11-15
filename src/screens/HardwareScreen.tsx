@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useProgress } from '@react-three/drei';
 import type { MissionData } from '../data/types';
@@ -8,57 +8,17 @@ import { hasWebGL } from '../lib/device';
 import { dur, ease } from '../lib/motion';
 import { useReducedMotion } from '../lib/useReducedMotion';
 import { AccentTitle, ScreenFrame } from '../components/ui/Layout';
-import { ComicPanel } from '../components/comic/ComicPage';
 import { IconClock, IconClose, IconPlay, IconTarget, IconTrophy } from '../components/ui/Icons';
 import { ChapterNav } from './ChapterNav';
 import MiniGameModal from '../components/comic/MiniGameModal';
 
 const HardwareViewer = lazy(() => import('../components/three/HardwareViewer'));
 
-/**
- * The comic panel the reader just left stays full-bleed over the canvas, then
- * dissolves (fade + blur + slight push) into the live 3D scene once the model has
- * loaded. That turns the model download into part of the transition, so the reader
- * never sees an empty canvas.
- */
-function PanelDissolve({ src, focus }: { src: string; focus?: string }) {
-  const { active, progress } = useProgress();
-  const reduced = useReducedMotion();
-  const [minDone, setMinDone] = useState(false);
-  const [gone, setGone] = useState(false);
-  useEffect(() => {
-    const id = window.setTimeout(() => setMinDone(true), reduced ? 0 : 650);
-    const cap = window.setTimeout(() => setGone(true), 4000);
-    return () => {
-      window.clearTimeout(id);
-      window.clearTimeout(cap);
-    };
-  }, [reduced]);
-  const ready = minDone && !active && progress >= 100;
-  if (reduced && ready) return null;
-  return (
-    <AnimatePresence>
-      {!gone && (
-        <motion.div
-          className="panel-dissolve"
-          aria-hidden="true"
-          initial={{ opacity: 1 }}
-          animate={ready ? { opacity: 0, filter: 'blur(12px)', scale: 1.06 } : { opacity: 1, filter: 'blur(0px)', scale: 1 }}
-          transition={{ duration: reduced ? dur.instant : dur.cinematic * 0.85, ease: ease.inOut }}
-          onAnimationComplete={() => ready && setGone(true)}
-        >
-          <img src={src} alt="" style={focus ? { objectPosition: focus } : undefined} />
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-}
-
 function ModelProgress() {
   const { active, progress } = useProgress();
   if (!active) return null;
   return (
-    <div className="pointer-events-none absolute bottom-28 right-10 font-mono text-[11px] tracking-[0.2em] text-fg-2" role="status">
+    <div className="pointer-events-none absolute bottom-28 right-10 font-pixel text-[12px] text-fg-2" role="status">
       RECEIVING MODEL · {Math.round(progress)}%
     </div>
   );
@@ -102,7 +62,6 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
               />
             </Suspense>
             <ModelProgress />
-            <PanelDissolve src={panel.comicImage} focus={panel.comicFocus} />
             <div className="hardware-scrim" aria-hidden="true" />
           </div>
         ) : (
@@ -124,7 +83,7 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
       <div className="hardware-grid">
         <div className="hardware-left">
           <AnimatePresence mode="wait" initial={false}>
-            {h ? (
+            {h && (
               <motion.article
                 key={h.id}
                 className="hotspot-card"
@@ -136,10 +95,10 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <p className="font-mono text-[11px] tracking-[0.18em] text-[var(--accent)]">
+                    <p className="font-pixel text-[12px] text-[var(--accent)]">
                       {pad2(hIndex + 1)} · {h.designation}
                     </p>
-                    <h2 className="mt-1 font-display text-[24px] font-semibold leading-tight">{h.label}</h2>
+                    <h2 className="mt-1 font-pixel text-[24px] leading-tight">{h.label}</h2>
                   </div>
                   <button type="button" className="btn-icon shrink-0" onClick={() => setHotspot(null)} aria-label="Close hotspot">
                     <IconClose />
@@ -151,16 +110,6 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
                 <h3 className="label-caps mt-4">Discovery</h3>
                 <p className="mt-1 text-[15px] leading-relaxed text-fg-2">{h.scienceDiscovery}</p>
               </motion.article>
-            ) : (
-              <motion.div
-                key="panel"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: dur.fast }}
-              >
-                <ComicPanel panel={panel} mission={mission} total={mission.comicPanels.length} size="md" priority />
-              </motion.div>
             )}
           </AnimatePresence>
         </div>
@@ -169,7 +118,7 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
           <div className="plate">
             <div className="flex items-center justify-between">
               <p className="kicker">Field test</p>
-              <span className="flex items-center gap-1.5 rounded-full border border-[var(--color-line-2)] px-2.5 py-1 font-mono text-[11px] text-fg-2">
+              <span className="flex items-center gap-1.5 rounded-full border border-[var(--color-line-2)] px-2.5 py-1 font-pixel text-[12px] text-fg-2">
                 <IconClock size={14} /> {g.durationSec ?? 15}s
               </span>
             </div>
@@ -179,7 +128,7 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
               <button type="button" className="btn-primary" onClick={() => setGamePhase('intro')}>
                 {result ? 'Play again' : 'Play now'} <IconPlay size={14} />
               </button>
-              {result && <span className="font-mono text-[12px] text-fg-3">Best {result.best}%</span>}
+              {result && <span className="font-pixel text-[12px] text-fg-3">Best {result.best}%</span>}
             </div>
           </div>
 
@@ -192,7 +141,7 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
                 <button type="button" className="btn-primary" onClick={() => openPlay('rover-drive')}>
                   {mission.extraGame.ctaLabel} <IconPlay size={14} />
                 </button>
-                {roverBest > 0 && <span className="font-mono text-[12px] text-fg-3">Best {roverBest}</span>}
+                {roverBest > 0 && <span className="font-pixel text-[12px] text-fg-3">Best {roverBest}</span>}
               </div>
             </div>
           )}
@@ -202,7 +151,7 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
               <p className="kicker flex items-center gap-2">
                 <IconTarget size={14} /> Inspect the hardware
               </p>
-              <span className="font-mono text-[11px] tracking-[0.12em] text-fg-3">
+              <span className="font-pixel text-[12px] text-fg-3">
                 {seen?.length ?? 0}/{mission.hotspots.length} SEEN
               </span>
             </div>
@@ -216,7 +165,7 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
                     data-seen={seen?.includes(x.id) || undefined}
                     onClick={() => setHotspot(active === x.id ? null : x.id)}
                   >
-                    <span className="font-mono text-[10.5px] text-[var(--accent)]">{pad2(i + 1)}</span>
+                    <span className="font-pixel text-[12px] text-[var(--accent)]">{pad2(i + 1)}</span>
                     <span className="text-[13px] leading-tight">{x.shortLabel ?? x.label}</span>
                   </button>
                 </li>

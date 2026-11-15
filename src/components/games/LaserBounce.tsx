@@ -814,7 +814,7 @@ export default function LaserBounce({ durationSec, params: _params, successThres
         />
 
         {/* Arcade HUD Overlay */}
-        <div className="absolute inset-x-0 top-0 flex flex-wrap items-center justify-between border-b border-white/20 bg-black/65 px-3 py-1.5 font-mono text-[11px] text-white">
+        <div className="absolute inset-x-0 top-0 flex flex-wrap items-center justify-between border-b border-white/20 bg-black/65 px-3 py-1.5 font-pixel text-[12px] text-white">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5">
               <span className="h-2 w-2 rounded-full bg-[var(--color-ok)] animate-pulse" />
@@ -846,8 +846,8 @@ export default function LaserBounce({ durationSec, params: _params, successThres
         {/* Game Over Screen */}
         {gameOver && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 p-6 text-center">
-            <h3 className="font-display text-2xl font-bold text-[var(--color-bad)]">EVA TERMINATED</h3>
-            <p className="mt-1 font-mono text-sm text-[var(--color-fg-2)]">
+            <h3 className="font-hero text-[24px] uppercase text-[var(--color-bad)]">EVA terminated</h3>
+            <p className="mt-1 text-sm text-[var(--color-fg-2)]">
               {oxygen <= 0
                 ? 'PLSS backpack oxygen depleted.'
                 : suitIntegrity <= 0
@@ -865,11 +865,11 @@ export default function LaserBounce({ durationSec, params: _params, successThres
         {/* Victory Screen */}
         {victory && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 p-6 text-center">
-            <h3 className="font-display text-2xl font-bold text-[var(--color-ok)]">LASER RANGING ESTABLISHED!</h3>
-            <p className="mt-1 font-mono text-sm text-[var(--color-fg)]">
+            <h3 className="font-hero text-[24px] uppercase text-[var(--color-ok)]">Laser ranging established!</h3>
+            <p className="mt-1 text-sm text-[var(--color-fg)]">
               Retroreflector operational at Tranquility Base! Earth laser round-trip confirmed: ~2.56 seconds.
             </p>
-            <p className="mt-2 font-mono text-xs text-[var(--color-fg-3)]">
+            <p className="mt-2 font-pixel text-[12px] text-[var(--color-fg-3)]">
               Score: <b>{score} / 100</b> · Millimeter precision lunar laser ranging online.
             </p>
           </div>
@@ -881,7 +881,7 @@ export default function LaserBounce({ durationSec, params: _params, successThres
         <div className="flex gap-2">
           <button
             type="button"
-            className="btn-ghost flex-1 py-3 text-center font-mono font-bold select-none active:bg-white/20"
+            className="btn-ghost flex-1 py-3 text-center font-pixel font-bold select-none active:bg-white/20"
             onPointerDown={() => (touchLeft.current = true)}
             onPointerUp={() => (touchLeft.current = false)}
             onPointerCancel={() => (touchLeft.current = false)}
@@ -890,7 +890,7 @@ export default function LaserBounce({ durationSec, params: _params, successThres
           </button>
           <button
             type="button"
-            className="btn-ghost flex-1 py-3 text-center font-mono font-bold select-none active:bg-white/20"
+            className="btn-ghost flex-1 py-3 text-center font-pixel font-bold select-none active:bg-white/20"
             onPointerDown={() => (touchRight.current = true)}
             onPointerUp={() => (touchRight.current = false)}
             onPointerCancel={() => (touchRight.current = false)}
@@ -901,7 +901,7 @@ export default function LaserBounce({ durationSec, params: _params, successThres
         <div className="flex gap-2">
           <button
             type="button"
-            className="btn-ghost flex-1 py-3 text-center font-mono font-bold text-cyan-300 select-none active:bg-white/20"
+            className="btn-ghost flex-1 py-3 text-center font-pixel font-bold text-cyan-300 select-none active:bg-white/20"
             onPointerDown={() => (touchJump.current = true)}
             onPointerUp={() => (touchJump.current = false)}
             onPointerCancel={() => (touchJump.current = false)}
@@ -910,7 +910,7 @@ export default function LaserBounce({ durationSec, params: _params, successThres
           </button>
           <button
             type="button"
-            className="btn-primary flex-1 py-3 text-center font-mono font-bold select-none"
+            className="btn-primary flex-1 py-3 text-center font-pixel font-bold select-none"
             onPointerDown={() => (touchAction.current = true)}
             onPointerUp={() => (touchAction.current = false)}
             onPointerCancel={() => (touchAction.current = false)}
@@ -921,7 +921,7 @@ export default function LaserBounce({ durationSec, params: _params, successThres
       </div>
 
       {/* Desktop Instructions Bar */}
-      <div className="hidden sm:flex items-center justify-between font-mono text-[11px] text-[var(--color-fg-3)]">
+      <div className="hidden sm:flex items-center justify-between font-pixel text-[12px] text-[var(--color-fg-3)]">
         <span>Controls: <b>A / D</b> or <b>← →</b> Leap · <b>W / Space</b> Low-G Jump · <b>E / Enter</b> Deploy LRRR</span>
         <span>Goal: Carry LRRR to 2100m site · Deploy & align to receive ~2.5s Earth laser return</span>
       </div>

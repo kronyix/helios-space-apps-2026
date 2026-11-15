@@ -1,0 +1,13 @@
+{
+  "baseUrl": "http://localhost:4173",
+  "only": "handoff",
+  "desktop": null,
+  "handoff": {
+    "handoffVisible": true,
+    "returnOnStory": true,
+    "winBannerVisible": true
+  },
+  "responsive": null,
+  "perf": null,
+  "problems": []
+}

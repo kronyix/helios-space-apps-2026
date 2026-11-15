@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
-import { StateTrack, TopRight } from './Shell';
+import { StateTrack, TopRight, navigate } from './Shell';
+import { HeliosMark } from './HeliosMark';
+import { useT } from '../../i18n/useT';
 
 /**
  * Shared screen frame: header (kicker + title lockup, status on the right),
@@ -26,13 +28,25 @@ export function ScreenFrame({
   /** Let empty space pass pointer input to a background canvas. */
   passthrough?: boolean;
 }) {
+  const t = useT();
   return (
     <section aria-labelledby={labelledBy} className={`screen ${passthrough ? 'screen--passthrough' : ''}`}>
       {background && <div className="screen__bg">{background}</div>}
       <div className="screen__scroll">
         <header className="screen__header">
           <div className="min-w-0">
-            <p className="flex items-center gap-4 font-mono text-[11px] tracking-[0.32em] text-fg-2 uppercase">
+            <a
+              href="#archive"
+              className="mb-2 inline-flex min-h-[44px] min-w-[44px] items-center md:hidden"
+              aria-label={t('nav.home')}
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('archive');
+              }}
+            >
+              <HeliosMark size={28} />
+            </a>
+            <p className="flex items-center gap-4 font-pixel text-[12px] text-fg-2 uppercase">
               {kicker}
               <span aria-hidden="true" className="h-px w-10 bg-[var(--accent)]" />
             </p>

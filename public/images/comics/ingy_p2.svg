@@ -19,7 +19,7 @@
     <rect x="-34" y="-186" width="68" height="14" fill="#2b3550"/>
   </g>
 <ellipse cx="480" cy="520" rx="150" ry="16" fill="#8c6340" opacity=".6"/>
-<text x="90" y="110" font-family="IBM Plex Mono, monospace" font-size="26" fill="#16100c">ρ ≈ 1% EARTH</text>
-<text x="640" y="110" font-family="IBM Plex Mono, monospace" font-size="26" fill="#16100c">−90 °C NIGHTS</text>
+<text x="90" y="110" font-family="Silkscreen, monospace" font-size="26" fill="#16100c">ρ ≈ 1% EARTH</text>
+<text x="640" y="110" font-family="Silkscreen, monospace" font-size="26" fill="#16100c">−90 °C NIGHTS</text>
 <rect width="960" height="600" filter="url(#grain-x)" opacity=".9"/>
 </svg>

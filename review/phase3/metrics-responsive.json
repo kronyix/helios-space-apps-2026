@@ -1,0 +1,34 @@
+{
+  "baseUrl": "http://localhost:4173",
+  "only": "responsive",
+  "desktop": null,
+  "handoff": null,
+  "responsive": {
+    "layoutReports": [
+      {
+        "label": "390x844-plan",
+        "vw": 390,
+        "vh": 844,
+        "docOverflow": false,
+        "smallTargets": []
+      },
+      {
+        "label": "390x844-downlink",
+        "vw": 390,
+        "vh": 844,
+        "docOverflow": false,
+        "smallTargets": []
+      },
+      {
+        "label": "360x640-plan",
+        "vw": 360,
+        "vh": 640,
+        "docOverflow": false,
+        "smallTargets": []
+      }
+    ],
+    "solCardHiddenInReduced": true
+  },
+  "perf": null,
+  "problems": []
+}

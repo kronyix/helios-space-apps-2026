@@ -69,6 +69,14 @@ interface AppState extends Progress {
   divingTo: string | null;
   /** Active full-screen game, if any. Closing it reveals the launching screen unchanged. */
   play: PlayId | null;
+  /** Signal Delay UI preferences (persisted). */
+  roverTutorialSeen: boolean;
+  roverView: '3d' | '2d';
+  masterVolume: number;
+  hapticsOn: boolean;
+  /** Transient story handoff tracking for Signal Delay. */
+  playSource: 'story' | 'other' | null;
+  roverStoryOutcome: { won: boolean; stars: number; points: number; sols: number } | null;
 
   go: (stage: Stage, missionId?: string | null) => void;
   openMission: (missionId: string) => void;
@@ -79,15 +87,20 @@ interface AppState extends Progress {
   recordGame: (missionId: string, score: number, passed: boolean) => void;
   markTransmission: (missionId: string) => void;
   setSound: (on: boolean) => void;
+  setMasterVolume: (vol: number) => void;
+  setHapticsOn: (on: boolean) => void;
   setLang: (lang: string) => void;
   setNarration: (n: Partial<Pick<AppState, 'narrationOn' | 'rate' | 'textOnly' | 'langPromptSeen'>>) => void;
   setCurrentLine: (id: string | null) => void;
   setFocused: (id: string | null) => void;
   setDiving: (id: string | null) => void;
   resetProgress: () => void;
-  openPlay: (id: PlayId) => void;
-  closePlay: () => void;
+  openPlay: (id: PlayId, fromStory?: boolean) => void;
+  closePlay: (outcome?: { won: boolean; stars: number; points: number; sols: number }) => void;
+  clearRoverStoryOutcome: () => void;
   recordRover: (points: number, stars: number, won: boolean) => void;
+  setRoverTutorialSeen: (seen: boolean) => void;
+  setRoverView: (v: '3d' | '2d') => void;
 }
 
 /**
@@ -175,6 +188,12 @@ export const useAppStore = create<AppState>()(
       focusedMissionId: null,
       divingTo: null,
       play: null,
+      roverTutorialSeen: false,
+      roverView: '3d',
+      masterVolume: 0.7,
+      hapticsOn: false,
+      playSource: null,
+      roverStoryOutcome: null,
       narrative: { page: 0, turning: false },
       ...fromUrl,
 
@@ -235,14 +254,23 @@ export const useAppStore = create<AppState>()(
         ),
 
       setSound: (soundOn) => set({ soundOn }),
+      setMasterVolume: (v) => set({ masterVolume: Math.max(0, Math.min(1, v)) }),
+      setHapticsOn: (hapticsOn) => set({ hapticsOn }),
       setLang: (lang) => set({ lang, langPromptSeen: true, currentLineId: null }),
       setNarration: (n) => set(n),
       setCurrentLine: (currentLineId) => set({ currentLineId }),
       setFocused: (focusedMissionId) => set({ focusedMissionId }),
       setDiving: (divingTo) => set({ divingTo }),
       resetProgress: () => set({ ...emptyProgress }),
-      openPlay: (play) => set({ play }),
-      closePlay: () => set({ play: null }),
+      openPlay: (play, fromStory = false) =>
+        set({ play, playSource: fromStory ? 'story' : 'other', roverStoryOutcome: fromStory ? null : get().roverStoryOutcome }),
+      closePlay: (outcome) =>
+        set((s) => ({
+          play: null,
+          playSource: null,
+          roverStoryOutcome: s.playSource === 'story' && outcome ? outcome : s.roverStoryOutcome,
+        })),
+      clearRoverStoryOutcome: () => set({ roverStoryOutcome: null }),
       recordRover: (points, stars, won) =>
         set((s) => {
           const p = s.roverResult;
@@ -255,6 +283,8 @@ export const useAppStore = create<AppState>()(
             },
           };
         }),
+      setRoverTutorialSeen: (roverTutorialSeen) => set({ roverTutorialSeen }),
+      setRoverView: (roverView) => set({ roverView }),
     }),
     {
       name: 'helios-progress-v1',
@@ -274,6 +304,10 @@ export const useAppStore = create<AppState>()(
         rate: s.rate,
         textOnly: s.textOnly,
         langPromptSeen: s.langPromptSeen,
+        roverTutorialSeen: s.roverTutorialSeen,
+        roverView: s.roverView,
+        masterVolume: s.masterVolume,
+        hapticsOn: s.hapticsOn,
       }),
     },
   ),

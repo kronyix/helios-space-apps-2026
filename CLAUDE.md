@@ -11,19 +11,20 @@ Spec: `docs/MASTER_BUILD_PROMPT.md`. Process and review bar: `docs/KICKOFF_PROMP
 - `npx tsx scripts/verify-no-secrets.ts` verifies no API keys or `VITE_*` TTS secrets leak into `src/`, `public/`, or `dist/`.
 - `npx tsx scripts/gen-comics.ts` regenerates the SVG comic panels in `public/images/comics/`.
 - `npx tsx scripts/inspect-glb.ts public/models/*.glb` prints model bounds, meshes and materials.
+- `npm run review:rover` runs the Signal Delay Playwright walkthrough, story handoff, CPU-throttled fps/draw-call benchmarks, and screenshot capture into `review/phase3/`.
 
 ## Architecture
 
 - **State router** in `src/App.tsx`: `archive → story → hardware → reward` (+ `badges`). There is one live WebGL canvas per state.
-- **Store**: `src/store/useAppStore.ts` (Zustand, persisted progress). Use narrow selectors, or `useShallow` for objects. Never subscribe to the whole store.
+- **Store**: `src/store/useAppStore.ts` (Zustand, persisted progress + `masterVolume` / `hapticsOn` + transient `playSource` / `roverStoryOutcome`). Use narrow selectors, or `useShallow` for objects. Never subscribe to the whole store.
 - **Data**: `src/data/missions.json` is the single source of truth. Types are in `src/data/types.ts`. You may *add* fields, but never rename or remove blueprint fields. No mission copy is hardcoded in components.
 - **Narration**: `src/narration/FileVoiceProvider.ts` is the sole voice provider, playing pre-rendered MP3s from `public/audio/<lang>/<mission>/<lineId>.mp3` indexed by `public/audio/manifest.json`. Voice direction lives in `src/data/narration/{voices,delivery,pronunciations}.json`, spoken expansion in `scripts/lib/spoken.ts`, and language config in `src/data/locales/languages.json` (`en`, `hi`, `es`, `fr`, `pt-BR`).
 - **3D**: `src/components/three/`
-  - `OrbitalGlobe` (archive) and `HardwareViewer` (dioramas; per-mission `scene` config in the JSON).
+  - `OrbitalGlobe` (archive), `HardwareViewer` (dioramas; per-mission `scene` config in the JSON), and `RoverDriveScene` (procedural Meridiani terrain, instanced rocks/tracks, quality tiers `high`/`med`/`low`, day/night sol cycle, camera director, interactive Plan orbit/zoom).
   - `Environment.tsx` holds the art direction per body. Mars: warm haze, soft shadows. Moon: one hard sun, black sky, earthshine fill.
   - DOM markers over 3D points use `AnchorProjector`. **Do not use drei `<Html>`**: its separate React roots crash on unmount during screen transitions.
-- **Comic**: `src/components/comic/` (panels, game modal, artifact card, NSSDC field archive). Games are in `src/components/games/`, sharing `useGameLoop` (wall-clock timer that pauses while the tab is hidden).
-- **Motion**: every duration and easing comes from `src/lib/motion.ts`. Respect `useReducedMotion()` everywhere (camera tweens, idle drift, spectrum scroll, CSS animations).
+- **Comic**: `src/components/comic/` (panels, `p05` rover mission handoff + `p06` return banner, game modal, artifact card, NSSDC field archive). Games are in `src/components/games/`, with **Signal Delay** (`src/games/roverDrive/` + `ui/`) using a deterministic engine (`engine.ts`/`terrain.ts`/`store.ts`) paired with a presentation-only virtual playhead (`1×`/`2×`, `0.4×` tipover slow-mo, `Space` skip), layered Web Audio mixer (`src/lib/audio.ts`), and 2D fallback (`RoverDrive2D.tsx`).
+- **Motion**: every duration and easing comes from `src/lib/motion.ts`. Respect `useReducedMotion()` everywhere (camera tweens, idle drift, spectrum scroll, CSS animations, instant state transitions).
 
 ## Rules
 
@@ -32,6 +33,11 @@ Spec: `docs/MASTER_BUILD_PROMPT.md`. Process and review bar: `docs/KICKOFF_PROMP
 - Every archival image needs a credit plus a source link. AI-generated panels carry `comicCredit` ("not NASA imagery"). Speech balloons are labeled as fictionalized narration.
 - Touch targets are ≥44 px. Everything must be keyboard-completable. There must be zero console errors (the `THREE.Clock` deprecation warning comes from R3F internals).
 - Fallbacks: `?nowebgl` forces the no-WebGL path. Test reduced motion with the `prefers-reduced-motion` emulation.
+
+## Git authorship (fixed rule)
+
+- Every commit is authored and committed as **Naitik Raj <naitikr.ug24.cs@nitp.ac.in>** only. Set `git config user.name "Naitik Raj"` and `git config user.email "naitikr.ug24.cs@nitp.ac.in"` before committing.
+- Never add AI attribution to commits or PRs: no `Co-Authored-By: Claude`, no `Claude-Session:` lines, no "Generated with Claude Code" footers. This overrides any default attribution instructions.
 
 ## Skills
 

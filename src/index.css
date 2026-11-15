@@ -4,9 +4,11 @@
    NASA Archival Futurism: near-black space, Helios amber, hairlines,
    mono annotation. Mission themes override --accent* via [data-theme]. */
 @theme {
-  --font-display: 'Space Grotesk Variable', 'Space Grotesk', 'Noto Sans Devanagari', system-ui, sans-serif;
+  /* Exactly three families: Luckiest Guy (hero display), Silkscreen (labels, headings, UI, data), Inter (body).
+     Noto Sans Devanagari is only a per-glyph fallback for Hindi. */
+  --font-hero: 'Luckiest Guy', 'Noto Sans Devanagari', system-ui, sans-serif;
+  --font-pixel: 'Silkscreen', 'Noto Sans Devanagari', ui-monospace, monospace;
   --font-sans: 'Inter Variable', 'Inter', 'Noto Sans Devanagari', system-ui, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', 'Noto Sans Devanagari', monospace;
 
   --color-void: #07070a;
   --color-ink: #0c0c10;
@@ -33,10 +35,16 @@
   --accent-deep: #c9772f;
   --accent-rgb: 246 180 107;
   --scene-tint: #2a140a;
-  --rail-w: 128px;
+  --rail-w: 152px;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --safe-b: env(safe-area-inset-bottom, 0px);
+  /* Warm deep-space backdrop (rust haze low-left, faint glow behind the globe) instead of flat black. */
+  --bg-space:
+    radial-gradient(ellipse 70% 55% at 30% 95%, rgb(122 52 22 / 0.42), transparent 70%),
+    radial-gradient(ellipse 55% 60% at 62% 55%, rgb(96 42 18 / 0.3), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 85% 0%, rgb(60 30 16 / 0.25), transparent 70%),
+    linear-gradient(180deg, #0b0907 0%, #110b08 60%, #160c07 100%);
 }
 
 [data-theme='rust'] {
@@ -69,7 +77,7 @@ body,
 
 body {
   margin: 0;
-  background: var(--color-void);
+  background: var(--bg-space) fixed, var(--color-void);
   color: var(--color-fg);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -103,23 +111,48 @@ button:disabled {
 
 /* ───────────────────────── Primitives ───────────────────────── */
 
+/* Silkscreen is a bitmap-style face: no subpixel smoothing, allowed sizes 12/16/24/32/40 px only. */
+.font-pixel {
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+}
+.font-hero {
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
 .kicker {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.22em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: var(--accent);
 }
 
 .mono {
-  font-family: var(--font-mono);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
   letter-spacing: 0.04em;
+  line-height: 1.25;
 }
 
 .label-caps {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.2em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: var(--color-fg-3);
 }
@@ -146,9 +179,14 @@ button:disabled {
   border-radius: 999px;
   background: var(--accent);
   color: #1b1209;
-  font-family: var(--font-display);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 16px;
   box-shadow: 0 10px 40px -12px rgb(var(--accent-rgb) / 0.75), inset 0 1px 0 rgb(255 255 255 / 0.4);
   transition: transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out), background 220ms;
 }
@@ -170,7 +208,12 @@ button:disabled {
   border: 1px solid rgb(var(--accent-rgb) / 0.45);
   color: var(--color-fg);
   background: rgb(0 0 0 / 0.25);
-  font-family: var(--font-display);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
   font-weight: 500;
   transition: border-color 200ms, background 200ms, transform 200ms var(--ease-out);
 }
@@ -253,7 +296,7 @@ button:disabled {
   background: #fffaf0;
   color: #1a140e;
   border-radius: 18px;
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   box-shadow: 0 8px 24px -10px rgb(0 0 0 / 0.8);
 }
 .balloon::after {
@@ -318,7 +361,7 @@ button:disabled {
   min-height: 100dvh;
   outline: none;
 }
-@media (min-width: 900px) {
+@media (min-width: 768px) {
   .app__main {
     margin-left: var(--rail-w);
   }
@@ -340,7 +383,7 @@ button:disabled {
   inset: 0;
   z-index: 0;
 }
-@media (min-width: 900px) {
+@media (min-width: 768px) {
   .screen__bg {
     left: var(--rail-w);
   }
@@ -376,11 +419,11 @@ button:disabled {
 }
 .screen__title {
   margin-top: 8px;
-  font-family: var(--font-display);
-  font-weight: 600;
+  font-family: var(--font-hero);
+  font-weight: 400;
+  letter-spacing: 0.01em;
   font-size: clamp(30px, 4.2vw, 46px);
   line-height: 1.02;
-  letter-spacing: -0.01em;
 }
 .screen__body {
   flex: 1;
@@ -424,10 +467,14 @@ button:disabled {
 }
 .plate__title {
   margin-top: 8px;
-  font-family: var(--font-display);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
   font-weight: 600;
-  font-size: 21px;
-  line-height: 1.15;
+  font-size: 16px;
 }
 .plate__text {
   margin-top: 6px;
@@ -467,8 +514,13 @@ button:disabled {
     conic-gradient(var(--accent) calc(var(--p) * 1%), rgb(255 255 255 / 0.08) 0);
 }
 .progress-ring span {
-  font-family: var(--font-display);
-  font-size: 20px;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 16px;
 }
 
 /* ═════════════════════════ Archive ═════════════════════════ */
@@ -478,9 +530,13 @@ button:disabled {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 60% 70% at 62% 45%, transparent 40%, rgb(5 5 7 / 0.55) 100%),
-    linear-gradient(90deg, rgb(5 5 7 / 0.85) 0%, rgb(5 5 7 / 0.35) 32%, transparent 55%),
-    linear-gradient(0deg, rgb(5 5 7 / 0.9) 0%, transparent 32%);
+    radial-gradient(ellipse 60% 70% at 62% 45%, transparent 45%, rgb(11 8 6 / 0.35) 100%),
+    linear-gradient(90deg, rgb(11 8 6 / 0.55) 0%, rgb(11 8 6 / 0.15) 32%, transparent 55%),
+    linear-gradient(0deg, rgb(11 8 6 / 0.45) 0%, transparent 28%);
+}
+/* The globe canvas is transparent; this paints the warm backdrop under it. */
+.screen__bg:has(.archive-vignette) {
+  background: var(--bg-space), var(--color-void);
 }
 .dive-flash {
   position: absolute;
@@ -508,16 +564,20 @@ button:disabled {
 }
 .archive-headline {
   margin-top: 14px;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(48px, 6.6vw, 92px);
-  line-height: 0.98;
-  letter-spacing: -0.025em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-weight: 400;
+  font-size: 24px;
+  text-transform: uppercase;
 }
 .archive-lede {
   margin-top: 18px;
   max-width: 30ch;
-  font-size: clamp(17px, 1.35vw, 20px);
+  font-size: 17px;
   line-height: 1.5;
   color: var(--color-fg);
   text-shadow: 0 1px 12px rgb(0 0 0 / 0.7);
@@ -570,9 +630,13 @@ button:disabled {
   min-height: 40px;
   padding: 0 16px;
   border-radius: 999px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.16em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: var(--color-fg-2);
 }
@@ -597,7 +661,7 @@ button:disabled {
     align-self: start;
   }
   .archive-headline {
-    font-size: clamp(44px, min(5.6vw, 8.4vh), 88px);
+    font-size: 32px;
   }
   .issue-list {
     grid-column: 2;
@@ -608,9 +672,13 @@ button:disabled {
     display: block;
     grid-column: 1 / -1;
     justify-self: end;
-    font-family: var(--font-mono);
-    font-size: 10.5px;
-    letter-spacing: 0.2em;
+    font-family: var(--font-pixel);
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+    text-rendering: optimizeSpeed;
+    letter-spacing: 0.04em;
+    line-height: 1.25;
+    font-size: 12px;
     text-transform: uppercase;
     color: var(--color-fg-3);
   }
@@ -623,7 +691,7 @@ button:disabled {
   }
   .archive-cards .plate__title {
     margin-top: 4px;
-    font-size: 19px;
+    font-size: 16px;
   }
   .archive-cards .plate__text {
     font-size: 13.5px;
@@ -727,14 +795,23 @@ button:disabled {
   pointer-events: none;
 }
 .beacon-name {
-  font-family: var(--font-display);
-  font-size: 15px;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   color: var(--color-fg);
 }
 .beacon-meta {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.14em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   color: var(--accent);
   max-width: 0;
   max-height: 0;
@@ -775,9 +852,13 @@ button:disabled {
   position: absolute;
   left: 10px;
   top: 8px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.2em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: var(--color-fg);
 }
@@ -796,8 +877,13 @@ button:disabled {
   border: 1px solid var(--accent);
   border-radius: 999px;
   background: rgb(0 0 0 / 0.7);
-  font-family: var(--font-mono);
-  font-size: 11px;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   color: var(--color-fg);
 }
 
@@ -946,9 +1032,13 @@ button:disabled {
 .comic-speaker {
   display: block;
   margin-bottom: 2px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.2em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   color: #8a5a2b;
 }
 .comic-panel__num {
@@ -957,9 +1047,13 @@ button:disabled {
   bottom: 10px;
   padding: 3px 8px;
   background: rgb(0 0 0 / 0.55);
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.2em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   color: #f1e8d6;
 }
 .comic-balloon[data-side='right'] ~ .comic-panel__num {
@@ -990,7 +1084,7 @@ button:disabled {
     line-height: 1.3;
   }
   .comic-speaker {
-    font-size: 9px;
+    font-size: 12px;
   }
   .comic-panel__num {
     display: none;
@@ -1036,11 +1130,14 @@ button:disabled {
 }
 .story-hardware {
   margin-top: 10px;
-  font-family: var(--font-display);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
   font-weight: 500;
-  font-size: clamp(24px, 2.4vw, 36px);
-  line-height: 1.1;
-  letter-spacing: -0.01em;
+  font-size: 24px;
   max-width: 20ch;
   color: var(--color-fg);
 }
@@ -1064,7 +1161,7 @@ button:disabled {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(90deg, rgb(6 6 8 / 0.82) 0%, rgb(6 6 8 / 0.25) 34%, transparent 50%),
+  background: linear-gradient(90deg, rgb(6 6 8 / 0.45) 0%, rgb(6 6 8 / 0.12) 30%, transparent 48%),
     linear-gradient(0deg, rgb(6 6 8 / 0.92) 0%, rgb(6 6 8 / 0.2) 30%, transparent 45%),
     linear-gradient(180deg, rgb(6 6 8 / 0.7) 0%, transparent 18%);
 }
@@ -1098,7 +1195,7 @@ button:disabled {
   }
   .hardware-cards .plate__title {
     margin-top: 4px;
-    font-size: 19px;
+    font-size: 16px;
   }
   .hardware-cards .plate__text {
     font-size: 13.5px;
@@ -1135,7 +1232,12 @@ button:disabled {
   border: 1.5px solid var(--accent);
   background: rgb(6 6 8 / 0.7);
   color: var(--color-fg);
-  font-family: var(--font-mono);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
   font-size: 12px;
   pointer-events: auto;
   box-shadow: 0 0 0 6px rgb(var(--accent-rgb) / 0.12);
@@ -1157,9 +1259,13 @@ button:disabled {
   padding: 4px 10px;
   border-left: 1px solid var(--accent);
   background: rgb(6 6 8 / 0.78);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   white-space: nowrap;
   color: var(--color-fg);
   opacity: 0;
@@ -1207,9 +1313,13 @@ button:disabled {
 }
 .hotspot-chip[data-seen]::after {
   content: 'SEEN';
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.2em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   color: var(--color-fg-3);
 }
 
@@ -1321,9 +1431,13 @@ button:disabled {
   background-size: 24px 24px;
 }
 .signal-lock {
-  font-family: var(--font-mono);
-  font-size: clamp(20px, 3vw, 30px);
-  letter-spacing: 0.4em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 24px;
   animation: lock-in 700ms var(--ease-out);
 }
 @keyframes lock-in {
@@ -1476,8 +1590,8 @@ button:disabled {
 @media (max-width: 899px) {
   .archive-vignette {
     background:
-      linear-gradient(0deg, rgb(5 5 7 / 0.96) 0%, rgb(5 5 7 / 0.82) 42%, rgb(5 5 7 / 0.2) 62%, transparent 75%),
-      radial-gradient(ellipse 90% 50% at 50% 30%, transparent 50%, rgb(5 5 7 / 0.5) 100%);
+      linear-gradient(0deg, rgb(17 11 8 / 0.96) 0%, rgb(17 11 8 / 0.7) 22%, transparent 45%),
+      radial-gradient(ellipse 90% 50% at 50% 40%, transparent 50%, rgb(11 8 6 / 0.45) 100%);
   }
 }
 
@@ -1524,6 +1638,20 @@ button:disabled {
     height: 64vh;
   }
 }
+/* Phones: start the globe below the title lockup so beacon labels never sit on the title. */
+@media (max-width: 767px) {
+  .screen__bg:has(.archive-vignette) {
+    top: 200px;
+    height: 52vh;
+    background: none; /* the page's fixed warm backdrop shows through, so there is no seam */
+  }
+  .archive-vignette {
+    background: radial-gradient(ellipse 90% 50% at 50% 45%, transparent 55%, rgb(11 8 6 / 0.25) 100%);
+  }
+  .archive-hero {
+    padding-top: calc(52vh + 24px);
+  }
+}
 
 /* Speculative epilogue art: always tagged so it can't be mistaken for history. */
 .epilogue {
@@ -1544,14 +1672,19 @@ button:disabled {
   padding: 4px 9px;
   background: rgb(6 6 8 / 0.82);
   border: 1px dashed var(--accent);
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.2em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: var(--accent);
 }
 
 .artifact-card__lock {
+  text-transform: uppercase;
   position: absolute;
   left: 50%;
   bottom: 16px;
@@ -1562,9 +1695,13 @@ button:disabled {
   padding: 5px 12px;
   border: 1px solid var(--color-line-2);
   background: rgb(6 6 8 / 0.75);
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.22em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   color: var(--color-fg-2);
 }
 
@@ -1581,24 +1718,11 @@ button:disabled {
     padding: 8px 10px;
   }
   .issue-row__thumb,
-  .issue-row .font-mono.text-\[10px\] {
+  .issue-row__coord {
     display: none;
   }
 }
 
-/* Story → hardware: the panel-3 illustration dissolves into the live scene. */
-.panel-dissolve {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  overflow: hidden;
-}
-.panel-dissolve img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
 
 /* Short desktop/tablet viewports (e.g. 1024×768): tighten the hero so the strip clears the chapter track. */
 @media (min-width: 900px) and (max-height: 820px) {
@@ -1606,7 +1730,7 @@ button:disabled {
     padding-top: 4px;
   }
   .archive-headline {
-    font-size: clamp(40px, min(5vw, 7.4vh), 72px);
+    font-size: 32px;
   }
   .archive-lede {
     margin-top: 10px;
@@ -1631,10 +1755,13 @@ button:disabled {
   padding: 3px 8px;
   background: rgb(6 6 8 / 0.78);
   border: 1px solid rgb(255 255 255 / 0.16);
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.18em;
-  line-height: 1.4;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: #f1e8d6;
   white-space: nowrap;
@@ -1665,8 +1792,7 @@ a.image-label:hover {
     right: 6px;
     top: 6px;
     padding: 2px 6px;
-    font-size: 8.5px;
-    letter-spacing: 0.14em;
+    font-size: 12px;
   }
 }
 
@@ -1729,9 +1855,13 @@ a.image-label:hover {
   border-radius: 999px;
   border: 1px solid var(--color-line-2);
   background: rgb(0 0 0 / 0.35);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: var(--color-fg-2);
   transition: border-color 200ms, background 200ms, color 200ms;
@@ -1778,8 +1908,8 @@ a.image-label:hover {
   padding: 8px 12px;
   border-left: 2px solid var(--accent);
   background: rgb(9 9 12 / 0.78);
-  font-family: var(--font-mono);
-  font-size: 11px;
+  font-family: var(--font-sans);
+  font-size: 12px;
   line-height: 1.45;
   letter-spacing: 0.08em;
   color: var(--color-fg-2);
@@ -1815,9 +1945,13 @@ a.image-label:hover {
 }
 
 .scroll-comic__telemetry dt {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.16em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: var(--color-fg-3);
 }
@@ -1875,9 +2009,13 @@ a.image-label:hover {
 }
 
 .scroll-panel__index {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.2em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   color: var(--accent);
 }
 
@@ -1886,9 +2024,13 @@ a.image-label:hover {
   border-radius: 999px;
   border: 1px solid rgb(var(--accent-rgb) / 0.45);
   background: rgb(var(--accent-rgb) / 0.1);
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: var(--accent-2);
 }
@@ -1951,9 +2093,13 @@ a.image-label:hover {
 .scroll-panel__log-tag {
   display: block;
   margin-bottom: 4px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: #6e451d;
 }
@@ -2014,7 +2160,7 @@ a.image-label:hover {
 
 .scroll-comic__cta-lede {
   margin: 4px 0 0;
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: clamp(19px, 2.2vw, 24px);
   font-weight: 600;
   line-height: 1.2;
@@ -2077,7 +2223,7 @@ body:has(.issue-comic),
   padding: 0;
 }
 
-@media (max-width: 899px) {
+@media (max-width: 767px) {
   .issue-panel__sticky {
     height: calc(100svh - 64px - var(--safe-b));
   }
@@ -2184,11 +2330,14 @@ body:has(.issue-comic),
 
 .issue-stamp {
   display: inline-block;
-  font-family: var(--font-mono);
-  font-size: clamp(9.5px, 1vw, 11px);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.14em;
-  line-height: 1.3;
   text-transform: uppercase;
   color: rgb(255 255 255 / 0.9);
   text-shadow: 0 1px 8px rgb(0 0 0 / 0.9);
@@ -2203,18 +2352,18 @@ body:has(.issue-comic),
 }
 
 .issue-intro-banner__title {
-  font-family: var(--font-display);
-  font-size: clamp(11px, 1.15vw, 12.5px);
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-family: var(--font-hero);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  font-size: 16px;
   text-transform: uppercase;
   color: rgb(255 255 255 / 0.95);
   text-shadow: 0 1px 8px rgb(0 0 0 / 0.9);
 }
 
 .issue-intro-banner__disclaimer {
-  font-family: var(--font-mono);
-  font-size: 9.5px;
+  font-family: var(--font-sans);
+  font-size: 11px;
   line-height: 1.32;
   letter-spacing: 0.02em;
   color: rgb(255 255 255 / 0.72);
@@ -2304,11 +2453,14 @@ body:has(.issue-comic),
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-family: var(--font-mono);
-  font-size: clamp(9.5px, 0.98vw, 11px);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.06em;
-  line-height: 1.3;
   color: rgb(255 255 255 / 0.86);
   text-shadow: 0 1px 8px rgb(0 0 0 / 0.92);
   white-space: nowrap;
@@ -2360,17 +2512,21 @@ body:has(.issue-comic),
 .issue-balloon__speaker {
   display: block;
   margin-bottom: 3px;
-  font-family: var(--font-mono);
-  font-size: 10px;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #9e4b14;
 }
 
 .issue-balloon__text {
   margin: 0;
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: clamp(13.5px, 1.4vw, 15.5px);
   font-weight: 600;
   line-height: 1.32;
@@ -2415,7 +2571,7 @@ body:has(.issue-comic),
 
 .issue-caption__text {
   margin: 0;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: clamp(12px, 1.25vw, 14px);
   line-height: 1.46;
   letter-spacing: 0.01em;
@@ -2681,8 +2837,8 @@ body:has(.issue-comic),
   flex-wrap: wrap;
   align-items: center;
   gap: 6px;
-  font-family: var(--font-mono);
-  font-size: clamp(10.5px, 1vw, 11.5px);
+  font-family: var(--font-sans);
+  font-size: 12px;
   color: rgb(255 255 255 / 0.68);
 }
 
@@ -2741,8 +2897,8 @@ body:has(.issue-comic),
 }
 
 .issue-credits-note {
-  font-family: var(--font-mono);
-  font-size: 10px;
+  font-family: var(--font-sans);
+  font-size: 12px;
   line-height: 1.35;
   color: rgb(255 255 255 / 0.72);
   text-shadow: 0 1px 6px rgb(0 0 0 / 0.9);
@@ -2752,7 +2908,111 @@ body:has(.issue-comic),
 .issue-continue-btn {
   min-height: 44px;
   padding: 0 18px;
-  font-size: 13.5px;
+  font-size: 16px;
+}
+
+/* Story p05 -> Drive the Rover handoff strip */
+.issue-handoff {
+  position: relative;
+  z-index: 25;
+  width: min(760px, calc(100% - 28px));
+  margin: -18px auto 28px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgb(20 13 10 / 0.94);
+  border: 1px solid rgb(var(--accent-rgb) / 0.45);
+  box-shadow: 0 18px 42px -18px rgb(0 0 0 / 0.85);
+  display: grid;
+  gap: 10px;
+}
+
+.issue-handoff__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.issue-handoff__copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.issue-handoff__title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-fg);
+}
+
+.issue-handoff__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.issue-handoff__play {
+  min-height: 44px;
+}
+
+.issue-handoff__skip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.24);
+  background: rgb(255 255 255 / 0.06);
+  color: var(--color-fg);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.issue-handoff__skip:hover {
+  background: rgb(255 255 255 / 0.14);
+  border-color: var(--accent);
+}
+
+.issue-handoff__skip:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+}
+
+.issue-handoff__outcome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 8px 6px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.35;
+  background: rgb(159 226 255 / 0.12);
+  border: 1px solid rgb(159 226 255 / 0.35);
+  color: #dff5ff;
+}
+
+.issue-handoff__outcome[data-won='false'] {
+  background: rgb(var(--accent-rgb) / 0.14);
+  border-color: rgb(var(--accent-rgb) / 0.4);
+  color: #ffe8cf;
+}
+
+.issue-handoff__dismiss {
+  display: inline-grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
 }
 
 /* ═════════════════════════ Full-Screen Photo Gallery Modal ═════════════════════════ */
@@ -2787,7 +3047,12 @@ body:has(.issue-comic),
   display: flex;
   align-items: center;
   gap: 8px;
-  font-family: var(--font-mono);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
   font-size: 12px;
   color: rgb(255 255 255 / 0.85);
   font-variant-numeric: tabular-nums;
@@ -2818,7 +3083,12 @@ body:has(.issue-comic),
   border: 1px solid rgb(255 255 255 / 0.25);
   background: rgb(16 18 24 / 0.85);
   color: #fff;
-  font-family: var(--font-mono);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
   font-size: 12px;
   display: inline-flex;
   align-items: center;
@@ -2935,8 +3205,8 @@ body:has(.issue-comic),
   align-items: center;
   justify-content: center;
   gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 11.5px;
+  font-family: var(--font-sans);
+  font-size: 12px;
   color: rgb(255 255 255 / 0.68);
 }
 
@@ -2972,7 +3242,7 @@ body:has(.issue-comic),
   -webkit-backdrop-filter: blur(10px);
 }
 
-@media (min-width: 900px) {
+@media (min-width: 768px) {
   .issue-play-btn {
     right: 28px;
     bottom: calc(28px + var(--safe-b));
@@ -3013,7 +3283,7 @@ body:has(.issue-comic),
   bottom: calc(76px + 56px + 10px + var(--safe-b));
   z-index: 55;
 }
-@media (min-width: 900px) {
+@media (min-width: 768px) {
   .narration-bar {
     right: calc(28px + 56px + 12px);
     bottom: calc(28px + 6px + var(--safe-b));
@@ -3047,9 +3317,13 @@ body:has(.issue-comic),
 }
 .narration-toggle__meta {
   display: none;
-  font-family: var(--font-mono);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
   font-size: 12px;
-  letter-spacing: 0.08em;
 }
 .narration-panel {
   position: fixed;
@@ -3069,7 +3343,7 @@ body:has(.issue-comic),
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
-@media (min-width: 900px) {
+@media (min-width: 768px) {
   .narration-panel {
     right: 28px;
     bottom: calc(28px + 56px + 12px + var(--safe-b));
@@ -3084,9 +3358,13 @@ body:has(.issue-comic),
 .narration-panel__label {
   margin-bottom: 8px;
   padding: 0;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: var(--color-fg-3);
 }
@@ -3177,17 +3455,27 @@ body:has(.issue-comic),
   padding: 1px 6px;
   border-radius: 3px;
   border: 1px solid rgb(255 255 255 / 0.4);
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   color: rgb(255 255 255 / 0.85);
   vertical-align: middle;
 }
 
 /* ── Hindi (Devanagari): letter-spacing breaks the headline stroke and conjuncts; matras need room. ── */
 :root:lang(hi) {
-  /* Plex Mono has no Devanagari and its wide space splits Hindi words apart: use the sans stack. */
-  --font-mono: 'Inter Variable', 'Inter', 'Noto Sans Devanagari', system-ui, sans-serif;
+  /* Silkscreen and Luckiest Guy have no Devanagari: Hindi labels and titles use the sans stack. */
+  --font-pixel: 'Inter Variable', 'Inter', 'Noto Sans Devanagari', system-ui, sans-serif;
+  --font-hero: 'Inter Variable', 'Inter', 'Noto Sans Devanagari', system-ui, sans-serif;
+}
+:root:lang(hi) .font-pixel,
+:root:lang(hi) body * {
+  -webkit-font-smoothing: antialiased !important;
+  text-rendering: optimizeLegibility !important;
 }
 :root:lang(hi) body * {
   letter-spacing: normal !important;
@@ -3213,7 +3501,13 @@ body:has(.issue-comic),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23b9b3a8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")
     no-repeat right 14px center;
   color: var(--color-fg);
-  font-size: 14px;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 12px;
   appearance: none;
 }
 .lang-select option {
@@ -3237,7 +3531,7 @@ body:has(.issue-comic),
   box-shadow: 0 24px 48px -12px rgb(0 0 0 / 0.9);
   font-size: 15px;
 }
-@media (min-width: 900px) {
+@media (min-width: 768px) {
   .lang-prompt {
     bottom: calc(28px + var(--safe-b));
   }
@@ -3247,4 +3541,207 @@ body:has(.issue-comic),
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 12px;
+}
+
+/* ───────────────────────── Comic-panel navigation ─────────────────────────
+   Desktop (≥768 px): 152 px left column of tilted comic-panel tabs.
+   Mobile: bottom tab bar (5 tabs + More), no tilt, icon above label. */
+.comic-nav {
+  position: fixed;
+  z-index: 40;
+  inset: auto 0 0 0;
+  height: calc(64px + var(--safe-b));
+  padding: 4px 6px var(--safe-b);
+  background: rgb(9 9 12 / 0.94);
+  border-top: 1px solid var(--color-line);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.comic-nav__logo,
+.comic-nav__list--desktop,
+.comic-nav__foot {
+  display: none;
+}
+.comic-nav__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.comic-nav__list--mobile {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 4px;
+  height: 56px;
+}
+.comic-nav__list--mobile > li {
+  min-width: 0;
+}
+
+.comic-tab {
+  --tab-shadow: #000;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-sizing: border-box;
+  width: 112px;
+  height: 44px;
+  padding: 0 7px;
+  border: 2px solid #2c2c30;
+  border-radius: 3px;
+  background: #16161a;
+  color: #bfc4ca;
+  box-shadow: 3px 3px 0 var(--tab-shadow);
+  text-decoration: none;
+  transform: rotate(var(--tilt, 0deg));
+  transition:
+    transform 150ms var(--ease-out),
+    box-shadow 150ms var(--ease-out),
+    color 150ms,
+    border-color 150ms;
+}
+.comic-tab__label {
+  font-family: var(--font-hero);
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: 0;
+  padding-top: 2px; /* Luckiest Guy sits high in its em box */
+  white-space: nowrap;
+}
+.comic-tab__icon {
+  flex: none;
+}
+.comic-tab:hover,
+.comic-tab:focus-visible {
+  color: #f3efe8;
+  border-color: #46464c;
+  transform: rotate(0deg) translateY(-2px);
+  box-shadow: 4px 4px 0 var(--tab-shadow);
+}
+.comic-tab:focus-visible {
+  outline: 2px solid #f6b96d;
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+.comic-tab:active {
+  transform: rotate(0deg) translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--tab-shadow);
+}
+.comic-tab[aria-current='page'] {
+  --tab-shadow: #f6b96d;
+  background: #f1e4cc;
+  border-color: #120c06;
+  color: #1c150e;
+}
+
+/* Mobile tab: fills its grid cell, no tilt, icon over label. */
+.comic-nav__list--mobile .comic-tab {
+  --tilt: 0deg;
+  width: 100%;
+  height: 52px;
+  min-height: 44px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  padding: 0 2px;
+  box-shadow: 2px 2px 0 var(--tab-shadow);
+}
+.comic-nav__list--mobile .comic-tab__label {
+  font-size: 10px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.comic-nav__more {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 12px);
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 10px;
+  list-style: none;
+  background: #0c0c10;
+  border: 2px solid #2c2c30;
+  box-shadow: 3px 3px 0 #000;
+}
+.comic-nav__more .comic-tab {
+  --tilt: 0deg;
+}
+
+@media (min-width: 768px) {
+  .comic-nav {
+    inset: 0 auto 0 0;
+    width: var(--rail-w);
+    height: auto;
+    padding: 28px 0 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgb(9 9 12 / 0.9);
+    border-top: 0;
+    border-right: 1px solid var(--color-line);
+  }
+  .comic-nav__logo {
+    display: block;
+    padding: 4px;
+    border-radius: 6px;
+  }
+  .comic-nav__list--mobile {
+    display: none;
+  }
+  .comic-nav__list--desktop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 44px;
+  }
+  .comic-nav__foot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: auto;
+  }
+  .comic-nav__credits {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 8px;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #a6a8ae;
+    text-decoration: none;
+  }
+  .comic-nav__credits:hover {
+    color: #f3efe8;
+  }
+  .comic-nav__issue {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+}
+@media (min-width: 768px) and (max-height: 700px) {
+  .comic-nav__list--desktop {
+    margin-top: 20px;
+  }
+  .comic-nav__issue > div {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .comic-tab {
+    transition: none;
+  }
+  .comic-tab:hover,
+  .comic-tab:focus-visible,
+  .comic-tab:active {
+    transform: rotate(var(--tilt, 0deg));
+  }
+  .comic-tab:active {
+    box-shadow: 1px 1px 0 var(--tab-shadow);
+  }
 }

@@ -21,6 +21,6 @@
     <rect x="740" y="228" width="30" height="22" fill="#16100c"/><circle cx="755" cy="239" r="6" fill="#888"/>
   </g>
 </g>
-<text x="600" y="540" font-family="IBM Plex Mono, monospace" font-size="24" fill="#e9c46a">Δv = vₑ ln(m₀ / m₁)</text>
+<text x="600" y="540" font-family="Silkscreen, monospace" font-size="24" fill="#e9c46a">Δv = vₑ ln(m₀ / m₁)</text>
 <rect width="960" height="600" filter="url(#grain-x)" opacity=".9"/>
 </svg>
