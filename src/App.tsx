@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useAppStore } from './store/useAppStore';
-import { getMission } from './lib/missions';
+import { getMission, missions } from './lib/missions';
 import { setSoundEnabled } from './lib/audio';
 import { dur, ease } from './lib/motion';
 import { useReducedMotion } from './lib/useReducedMotion';
@@ -123,7 +123,7 @@ export default function App() {
   if (stage === 'archive') screen = <ArchiveScreen />;
   else if (stage === 'badges') screen = <BadgesScreen />;
   else if (mission && stage === 'story') screen = <StoryScreen mission={mission} />;
-  else if (mission && stage === 'hardware') screen = <HardwareScreen mission={mission} />;
+  else if (stage === 'hardware') screen = <HardwareScreen mission={mission ?? missions[0]} />;
   else if (mission && stage === 'reward') screen = <RewardScreen mission={mission} />;
   // Full-screen game replaces the screen (its exit runs first, so only one canvas is ever live).
   if (playCopy) screen = <RoverDriveGame copy={playCopy} onExit={closePlay} exitLabel={EXIT_LABELS[stage]} />;

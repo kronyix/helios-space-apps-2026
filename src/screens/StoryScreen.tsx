@@ -60,7 +60,7 @@ export default function StoryScreen({ mission }: { mission: MissionData }) {
         issue={motionComic}
         onContinue={() => {
           prefetch(mission.modelPath);
-          go('hardware');
+          go('hardware', mission.id);
         }}
       />
     );
@@ -84,7 +84,7 @@ export default function StoryScreen({ mission }: { mission: MissionData }) {
           mission={mission}
           step={1}
           onPrev={() => go('archive', null)}
-          onNext={() => go('hardware')}
+          onNext={() => go('hardware', mission.id)}
           nextLabel="Hardware"
         />
       }
@@ -135,7 +135,7 @@ export default function StoryScreen({ mission }: { mission: MissionData }) {
               onFocus={() => prefetch(mission.modelPath)}
               onClick={() => {
                 prefetch(mission.modelPath);
-                go('hardware');
+                go('hardware', mission.id);
               }}
             >
               Inspect the hardware <IconArrowRight size={18} />

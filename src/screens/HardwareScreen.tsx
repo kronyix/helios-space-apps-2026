@@ -9,9 +9,28 @@ import { dur, ease } from '../lib/motion';
 import { useReducedMotion } from '../lib/useReducedMotion';
 import { AccentTitle, ScreenFrame } from '../components/ui/Layout';
 import { ComicPanel } from '../components/comic/ComicPage';
-import { IconClock, IconClose, IconPlay, IconTarget, IconTrophy } from '../components/ui/Icons';
+import { IconArrowLeft, IconClock, IconClose, IconPlay, IconTarget, IconTrophy } from '../components/ui/Icons';
 import { ChapterNav } from './ChapterNav';
 import MiniGameModal from '../components/comic/MiniGameModal';
+import HardwareHubScreen from './HardwareHubScreen';
+
+const HOTSPOT_GAMEPLAY: Record<string, Record<string, string>> = {
+  opportunity: {
+    arm: 'Used in Spectrometer Scan to position the Mössbauer spectrometer against martian soil to identify hematite spherules.',
+    wheel: 'Tested in Signal Delay Rover Drive — manage torque across six independent wheels over hazardous Martian dunes.',
+    arrays: 'Monitors solar power generation and battery margins before authorizing robotic arm science operations.',
+  },
+  apollo11: {
+    lrrr: 'The target in Laser Bounce! Earth observatories fire laser pulses at these 100 fused-silica prisms to track Moon drift.',
+    kapton: 'Multilayer thermal insulation shielding the descent stage from +120°C solar radiation and engine exhaust plume.',
+    psep: 'Solar-powered seismic package that transmitted humanity\'s first recorded moonquake data back to Houston.',
+  },
+  ingenuity: {
+    blades: 'The core mechanic in RPM Throttle! Throttle counter-rotating blades to 2,537+ RPM to achieve lift in 1% Martian air.',
+    avionics: 'Runs autonomous flight control loops 500 times per second — no joystick on Earth could react fast enough across 15 light-minutes.',
+    navcam: 'Downward camera tracking surface features at 30 fps to provide real-time velocity and position estimates.',
+  },
+};
 
 const HardwareViewer = lazy(() => import('../components/three/HardwareViewer'));
 
@@ -65,6 +84,9 @@ function ModelProgress() {
 }
 
 export default function HardwareScreen({ mission }: { mission: MissionData }) {
+  const hwView = useAppStore((s) => s.hwView);
+  const setHwView = useAppStore((s) => s.setHwView);
+  const openHardware = useAppStore((s) => s.openHardware);
   const active = useAppStore((s) => s.activeHotspot);
   const setHotspot = useAppStore((s) => s.setHotspot);
   const seen = useAppStore((s) => s.hotspotsSeen[mission.id]);
@@ -81,10 +103,36 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
   const g = mission.miniGame;
   const badgeAt = g.badgeThreshold ?? 80;
 
+  if (hwView === 'hub') {
+    return (
+      <HardwareHubScreen
+        onSelectMission={(id) => openHardware(id)}
+        onLaunchGame={(id) => {
+          openHardware(id);
+          setGamePhase('intro');
+        }}
+      />
+    );
+  }
+
+  const gameplayNote = h ? HOTSPOT_GAMEPLAY[mission.id]?.[h.id] : null;
+
   return (
     <ScreenFrame
       passthrough
-      kicker={`Issue ${pad2(mission.issueNumber)} · Hardware`}
+      kicker={
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            className="hw-back-pill"
+            onClick={() => setHwView('hub')}
+            aria-label="Return to Hardware Hub"
+          >
+            <IconArrowLeft size={13} /> ALL MACHINES
+          </button>
+          <span>Issue {pad2(mission.issueNumber)} · Hardware</span>
+        </div>
+      }
       title={<AccentTitle text={mission.issueTitle} />}
       status="Chapter III · The Hardware"
       background={
@@ -115,7 +163,7 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
         <ChapterNav
           mission={mission}
           step={2}
-          onPrev={() => go('story')}
+          onPrev={() => setHwView('hub')}
           onNext={() => go('reward')}
           nextLabel="Transmission"
         />
@@ -150,6 +198,14 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
                 <p className="mt-1 text-[15px] leading-relaxed text-fg">{h.engineeringFact}</p>
                 <h3 className="label-caps mt-4">Discovery</h3>
                 <p className="mt-1 text-[15px] leading-relaxed text-fg-2">{h.scienceDiscovery}</p>
+                {gameplayNote && (
+                  <div className="mt-4 rounded border border-[var(--color-line-2)] bg-[rgb(var(--accent-rgb)/0.06)] p-3">
+                    <h3 className="label-caps text-[var(--accent)] flex items-center gap-1.5">
+                      <IconPlay size={12} /> Field Test Connection
+                    </h3>
+                    <p className="mt-1 text-[13.5px] leading-relaxed text-fg-2">{gameplayNote}</p>
+                  </div>
+                )}
               </motion.article>
             ) : (
               <motion.div
@@ -166,6 +222,19 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
         </div>
 
         <div className="hardware-cards">
+          <div className="flex items-center justify-between pb-1">
+            <button
+              type="button"
+              className="btn-ghost text-[12px] py-1 px-3"
+              onClick={() => setHwView('hub')}
+            >
+              <IconArrowLeft size={14} /> Back to All Machines
+            </button>
+            <span className="font-pixel text-[11px] text-fg-3">
+              {mission.shortName}
+            </span>
+          </div>
+
           <div className="plate">
             <div className="flex items-center justify-between">
               <p className="kicker">Field test</p>
