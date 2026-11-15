@@ -273,6 +273,7 @@ export const useAppStore = create<AppState>()(
         roverResult: s.roverResult,
         storyMode: s.storyMode,
         lang: s.lang,
+        soundOn: s.soundOn,
         narrationOn: s.narrationOn,
         rate: s.rate,
         readAlong: s.readAlong,

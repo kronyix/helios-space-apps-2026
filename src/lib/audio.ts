@@ -5,6 +5,8 @@
 let ctx: AudioContext | null = null;
 let master: GainNode | null = null;
 let drone: { stop: () => void } | null = null;
+// Tracked here: AudioParam.value doesn't reflect scheduled ramps in every browser (Firefox reports 0).
+let enabled = false;
 
 function ensure() {
   if (!ctx) {
@@ -20,6 +22,7 @@ function ensure() {
 export function setSoundEnabled(on: boolean) {
   try {
     const { ctx, master } = ensure();
+    enabled = on;
     if (on) {
       void ctx.resume();
       master.gain.setTargetAtTime(0.5, ctx.currentTime, 0.4);
@@ -67,7 +70,7 @@ function startDrone(ctx: AudioContext, out: GainNode) {
 }
 
 export function blip(kind: 'tick' | 'ok' | 'bad' | 'lock' = 'tick') {
-  if (!ctx || !master || master.gain.value < 0.01) return;
+  if (!ctx || !master || !enabled) return;
   const o = ctx.createOscillator();
   const g = ctx.createGain();
   const f = { tick: 880, ok: 1320, bad: 196, lock: 1046 }[kind];
@@ -84,7 +87,7 @@ export function blip(kind: 'tick' | 'ok' | 'bad' | 'lock' = 'tick') {
 /** Quiet paper-turn rustle (filtered noise). Three variants so it never repeats exactly. */
 let noise: AudioBuffer | null = null;
 export function pageTurnSound() {
-  if (!ctx || !master || master.gain.value < 0.01) return;
+  if (!ctx || !master || !enabled) return;
   if (!noise) {
     noise = ctx.createBuffer(1, ctx.sampleRate * 0.6, ctx.sampleRate);
     const d = noise.getChannelData(0);
@@ -116,7 +119,7 @@ export function pageTurnSound() {
 // ---------------------------------------------------------------------------
 // Signal Delay (rover drive) sounds. All respect the master mute.
 
-const audible = () => !!ctx && !!master && master.gain.value >= 0.01;
+const audible = () => !!ctx && !!master && enabled;
 
 function noiseBuffer(c: AudioContext) {
   if (!noise) {

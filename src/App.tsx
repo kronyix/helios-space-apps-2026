@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useAppStore } from './store/useAppStore';
 import { getMission } from './lib/missions';
+import { setSoundEnabled } from './lib/audio';
 import { dur, ease } from './lib/motion';
 import { useReducedMotion } from './lib/useReducedMotion';
 import { NavRail } from './components/ui/Shell';
@@ -75,6 +76,21 @@ export default function App() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [stage, mission, playCopy]);
+
+  // Sound preference persists, but browsers only allow audio after a user gesture:
+  // resume it on the first pointer/key press if it was left on.
+  useEffect(() => {
+    const resume = () => {
+      if (useAppStore.getState().soundOn) setSoundEnabled(true);
+    };
+    const opts = { once: true, capture: true } as const;
+    window.addEventListener('pointerdown', resume, opts);
+    window.addEventListener('keydown', resume, opts);
+    return () => {
+      window.removeEventListener('pointerdown', resume, opts);
+      window.removeEventListener('keydown', resume, opts);
+    };
+  }, []);
 
   useEffect(() => {
     if (playCopy) {
