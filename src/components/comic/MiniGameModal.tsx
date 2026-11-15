@@ -137,7 +137,7 @@ export default function MiniGameModal({ mission }: { mission: MissionData }) {
             <header className="flex items-start justify-between gap-4 border-b border-[var(--color-line)] px-6 pb-4 pt-5">
               <div>
                 <p className="kicker">Field test · Issue {String(mission.issueNumber).padStart(2, '0')} · {g.durationSec ?? 15}s</p>
-                <h2 id="game-title" className="mt-1 font-display text-[28px] font-semibold leading-tight">
+                <h2 id="game-title" className="mt-1 font-hero text-[28px] leading-tight">
                   {g.title}
                 </h2>
               </div>
@@ -154,24 +154,24 @@ export default function MiniGameModal({ mission }: { mission: MissionData }) {
                     <ol className="mt-4 space-y-3">
                       {g.instructions?.map((s, i) => (
                         <li key={i} className="grid grid-cols-[28px_1fr] gap-2 text-[15px] leading-relaxed text-fg-2">
-                          <span className="font-mono text-[12px] text-[var(--accent)]">0{i + 1}</span>
+                          <span className="font-pixel text-[12px] text-[var(--accent)]">0{i + 1}</span>
                           {s}
                         </li>
                       ))}
                     </ol>
-                    <p className="mt-4 font-mono text-[11.5px] leading-relaxed tracking-[0.06em] text-fg-3">{g.controls}</p>
+                    <p className="mt-4 text-[14px] leading-relaxed text-fg-3">{g.controls}</p>
                   </div>
                   <aside className="science-note">
                     <p className="label-caps mb-2 !text-[var(--accent)]">The science</p>
                     <p className="text-[14px] leading-relaxed text-fg-2">{g.science}</p>
-                    <p className="mt-3 font-mono text-[11px] text-fg-3">Pass: {threshold}% · Badge: {g.badgeThreshold ?? 80}%</p>
+                    <p className="mt-3 font-pixel text-[12px] text-fg-3">Pass: {threshold}% · Badge: {g.badgeThreshold ?? 80}%</p>
                   </aside>
                   <div className="flex flex-wrap items-center gap-3 md:col-span-2">
                     <button type="button" className="btn-primary" onClick={start} data-autofocus>
                       Start the {g.durationSec ?? 15}-second test <IconArrowRight size={18} />
                     </button>
                     {result && (
-                      <span className="font-mono text-[12px] text-fg-3">
+                      <span className="font-pixel text-[12px] text-fg-3">
                         Best {result.best}% · {result.attempts} attempt{result.attempts === 1 ? '' : 's'}
                       </span>
                     )}
@@ -214,8 +214,8 @@ export default function MiniGameModal({ mission }: { mission: MissionData }) {
               {(phase === 'success' || phase === 'failure') && (
                 <div className="grid gap-6 md:grid-cols-[auto_1fr]" role="status">
                   <div className="score-dial" data-pass={phase === 'success' || undefined}>
-                    <span className="font-display text-[56px] font-semibold tabular-nums leading-none">{lastScore ?? 0}</span>
-                    <span className="font-mono text-[11px] tracking-[0.2em] text-fg-3">/ 100</span>
+                    <span className="font-pixel text-[40px] tabular-nums leading-none">{lastScore ?? 0}</span>
+                    <span className="font-pixel text-[12px] text-fg-3">/ 100</span>
                   </div>
                   <div>
                     <p className={`kicker ${phase === 'success' ? '!text-[var(--color-ok)]' : '!text-[var(--color-bad)]'}`}>
@@ -224,7 +224,7 @@ export default function MiniGameModal({ mission }: { mission: MissionData }) {
                     <p className="mt-2 text-[17px] text-fg">{detail}</p>
                     <p className="mt-3 text-[14px] leading-relaxed text-fg-2">{g.science}</p>
                     {result && (
-                      <p className="mt-3 font-mono text-[12px] text-fg-3">
+                      <p className="mt-3 font-pixel text-[12px] text-fg-3">
                         Best {result.best}% · badge at {g.badgeThreshold ?? 80}% · {result.attempts} attempt{result.attempts === 1 ? '' : 's'}
                       </p>
                     )}

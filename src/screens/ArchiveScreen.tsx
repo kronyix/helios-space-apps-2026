@@ -134,12 +134,12 @@ export default function ArchiveScreen() {
           <h2 className="archive-headline">
             Abandoned.
             <br />
-            Not <span className="text-[var(--accent)]">forgotten.</span>
+            Not <span className="text-[#F6B96D]">forgotten.</span>
           </h2>
           <p className="archive-lede">They were left behind. Their discoveries moved humanity forward.</p>
           <span className="hairline mt-5 block w-24" aria-hidden="true" />
           <div className="mt-6 flex flex-wrap items-center gap-4">
-            <button type="button" className="btn-primary h-14 px-8 text-[17px]" onClick={begin}>
+            <button type="button" className="btn-primary h-14 px-8 text-[16px]" onClick={begin}>
               <IconPlay size={16} /> Begin the journey <IconArrowRight size={18} />
             </button>
           </div>
@@ -159,8 +159,8 @@ export default function ArchiveScreen() {
             <h2 id="issues-h" className="label-caps !text-fg-2">
               The issues
             </h2>
-            <span className="font-mono text-[11px] tracking-[0.18em] text-fg-3">
-              {opened.length} / {missions.length} READ
+            <span className="font-pixel text-[12px] text-fg-3">
+              {opened.length} / {missions.length} read
             </span>
           </div>
           <ul className="flex flex-col gap-2.5">
@@ -190,13 +190,13 @@ export default function ArchiveScreen() {
                 >
                   <img src={m.comicPanels[2].comicImage} alt="" className="issue-row__thumb" loading="lazy" />
                   <span className="min-w-0 flex-1 text-left">
-                    <span className="block font-mono text-[10.5px] tracking-[0.18em] text-[var(--accent)]">
-                      ISSUE {pad2(m.issueNumber)}
-                      {opened.includes(m.id) && <span className="ml-2 text-fg-3">· READ</span>}
+                    <span className="block font-pixel text-[12px] uppercase text-[var(--accent)]">
+                      Issue {pad2(m.issueNumber)}
+                      {opened.includes(m.id) && <span className="ml-2 text-fg-3">· read</span>}
                     </span>
-                    <span className="mt-0.5 block font-display text-[18px] font-semibold leading-tight text-fg">{m.shortName}</span>
+                    <span className="mt-0.5 block font-pixel text-[16px] leading-tight text-fg">{m.shortName}</span>
                     <span className="block text-[13px] text-fg-2">{m.issueTitle}</span>
-                    <span className="mt-1 block font-mono text-[10px] tracking-[0.08em] text-fg-3">
+                    <span className="issue-row__coord mt-1 block font-pixel text-[12px] text-fg-3">
                       {formatCoord(m.coordinates.lat, m.coordinates.lng)}
                     </span>
                   </span>
@@ -233,10 +233,10 @@ export default function ArchiveScreen() {
             <div>
               <p className="kicker">Your expedition</p>
               <p className="mt-2 text-[15px] text-fg-2">
-                Issues read <b className="font-mono font-normal text-fg">{opened.length}/{missions.length}</b>
+                Issues read <b className="font-pixel text-[16px] font-normal text-fg">{opened.length}/{missions.length}</b>
               </p>
               <p className="text-[15px] text-fg-2">
-                Artifacts recovered <b className="font-mono font-normal text-fg">{artifacts.length}/{missions.length}</b>
+                Artifacts recovered <b className="font-pixel text-[16px] font-normal text-fg">{artifacts.length}/{missions.length}</b>
               </p>
             </div>
           </div>

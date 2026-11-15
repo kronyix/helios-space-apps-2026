@@ -49,7 +49,7 @@ export default function RewardScreen({ mission }: { mission: MissionData }) {
           <h2 id="tx-h" className="label-caps !text-[var(--accent)]">
             Decoded · {mission.hardwareName}
           </h2>
-          <dl className="mt-3 grid gap-x-8 gap-y-2 font-mono text-[13px] sm:grid-cols-2">
+          <dl className="mt-3 grid gap-x-8 gap-y-2 font-pixel text-[12px] sm:grid-cols-2">
             <div className="flex justify-between gap-4 border-b border-[var(--color-line)] py-1.5">
               <dt className="text-fg-3">PLANNED</dt>
               <dd className="text-right text-fg">{t.plannedLifespan}</dd>

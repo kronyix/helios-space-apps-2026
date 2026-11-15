@@ -690,7 +690,7 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
         />
 
         {/* Arcade HUD Overlay */}
-        <div className="absolute inset-x-0 top-0 flex flex-wrap items-center justify-between border-b border-black/40 bg-black/60 px-3 py-1.5 font-mono text-[11px] text-white">
+        <div className="absolute inset-x-0 top-0 flex flex-wrap items-center justify-between border-b border-black/40 bg-black/60 px-3 py-1.5 font-pixel text-[12px] text-white">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5">
               <span className={`h-2 w-2 rounded-full ${inOptimalRpm ? 'bg-[var(--color-ok)] animate-pulse' : 'bg-amber-400'}`} />
@@ -722,8 +722,8 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
         {/* Game Over Screen */}
         {gameOver && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 p-6 text-center">
-            <h3 className="font-display text-2xl font-bold text-[var(--color-bad)]">FLIGHT ABORTED</h3>
-            <p className="mt-1 font-mono text-sm text-[var(--color-fg-2)]">
+            <h3 className="font-hero text-[24px] uppercase text-[var(--color-bad)]">Flight aborted</h3>
+            <p className="mt-1 text-sm text-[var(--color-fg-2)]">
               {battery <= 0
                 ? 'Solar battery depleted during high-torque flight.'
                 : 'Helicopter collided with canyon spires or terrain.'}
@@ -739,11 +739,11 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
         {/* Victory Screen */}
         {victory && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 p-6 text-center">
-            <h3 className="font-display text-2xl font-bold text-[var(--color-ok)]">TOUCHDOWN SUCCESSFUL!</h3>
-            <p className="mt-1 font-mono text-sm text-[var(--color-fg)]">
+            <h3 className="font-hero text-[24px] uppercase text-[var(--color-ok)]">Touchdown successful!</h3>
+            <p className="mt-1 text-sm text-[var(--color-fg)]">
               Ingenuity successfully navigated the Martian canyon and landed gently on Airfield Beta!
             </p>
-            <p className="mt-2 font-mono text-xs text-[var(--color-fg-3)]">
+            <p className="mt-2 font-pixel text-[12px] text-[var(--color-fg-3)]">
               Final Score: <b>{score} / 100</b> · Preserved {battery}% flight battery.
             </p>
           </div>
@@ -755,7 +755,7 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
         <div className="flex gap-2">
           <button
             type="button"
-            className="btn-ghost flex-1 py-3 text-center font-mono font-bold select-none active:bg-white/20"
+            className="btn-ghost flex-1 py-3 text-center font-pixel font-bold select-none active:bg-white/20"
             onPointerDown={() => (touchLeft.current = true)}
             onPointerUp={() => (touchLeft.current = false)}
             onPointerCancel={() => (touchLeft.current = false)}
@@ -764,7 +764,7 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
           </button>
           <button
             type="button"
-            className="btn-ghost flex-1 py-3 text-center font-mono font-bold select-none active:bg-white/20"
+            className="btn-ghost flex-1 py-3 text-center font-pixel font-bold select-none active:bg-white/20"
             onPointerDown={() => (touchRight.current = true)}
             onPointerUp={() => (touchRight.current = false)}
             onPointerCancel={() => (touchRight.current = false)}
@@ -775,7 +775,7 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
         <div>
           <button
             type="button"
-            className="btn-primary w-full py-3 text-center font-mono font-bold select-none active:bg-amber-500"
+            className="btn-primary w-full py-3 text-center font-pixel font-bold select-none active:bg-amber-500"
             onPointerDown={() => (touchThrottle.current = true)}
             onPointerUp={() => (touchThrottle.current = false)}
             onPointerCancel={() => (touchThrottle.current = false)}
@@ -786,7 +786,7 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
       </div>
 
       {/* Desktop Instructions Bar */}
-      <div className="hidden sm:flex items-center justify-between font-mono text-[11px] text-[var(--color-fg-3)]">
+      <div className="hidden sm:flex items-center justify-between font-pixel text-[12px] text-[var(--color-fg-3)]">
         <span>Controls: <b>W / Space / ↑</b> Throttle Lift (Target 2537 RPM) · <b>A / D / ← →</b> Tilt Pitch</span>
         <span>Goal: Fly through 5 waypoints · Land gently on Airfield Beta (keep vertical speed low & level)</span>
       </div>

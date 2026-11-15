@@ -326,13 +326,13 @@ export function ScrollComic({ mission, panels, header, footer }: ScrollComicProp
                   {archival ? (
                     <>
                       <span className="text-fg-2">{panel.nasaImageCaption}</span>{' '}
-                      <span className="font-mono text-[11px] text-fg-3">
+                      <span className="font-pixel text-[12px] text-fg-3">
                         Credit: {panel.nasaImageCredit ?? 'NASA'}
                         {panel.nasaImageDate ? ` · ${panel.nasaImageDate}` : ''}
                       </span>
                     </>
                   ) : (
-                    <span className="font-mono text-[11px] text-fg-3">
+                    <span className="font-pixel text-[12px] text-fg-3">
                       Illustrated dramatization · Archival reference: {panel.nasaImageCredit ?? 'NASA'}
                     </span>
                   )}

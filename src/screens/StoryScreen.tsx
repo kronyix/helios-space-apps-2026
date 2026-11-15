@@ -96,7 +96,7 @@ export default function StoryScreen({ mission }: { mission: MissionData }) {
           <div className="scroll-comic__brief">
             <div className="flex flex-wrap items-baseline justify-between gap-2">
               <p className="kicker">{mission.hardwareName}</p>
-              <span className="font-mono text-[11px] tracking-[0.14em] text-fg-3">
+              <span className="font-pixel text-[12px] text-fg-3">
                 {mission.coordinates.locationName} · {formatCoord(mission.coordinates.lat, mission.coordinates.lng)}
               </span>
             </div>
