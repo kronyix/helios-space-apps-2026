@@ -102,7 +102,7 @@ await Promise.all(vps.map((v) => capture(browser, v, {})));
 if (!only || only.includes('1440')) {
   await capture(browser, '1440', { reducedMotion: 'reduce' }, '-reduced', ['archive', 'story-illustrated', 'hardware', 'reward']);
   await capture(browser, '1440', {}, '-nowebgl', ['01-archive', '-hardware', 'reward']);
-  await video(browser);
+  await video(browser).catch((e: Error) => console.warn(`video skipped: ${e.message.split("\n")[0]}`));
 }
 await browser.close();
 writeFileSync(`${out}/console.json`, JSON.stringify(consoleLog, null, 2));
