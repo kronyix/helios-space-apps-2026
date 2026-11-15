@@ -1,10 +1,10 @@
+<p align="center"><strong>▶ Live demo: <a href="https://helios-space-apps-2026.vercel.app">helios-space-apps-2026.vercel.app</a></strong></p>
+
 <p align="center">
   <img src="docs/readme/banner.svg" alt="Chronicles of the Silent Pioneers, by Team Helios" width="100%" />
 </p>
 
 <p align="center"><em>They were left behind. Their discoveries moved humanity forward.</em></p>
-
-<p align="center"><strong>▶ Live demo: <a href="https://helios-space-apps-2026.vercel.app">helios-space-apps-2026.vercel.app</a></strong></p>
 
 <p align="center">
   <img alt="React 19" src="https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=white&labelColor=08090C" />
