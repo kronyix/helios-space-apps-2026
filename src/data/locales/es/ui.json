@@ -89,5 +89,16 @@
   "badge.inspector.criteria": "Inspecciona los {n} puntos clave de los tres números.",
   "badge.archivist.name": "Archivista",
   "badge.archivist.criteria": "Recupera los tres artefactos.",
-  "badges.issues": "Números"
+  "badges.issues": "Números",
+  "rover.caption.intro": "Tus órdenes llegan a Marte minutos después. Planifica un sol y transmite.",
+  "rover.caption.firstUplink": "Señal de radio rumbo a Meridiani Planum. Espera la telemetría.",
+  "rover.caption.firstSandSlip": "Arena blanda delante: las ruedas patinan en dunas sueltas.",
+  "rover.caption.rockStop": "La evasión de riesgos detuvo el avance antes de chocar.",
+  "rover.caption.lowBattery": "Batería baja. Haz el próximo sol corto para recargar.",
+  "rover.caption.win": "¡Arándanos de hematita escaneados! El agua moldeó esta llanura.",
+  "rover.caption.lose": "Se perdió la señal antes de escanear. Revisa e inténtalo otra vez.",
+  "story.driveRover": "Conduce el róver",
+  "story.continueStory": "Seguir historia",
+  "story.roverWon": "¡Escaneaste los arándanos! Continúa la historia abajo.",
+  "story.roverLost": "Incluso el control de misión encuentra riesgos en Marte; sigue abajo."
 }

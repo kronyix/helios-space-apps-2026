@@ -89,5 +89,16 @@
   "badge.inspector.criteria": "Inspecte les {n} points clés des trois numéros.",
   "badge.archivist.name": "Archiviste",
   "badge.archivist.criteria": "Récupère les trois artefacts.",
-  "badges.issues": "Numéros"
+  "badges.issues": "Numéros",
+  "rover.caption.intro": "Tes ordres arrivent sur Mars après quelques minutes. Planifie un sol.",
+  "rover.caption.firstUplink": "Signal radio émis vers Meridiani Planum. Attends la télémétrie.",
+  "rover.caption.firstSandSlip": "Sable mou devant : les roues patinent dans la poussière.",
+  "rover.caption.rockStop": "L’évitement d’obstacles a stoppé le rover avant un rocher.",
+  "rover.caption.lowBattery": "Batterie faible. Garde le prochain sol court pour recharger.",
+  "rover.caption.win": "Myrtilles d’hématite analysées ! L’eau a façonné cette plaine.",
+  "rover.caption.lose": "Télémétrie perdue avant l’analyse. Vérifie et réessaie.",
+  "story.driveRover": "Piloter le rover",
+  "story.continueStory": "Continuer l’histoire",
+  "story.roverWon": "Tu as scanné les myrtilles ! Poursuis l’histoire ci-dessous.",
+  "story.roverLost": "Même la salle de contrôle rencontre des imprévus sur Mars — continue."
 }

@@ -89,5 +89,16 @@
   "badge.inspector.criteria": "तीनों अंकों के सभी {n} हॉटस्पॉट देखें।",
   "badge.archivist.name": "पुरालेखपाल",
   "badge.archivist.criteria": "तीनों कलाकृतियाँ वापस पाएँ।",
-  "badges.issues": "अंक"
+  "badges.issues": "अंक",
+  "rover.caption.intro": "आपके आदेश मंगल तक मिनटों बाद पहुँचते हैं। एक सोल की योजना भेजें।",
+  "rover.caption.firstUplink": "मेरिडियानी प्लैनम की ओर रेडियो संकेत जा रहा है। प्रतीक्षा करें।",
+  "rover.caption.firstSandSlip": "आगे नरम रेत है — पहिये ढीली धूल में फिसल रहे हैं।",
+  "rover.caption.rockStop": "खतरे से बचाव ने चट्टान से पहले रोवर को रोक दिया।",
+  "rover.caption.lowBattery": "बैटरी कम है। रिचार्ज के लिए अगला सोल छोटा रखें।",
+  "rover.caption.win": "हेमेटाइट ब्लूबेरी स्कैन हुईं! कभी यहाँ पानी बहता था।",
+  "rover.caption.lose": "स्कैन से पहले संपर्क टूट गया। समीक्षा करें और फिर प्रयास करें।",
+  "story.driveRover": "रोवर चलाएँ",
+  "story.continueStory": "कहानी जारी रखें",
+  "story.roverWon": "आपने ब्लूबेरी स्कैन कर लीं! नीचे कहानी जारी रखें।",
+  "story.roverLost": "मंगल पर मिशन कंट्रोल के सामने भी बाधाएँ आती हैं — नीचे जारी रखें।"
 }

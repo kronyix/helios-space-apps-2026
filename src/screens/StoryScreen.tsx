@@ -52,6 +52,9 @@ export function MissionFile({ mission }: { mission: MissionData }) {
 
 export default function StoryScreen({ mission }: { mission: MissionData }) {
   const go = useAppStore((s) => s.go);
+  const openPlay = useAppStore((s) => s.openPlay);
+  const roverStoryOutcome = useAppStore((s) => s.roverStoryOutcome);
+  const clearRoverStoryOutcome = useAppStore((s) => s.clearRoverStoryOutcome);
 
   const motionComic = MOTION_COMICS[mission.issueNumber];
   if (motionComic) {
@@ -63,6 +66,9 @@ export default function StoryScreen({ mission }: { mission: MissionData }) {
           prefetch(mission.modelPath);
           go('hardware', mission.id);
         }}
+        onPlayRover={mission.id === 'opportunity' ? () => openPlay('rover-drive', true) : undefined}
+        roverReturnOutcome={mission.id === 'opportunity' ? roverStoryOutcome : null}
+        onDismissRoverOutcome={clearRoverStoryOutcome}
       />
     );
   }

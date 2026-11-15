@@ -242,8 +242,9 @@ npm run preview    # http://localhost:4173
 | `verify:no-secrets` | `tsx scripts/verify-no-secrets.ts` | Check the build for leaked keys |
 | `review:capture` | `tsx scripts/review/capture.ts` | Playwright screenshots of every screen |
 | `review:metrics` | `tsx scripts/review/metrics.ts` | FPS, draw calls and bundle metrics |
+| `review:rover` | `tsx scripts/review/rover.ts` | Signal Delay Playwright E2E + perf sweep |
 
-Running the app needs no environment variables. Only narration generation does: copy `.env.example` to `.env.local` and set `FISH_API_KEY` (used first) or `GEMINI_API_KEY`. These keys are server-side only and never shipped to the client. Useful URL flags: `?nowebgl`, `?stage=hardware&mission=apollo11&hotspot=lrrr`, `?issue=2`, `?mode=archival`.
+Running the app needs no environment variables. Only narration generation does: copy `.env.example` to `.env.local` and set `FISH_API_KEY` (used first) or `GEMINI_API_KEY`. These keys are server-side only and never shipped to the client. Useful URL flags: `?nowebgl`, `?fps` (frame/draw-call telemetry), `?quality=high|med|low` (lock 3D tier), `?stage=hardware&mission=apollo11&hotspot=lrrr`, `?issue=2`, `?mode=archival`.
 
 ## Adding a new mission
 

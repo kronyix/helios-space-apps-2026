@@ -1193,7 +1193,7 @@ button:disabled {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(90deg, rgb(6 6 8 / 0.82) 0%, rgb(6 6 8 / 0.25) 34%, transparent 50%),
+  background: linear-gradient(90deg, rgb(6 6 8 / 0.45) 0%, rgb(6 6 8 / 0.12) 30%, transparent 48%),
     linear-gradient(0deg, rgb(6 6 8 / 0.92) 0%, rgb(6 6 8 / 0.2) 30%, transparent 45%),
     linear-gradient(180deg, rgb(6 6 8 / 0.7) 0%, transparent 18%);
 }
@@ -2940,6 +2940,110 @@ body:has(.issue-comic),
   min-height: 44px;
   padding: 0 18px;
   font-size: 16px;
+}
+
+/* Story p05 -> Drive the Rover handoff strip */
+.issue-handoff {
+  position: relative;
+  z-index: 25;
+  width: min(760px, calc(100% - 28px));
+  margin: -18px auto 28px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgb(20 13 10 / 0.94);
+  border: 1px solid rgb(var(--accent-rgb) / 0.45);
+  box-shadow: 0 18px 42px -18px rgb(0 0 0 / 0.85);
+  display: grid;
+  gap: 10px;
+}
+
+.issue-handoff__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.issue-handoff__copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.issue-handoff__title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-fg);
+}
+
+.issue-handoff__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.issue-handoff__play {
+  min-height: 44px;
+}
+
+.issue-handoff__skip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.24);
+  background: rgb(255 255 255 / 0.06);
+  color: var(--color-fg);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.issue-handoff__skip:hover {
+  background: rgb(255 255 255 / 0.14);
+  border-color: var(--accent);
+}
+
+.issue-handoff__skip:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+}
+
+.issue-handoff__outcome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 8px 6px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.35;
+  background: rgb(159 226 255 / 0.12);
+  border: 1px solid rgb(159 226 255 / 0.35);
+  color: #dff5ff;
+}
+
+.issue-handoff__outcome[data-won='false'] {
+  background: rgb(var(--accent-rgb) / 0.14);
+  border-color: rgb(var(--accent-rgb) / 0.4);
+  color: #ffe8cf;
+}
+
+.issue-handoff__dismiss {
+  display: inline-grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
 }
 
 /* ═════════════════════════ Full-Screen Photo Gallery Modal ═════════════════════════ */
