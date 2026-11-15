@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="public/brand/helios-wordmark.svg" />
+    <img src="public/brand/helios-wordmark-dark.svg" alt="Team Helios" width="300" />
+  </picture>
+</p>
+
 # Chronicles of the Silent Pioneers
 
 **Team Helios · NASA Space Apps Challenge 2026 · "Abandoned but Not Forgotten"**

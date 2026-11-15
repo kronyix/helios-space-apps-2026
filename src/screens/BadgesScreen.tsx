@@ -5,6 +5,7 @@ import { selectBadges, useAppStore } from '../store/useAppStore';
 import { ScreenFrame } from '../components/ui/Layout';
 import { IconExternal, IconLock, IconTrophy } from '../components/ui/Icons';
 import { useT } from '../i18n/useT';
+import { HeliosWordmark } from '../components/ui/HeliosMark';
 import { narrator, useVoicesVersion } from '../narration/narrator';
 
 /** Names the voice source: the generated-audio provider when files exist, plus the device-voice fallback. */
@@ -103,7 +104,8 @@ export default function BadgesScreen() {
 
         <section id="credits" className="mt-10 grid scroll-mt-6 gap-8 md:grid-cols-[1.4fr_1fr]" aria-labelledby="credits-h">
           <div>
-            <h2 id="credits-h" className="label-caps !text-fg-2">
+            <HeliosWordmark width={180} title="Team Helios" />
+            <h2 id="credits-h" className="label-caps mt-4 !text-fg-2">
               {t('credits.title')}
             </h2>
             <p className="mt-2 max-w-[70ch] text-[14px] leading-relaxed text-fg-2">{t('credits.art')}</p>
