@@ -35,7 +35,7 @@
   --accent-deep: #c9772f;
   --accent-rgb: 246 180 107;
   --scene-tint: #2a140a;
-  --rail-w: 128px;
+  --rail-w: 152px;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --safe-b: env(safe-area-inset-bottom, 0px);
@@ -355,7 +355,7 @@ button:disabled {
   min-height: 100dvh;
   outline: none;
 }
-@media (min-width: 900px) {
+@media (min-width: 768px) {
   .app__main {
     margin-left: var(--rail-w);
   }
@@ -377,7 +377,7 @@ button:disabled {
   inset: 0;
   z-index: 0;
 }
-@media (min-width: 900px) {
+@media (min-width: 768px) {
   .screen__bg {
     left: var(--rail-w);
   }
@@ -681,7 +681,7 @@ button:disabled {
   }
   .archive-cards .plate__title {
     margin-top: 4px;
-    font-size: 19px;
+    font-size: 16px;
   }
   .archive-cards .plate__text {
     font-size: 13.5px;
@@ -1185,7 +1185,7 @@ button:disabled {
   }
   .hardware-cards .plate__title {
     margin-top: 4px;
-    font-size: 19px;
+    font-size: 16px;
   }
   .hardware-cards .plate__text {
     font-size: 13.5px;
@@ -2212,7 +2212,7 @@ body:has(.issue-comic),
   padding: 0;
 }
 
-@media (max-width: 899px) {
+@media (max-width: 767px) {
   .issue-panel__sticky {
     height: calc(100svh - 64px - var(--safe-b));
   }
@@ -2845,7 +2845,7 @@ body:has(.issue-comic),
 .issue-continue-btn {
   min-height: 44px;
   padding: 0 18px;
-  font-size: 13.5px;
+  font-size: 16px;
 }
 
 /* ═════════════════════════ Full-Screen Photo Gallery Modal ═════════════════════════ */
@@ -3075,7 +3075,7 @@ body:has(.issue-comic),
   -webkit-backdrop-filter: blur(10px);
 }
 
-@media (min-width: 900px) {
+@media (min-width: 768px) {
   .issue-play-btn {
     right: 28px;
     bottom: calc(28px + var(--safe-b));
@@ -3116,7 +3116,7 @@ body:has(.issue-comic),
   bottom: calc(76px + 56px + 10px + var(--safe-b));
   z-index: 55;
 }
-@media (min-width: 900px) {
+@media (min-width: 768px) {
   .narration-bar {
     right: calc(28px + 56px + 12px);
     bottom: calc(28px + 6px + var(--safe-b));
@@ -3176,7 +3176,7 @@ body:has(.issue-comic),
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
-@media (min-width: 900px) {
+@media (min-width: 768px) {
   .narration-panel {
     right: 28px;
     bottom: calc(28px + 56px + 12px + var(--safe-b));
@@ -3334,7 +3334,13 @@ body:has(.issue-comic),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23b9b3a8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")
     no-repeat right 14px center;
   color: var(--color-fg);
-  font-size: 14px;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 12px;
   appearance: none;
 }
 .lang-select option {
@@ -3358,7 +3364,7 @@ body:has(.issue-comic),
   box-shadow: 0 24px 48px -12px rgb(0 0 0 / 0.9);
   font-size: 15px;
 }
-@media (min-width: 900px) {
+@media (min-width: 768px) {
   .lang-prompt {
     bottom: calc(28px + var(--safe-b));
   }
@@ -3368,4 +3374,207 @@ body:has(.issue-comic),
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 12px;
+}
+
+/* ───────────────────────── Comic-panel navigation ─────────────────────────
+   Desktop (≥768 px): 152 px left column of tilted comic-panel tabs.
+   Mobile: bottom tab bar (5 tabs + More), no tilt, icon above label. */
+.comic-nav {
+  position: fixed;
+  z-index: 40;
+  inset: auto 0 0 0;
+  height: calc(64px + var(--safe-b));
+  padding: 4px 6px var(--safe-b);
+  background: rgb(9 9 12 / 0.94);
+  border-top: 1px solid var(--color-line);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.comic-nav__logo,
+.comic-nav__list--desktop,
+.comic-nav__foot {
+  display: none;
+}
+.comic-nav__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.comic-nav__list--mobile {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 4px;
+  height: 56px;
+}
+.comic-nav__list--mobile > li {
+  min-width: 0;
+}
+
+.comic-tab {
+  --tab-shadow: #000;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-sizing: border-box;
+  width: 112px;
+  height: 44px;
+  padding: 0 7px;
+  border: 2px solid #2c2c30;
+  border-radius: 3px;
+  background: #16161a;
+  color: #bfc4ca;
+  box-shadow: 3px 3px 0 var(--tab-shadow);
+  text-decoration: none;
+  transform: rotate(var(--tilt, 0deg));
+  transition:
+    transform 150ms var(--ease-out),
+    box-shadow 150ms var(--ease-out),
+    color 150ms,
+    border-color 150ms;
+}
+.comic-tab__label {
+  font-family: var(--font-hero);
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: 0;
+  padding-top: 2px; /* Luckiest Guy sits high in its em box */
+  white-space: nowrap;
+}
+.comic-tab__icon {
+  flex: none;
+}
+.comic-tab:hover,
+.comic-tab:focus-visible {
+  color: #f3efe8;
+  border-color: #46464c;
+  transform: rotate(0deg) translateY(-2px);
+  box-shadow: 4px 4px 0 var(--tab-shadow);
+}
+.comic-tab:focus-visible {
+  outline: 2px solid #f6b96d;
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+.comic-tab:active {
+  transform: rotate(0deg) translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--tab-shadow);
+}
+.comic-tab[aria-current='page'] {
+  --tab-shadow: #f6b96d;
+  background: #f1e4cc;
+  border-color: #120c06;
+  color: #1c150e;
+}
+
+/* Mobile tab: fills its grid cell, no tilt, icon over label. */
+.comic-nav__list--mobile .comic-tab {
+  --tilt: 0deg;
+  width: 100%;
+  height: 52px;
+  min-height: 44px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  padding: 0 2px;
+  box-shadow: 2px 2px 0 var(--tab-shadow);
+}
+.comic-nav__list--mobile .comic-tab__label {
+  font-size: 10px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.comic-nav__more {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 12px);
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 10px;
+  list-style: none;
+  background: #0c0c10;
+  border: 2px solid #2c2c30;
+  box-shadow: 3px 3px 0 #000;
+}
+.comic-nav__more .comic-tab {
+  --tilt: 0deg;
+}
+
+@media (min-width: 768px) {
+  .comic-nav {
+    inset: 0 auto 0 0;
+    width: var(--rail-w);
+    height: auto;
+    padding: 28px 0 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgb(9 9 12 / 0.9);
+    border-top: 0;
+    border-right: 1px solid var(--color-line);
+  }
+  .comic-nav__logo {
+    display: block;
+    padding: 4px;
+    border-radius: 6px;
+  }
+  .comic-nav__list--mobile {
+    display: none;
+  }
+  .comic-nav__list--desktop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 44px;
+  }
+  .comic-nav__foot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: auto;
+  }
+  .comic-nav__credits {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 8px;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #a6a8ae;
+    text-decoration: none;
+  }
+  .comic-nav__credits:hover {
+    color: #f3efe8;
+  }
+  .comic-nav__issue {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+}
+@media (min-width: 768px) and (max-height: 700px) {
+  .comic-nav__list--desktop {
+    margin-top: 20px;
+  }
+  .comic-nav__issue > div {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .comic-tab {
+    transition: none;
+  }
+  .comic-tab:hover,
+  .comic-tab:focus-visible,
+  .comic-tab:active {
+    transform: rotate(var(--tilt, 0deg));
+  }
+  .comic-tab:active {
+    box-shadow: 1px 1px 0 var(--tab-shadow);
+  }
 }
