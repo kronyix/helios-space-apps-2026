@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "properNames": {
+    "Spirit": {
+      "ipa": "ˈspɪrɪt",
+      "hint": "SPEER-it",
+      "keepVerbatim": true
+    },
+    "Opportunity": {
+      "ipa": "ˌɒpərˈtjuːnɪti",
+      "hint": "ah-per-TOO-nih-tee",
+      "keepVerbatim": true
+    },
+    "Gusev": {
+      "ipa": "ˈɡuːsɛv",
+      "hint": "GOO-sev",
+      "keepVerbatim": true
+    },
+    "Meridiani Planum": {
+      "ipa": "məˌrɪdiˈænaɪ ˈpleɪnəm",
+      "hint": "meh-rid-ee-AH-nee PLAY-num",
+      "keepVerbatim": true
+    },
+    "Eagle Crater": {
+      "ipa": "ˈiːɡəl ˈkreɪtər",
+      "hint": "EE-gul KRAY-ter",
+      "keepVerbatim": true
+    },
+    "Endurance": {
+      "ipa": "ɪnˈdjʊərəns",
+      "hint": "en-DOOR-uns",
+      "keepVerbatim": true
+    },
+    "Home Plate": {
+      "ipa": "hoʊm pleɪt",
+      "hint": "Hohm Playt",
+      "keepVerbatim": true
+    },
+    "Ingenuity": {
+      "ipa": "ˌɪndʒɪˈnjuːɪti",
+      "hint": "in-jeh-NOO-ih-tee",
+      "keepVerbatim": true
+    },
+    "Jezero": {
+      "ipa": "ˈjɛzəroʊ",
+      "hint": "YEZ-eh-roh",
+      "keepVerbatim": true
+    },
+    "Apollo": {
+      "ipa": "əˈpɒloʊ",
+      "hint": "uh-PAH-loh",
+      "keepVerbatim": true
+    },
+    "Kapton": {
+      "ipa": "ˈkæptɒn",
+      "hint": "KAP-tahn",
+      "keepVerbatim": true
+    },
+    "Perseverance": {
+      "ipa": "ˌpɜːrsɪˈvɪərəns",
+      "hint": "per-seh-VEER-uns",
+      "keepVerbatim": true
+    },
+    "Tranquillitatis": {
+      "ipa": "træŋˌkwɪlɪˈteɪtɪs",
+      "hint": "tran-kwil-ih-TAY-tis",
+      "keepVerbatim": true
+    },
+    "Tranquility Base": {
+      "ipa": "træŋˈkwɪlɪti beɪs",
+      "hint": "tran-KWIL-ih-tee Bays",
+      "keepVerbatim": true
+    },
+    "Columbia": {
+      "ipa": "kəˈlʌmbiə",
+      "hint": "kuh-LUM-bee-uh",
+      "keepVerbatim": true
+    },
+    "USS Hornet": {
+      "ipa": "ˌjuːɛsˈɛs ˈhɔːrnɪt",
+      "hint": "U S S HOR-net",
+      "keepVerbatim": true
+    },
+    "Saturn V": {
+      "ipa": "ˈsætərn faɪv",
+      "hint": "Saturn Five",
+      "spoken": {
+        "en": "Saturn Five",
+        "hi": "Saturn Five",
+        "es": "Saturn Cinco",
+        "fr": "Saturn Cinq",
+        "pt-BR": "Saturn Cinco"
+      }
+    },
+    "LRRR": {
+      "ipa": "ˌɛlˌɑːrˌɑːrˈɑːr",
+      "hint": "L R R R (Laser Retroreflector)",
+      "spoken": {
+        "en": "L R R R",
+        "hi": "एल आर आर आर",
+        "es": "L R R R",
+        "fr": "L R R R",
+        "pt-BR": "L R R R"
+      }
+    }
+  }
+}

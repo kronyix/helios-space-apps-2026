@@ -17,6 +17,7 @@ import { useLocaleDict, type MissionsDict } from '../../i18n/locales';
 import { localizeIssue, type LocalizedPanel, type NarratedLine } from '../../i18n/comic';
 import { useT } from '../../i18n/useT';
 import { useNarrationPlayer } from '../../narration/useNarrationPlayer';
+import { useVoicesVersion } from '../../narration/narrator';
 import { NarrationBar } from './NarrationBar';
 
 export interface IssueComicProps {
@@ -56,13 +57,41 @@ function CameraSmallIcon() {
   );
 }
 
+function SpeakerPanelIcon({ active }: { active: boolean }) {
+  return (
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill={active ? 'currentColor' : 'none'} />
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14" opacity={active ? 1 : 0.65} />
+    </svg>
+  );
+}
+
 /** Read-along highlight for the line being narrated: soft glow, or a plain outline with reduced motion. */
 function useReading(lineId: string, reduced: boolean): 'glow' | 'outline' | undefined {
-  const on = useAppStore((s) => s.readAlong && s.currentLineId === lineId);
+  const on = useAppStore((s) => !s.textOnly && s.currentLineId === lineId);
   return on ? (reduced ? 'outline' : 'glow') : undefined;
 }
 
-function LegacyCaption({ line, reduced }: { line: NarratedLine; reduced: boolean }) {
+function LegacyCaption({
+  line,
+  reduced,
+  onTap,
+}: {
+  line: NarratedLine;
+  reduced: boolean;
+  onTap?: () => void;
+}) {
   return (
     <div
       className="issue-caption issue-caption--compact"
@@ -70,6 +99,11 @@ function LegacyCaption({ line, reduced }: { line: NarratedLine; reduced: boolean
       data-as-of={line.asOf}
       data-reading={useReading(line.id, reduced)}
       lang={line.textLang}
+      onClick={(e) => {
+        if (!onTap) return;
+        e.stopPropagation();
+        onTap();
+      }}
     >
       <p className="issue-caption__text">{line.text}</p>
     </div>
@@ -83,6 +117,7 @@ function CaptionLine({
   p,
   fadesOnDevelop,
   reduced,
+  onTap,
 }: {
   line: NarratedLine;
   lineIdx: number;
@@ -90,6 +125,7 @@ function CaptionLine({
   p: MotionValue<number>;
   fadesOnDevelop: boolean;
   reduced: boolean;
+  onTap?: () => void;
 }) {
   const reading = useReading(line.id, reduced);
   const win = bp.lineWindows[lineIdx] ?? { start: 0, peak: 0.08, end: 0.5 };
@@ -126,6 +162,11 @@ function CaptionLine({
       data-as-of={line.asOf}
       data-reading={reading}
       lang={line.textLang}
+      onClick={(e) => {
+        if (!onTap) return;
+        e.stopPropagation();
+        onTap();
+      }}
     >
       <p className="issue-caption__text">{line.text}</p>
     </motion.div>
@@ -140,6 +181,7 @@ function SpeechBalloon({
   fadesOnDevelop,
   hasIntroBanner,
   reduced,
+  onTap,
 }: {
   line: NarratedLine;
   lineIdx: number;
@@ -148,6 +190,7 @@ function SpeechBalloon({
   fadesOnDevelop: boolean;
   hasIntroBanner: boolean;
   reduced: boolean;
+  onTap?: () => void;
 }) {
   const reading = useReading(line.id, reduced);
   const win = bp.lineWindows[lineIdx] ?? { start: 0.2, peak: 0.3, end: 0.65 };
@@ -198,6 +241,11 @@ function SpeechBalloon({
       data-line-id={line.id}
       data-reading={reading}
       lang={line.textLang}
+      onClick={(e) => {
+        if (!onTap) return;
+        e.stopPropagation();
+        onTap();
+      }}
     >
       {line.speaker && <span className="issue-balloon__speaker">{line.speaker}</span>}
       <p className="issue-balloon__text">{line.text}</p>
@@ -364,7 +412,11 @@ function PanelSection({
   total,
   priority,
   reduced,
+  canNarrate,
+  isSpeaking,
+  onSpeakPanel,
   onStageClick,
+  onLineTap,
   onFocusPanel,
   onOpenGallery,
   onContinue,
@@ -377,7 +429,11 @@ function PanelSection({
   total: number;
   priority: boolean;
   reduced: boolean;
+  canNarrate: boolean;
+  isSpeaking: boolean;
+  onSpeakPanel: () => void;
   onStageClick: () => void;
+  onLineTap: (lineIdx: number) => void;
   onFocusPanel: (idx: number) => void;
   onOpenGallery: (panel: ComicPanel, initialPhotoIndex: number, triggerEl: HTMLElement | null) => void;
   onContinue?: () => void;
@@ -596,9 +652,17 @@ function PanelSection({
                   className="issue-legacy-closing"
                 >
                   <div className="issue-legacy-closing__captions">
-                    {captions.map((line) => (
-                      <LegacyCaption key={line.id} line={line} reduced={reduced} />
-                    ))}
+                    {captions.map((line) => {
+                      const lineIdx = panel.lines.findIndex((l) => l.id === line.id);
+                      return (
+                        <LegacyCaption
+                          key={line.id}
+                          line={line}
+                          reduced={reduced}
+                          onTap={() => onLineTap(lineIdx)}
+                        />
+                      );
+                    })}
                   </div>
                   <span className="issue-credits-note">{creditsNote}</span>
                 </motion.div>
@@ -702,26 +766,43 @@ function PanelSection({
             </div>
 
             <div className="issue-panel__top-right">
-              {!isRealOnly && (
-                <motion.div style={{ opacity: artLabelOpacity }} className="issue-top-label-group">
-                  <span className="issue-top-label">{artNatureText}</span>
-                  {panel.imagedNote && (
-                    <span className="issue-top-label__note">{panel.imagedNote}</span>
-                  )}
-                </motion.div>
-              )}
-              {currentPhoto && (
-                <motion.div
-                  style={{ opacity: photoLabelOpacity }}
-                  className="issue-top-label-group issue-top-label-group--photo"
-                >
-                  <span className="issue-top-label issue-top-label--photo">
-                    <CameraSmallIcon />
-                    <span>
-                      <PhotoKindLabel photo={currentPhoto} />
+              <div className="issue-top-labels">
+                {!isRealOnly && (
+                  <motion.div style={{ opacity: artLabelOpacity }} className="issue-top-label-group">
+                    <span className="issue-top-label">{artNatureText}</span>
+                    {panel.imagedNote && (
+                      <span className="issue-top-label__note">{panel.imagedNote}</span>
+                    )}
+                  </motion.div>
+                )}
+                {currentPhoto && (
+                  <motion.div
+                    style={{ opacity: photoLabelOpacity }}
+                    className="issue-top-label-group issue-top-label-group--photo"
+                  >
+                    <span className="issue-top-label issue-top-label--photo">
+                      <CameraSmallIcon />
+                      <span>
+                        <PhotoKindLabel photo={currentPhoto} />
+                      </span>
                     </span>
-                  </span>
-                </motion.div>
+                  </motion.div>
+                )}
+              </div>
+              {canNarrate && panel.lines.length > 0 && (
+                <button
+                  type="button"
+                  className="issue-panel-speak-btn"
+                  aria-pressed={isSpeaking}
+                  aria-label={t(isSpeaking ? 'narration.stopPanel' : 'narration.readPanel', { n: index + 1 })}
+                  title={t(isSpeaking ? 'narration.stopPanel' : 'narration.readPanel', { n: index + 1 })}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSpeakPanel();
+                  }}
+                >
+                  <SpeakerPanelIcon active={isSpeaking} />
+                </button>
               )}
             </div>
           </div>
@@ -740,6 +821,7 @@ function PanelSection({
                   fadesOnDevelop={fadesLinesOnDevelop}
                   hasIntroBanner={Boolean(panel.introBanner)}
                   reduced={reduced}
+                  onTap={() => onLineTap(lineIdx)}
                 />
               );
             })}
@@ -758,6 +840,7 @@ function PanelSection({
                     p={p}
                     fadesOnDevelop={fadesLinesOnDevelop}
                     reduced={reduced}
+                    onTap={() => onLineTap(lineIdx)}
                   />
                 );
               })}
@@ -1038,11 +1121,15 @@ export function IssueComic({ issue, onContinue }: IssueComicProps) {
   const t = useT();
   const lang = useAppStore((s) => s.lang);
   const dict = useLocaleDict<MissionsDict>('missions', lang);
+  const voicesVersion = useVoicesVersion();
   const textReady = lang === 'en' || dict !== undefined;
   const issueWord = t('comic.issue').toLocaleUpperCase();
   const localized = useMemo(
-    () => localizeIssue(issue, lang, lang === 'en' ? undefined : dict, issueWord),
-    [issue, lang, dict, issueWord],
+    () => {
+      void voicesVersion;
+      return localizeIssue(issue, lang, lang === 'en' ? undefined : dict, issueWord);
+    },
+    [issue, lang, dict, issueWord, voicesVersion],
   );
   const panels = localized.panels;
   const total = panels.length;
@@ -1172,6 +1259,83 @@ export function IssueComic({ issue, onContinue }: IssueComicProps) {
     [panels, reduced],
   );
 
+  /**
+   * Smoothly transitions from the illustrated art state through the diagonal wipe
+   * to reveal the panel's archival NASA stage photo(s) silently for a short moment
+   * before advancing to the next panel.
+   */
+  const revealPanelPhotos = useCallback(
+    async (panelIdx: number, rate: number, isCancelled: () => boolean) => {
+      const el = sectionRefs.current[panelIdx];
+      const panel = panels[panelIdx];
+      if (!el || !panel || panel.photos.length === 0) return;
+
+      const bp = getPanelBreakpoints(panel);
+      if (bp.photoWindows.length === 0) return;
+
+      const scrollable = Math.max(1, el.offsetHeight - window.innerHeight);
+      const scale = 1 / Math.max(0.75, rate);
+
+      const waitCancellable = (ms: number) =>
+        new Promise<void>((resolve) => {
+          const start = performance.now();
+          const check = (now: number) => {
+            if (isCancelled() || now - start >= ms) {
+              resolve();
+              return;
+            }
+            requestAnimationFrame(check);
+          };
+          requestAnimationFrame(check);
+        });
+
+      const animateScrollToP = (targetP: number, durationMs: number) =>
+        new Promise<void>((resolve) => {
+          if (isCancelled()) {
+            resolve();
+            return;
+          }
+          const startY = window.scrollY || 0;
+          const targetY = Math.round(el.offsetTop + scrollable * targetP);
+          if (reduced || durationMs <= 16 || Math.abs(targetY - startY) < 2) {
+            window.scrollTo({ top: targetY, behavior: 'auto' });
+            resolve();
+            return;
+          }
+          const startTime = performance.now();
+          const step = (now: number) => {
+            if (isCancelled()) {
+              resolve();
+              return;
+            }
+            const t = Math.min(1, (now - startTime) / durationMs);
+            const eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+            window.scrollTo(0, Math.round(startY + (targetY - startY) * eased));
+            if (t >= 1) {
+              resolve();
+              return;
+            }
+            requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        });
+
+      // 1. Wipe into Hero NASA photo (photoSampleP) and hold briefly
+      await animateScrollToP(bp.photoSampleP, Math.round(700 * scale));
+      if (isCancelled()) return;
+      await waitCancellable(Math.round(800 * scale));
+      if (isCancelled()) return;
+
+      // 2. If a second stage photo exists, crossfade-scroll to it and hold briefly
+      if (bp.photoWindows.length > 1 && bp.secondPhotoSampleP > bp.photoSampleP + 0.02) {
+        await animateScrollToP(bp.secondPhotoSampleP, Math.round(500 * scale));
+        if (isCancelled()) return;
+        await waitCancellable(Math.round(650 * scale));
+      }
+    },
+    [panels, reduced],
+  );
+
   const narration = useNarrationPlayer({
     missionId: issue.missionId ?? '',
     panels,
@@ -1179,11 +1343,19 @@ export function IssueComic({ issue, onContinue }: IssueComicProps) {
     ready: textReady,
     reduced,
     revealLine,
+    revealPanelPhotos,
     jumpToPanel,
   });
   const { narrating, canNarrate } = narration;
   const stopNarration = narration.stop;
   const toggleNarration = narration.toggle;
+
+  // Pause narration if photo gallery is opened
+  useEffect(() => {
+    if (galleryState && narrating) {
+      stopNarration();
+    }
+  }, [galleryState, narrating, stopNarration]);
 
   // Stop Play mode immediately on any manual user wheel or touch scroll
   useEffect(() => {
@@ -1247,12 +1419,14 @@ export function IssueComic({ issue, onContinue }: IssueComicProps) {
       if (e.key === 'ArrowRight' && !onInteractive) {
         e.preventDefault();
         setPlaying(false);
+        if (narrating) stopNarration();
         jumpToPanel(activeIndex + 1, true);
         return;
       }
       if (e.key === 'ArrowLeft' && !onInteractive) {
         e.preventDefault();
         setPlaying(false);
+        if (narrating) stopNarration();
         jumpToPanel(activeIndex - 1, true);
         return;
       }
@@ -1443,8 +1617,16 @@ export function IssueComic({ issue, onContinue }: IssueComicProps) {
             total={total}
             priority={idx <= 1}
             reduced={reduced}
+            canNarrate={canNarrate}
+            isSpeaking={narration.speakingPanel === idx}
+            onSpeakPanel={() => narration.speakPanel(idx)}
             onStageClick={() => {
               if (playing) setPlaying(false);
+            }}
+            onLineTap={(lineIdx) => {
+              if (!playing && !narrating) {
+                narration.speakLine(idx, lineIdx);
+              }
             }}
             onFocusPanel={(i) => setActiveIndex(i)}
             onOpenGallery={handleOpenGallery}

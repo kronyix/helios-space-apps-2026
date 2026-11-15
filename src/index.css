@@ -2386,11 +2386,63 @@ body:has(.issue-comic),
 .issue-panel__top-right {
   position: relative;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 10px;
   flex: 1 1 50%;
   max-width: 50%;
   min-width: 0;
+}
+
+.issue-top-labels {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 0;
+}
+
+.issue-panel-speak-btn {
+  position: relative;
+  pointer-events: auto;
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.24);
+  background: rgb(8 10 14 / 0.72);
+  color: rgb(255 255 255 / 0.9);
+  box-shadow: 0 6px 18px -4px rgb(0 0 0 / 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition:
+    transform 160ms ease-out,
+    border-color 160ms ease-out,
+    color 160ms ease-out,
+    background-color 160ms ease-out;
+}
+
+.issue-panel-speak-btn::after {
+  content: '';
+  position: absolute;
+  inset: -5px;
+}
+
+.issue-panel-speak-btn:hover {
+  transform: scale(1.06);
+  border-color: rgb(var(--accent-rgb) / 0.75);
+  color: var(--accent);
+}
+
+.issue-panel-speak-btn[aria-pressed='true'] {
+  border-color: var(--accent);
+  background: rgb(var(--accent-rgb) / 0.18);
+  color: var(--accent);
+  box-shadow: 0 0 18px rgb(var(--accent-rgb) / 0.4);
 }
 
 .issue-top-label-group {

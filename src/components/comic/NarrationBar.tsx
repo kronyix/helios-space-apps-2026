@@ -21,8 +21,8 @@ function Switch({ label, checked, onChange }: { label: string; checked: boolean;
 /** Voice settings (language, speed, read-along, auto-advance, text only) + the narration live region. */
 export function NarrationBar({ status, total }: { status: NarrationStatus; total: number }) {
   const t = useT();
-  const { lang, rate, readAlong, autoAdvance, textOnly } = useAppStore(
-    useShallow((s) => ({ lang: s.lang, rate: s.rate, readAlong: s.readAlong, autoAdvance: s.autoAdvance, textOnly: s.textOnly })),
+  const { lang, rate, textOnly } = useAppStore(
+    useShallow((s) => ({ lang: s.lang, rate: s.rate, textOnly: s.textOnly })),
   );
   const setLang = useAppStore((s) => s.setLang);
   const setNarration = useAppStore((s) => s.setNarration);
@@ -97,8 +97,6 @@ export function NarrationBar({ status, total }: { status: NarrationStatus; total
               ))}
             </div>
           </fieldset>
-          <Switch label={t('narration.readAlong')} checked={readAlong} onChange={(v) => setNarration({ readAlong: v })} />
-          <Switch label={t('narration.autoAdvance')} checked={autoAdvance} onChange={(v) => setNarration({ autoAdvance: v })} />
           <Switch label={t('narration.textOnly')} checked={textOnly} onChange={(v) => setNarration({ textOnly: v })} />
         </div>
       )}

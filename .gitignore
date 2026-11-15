@@ -37,10 +37,11 @@ review/**/video/
 .antigravity
 bun.lock
 public/assets/
-
+.env.local
 
 
 !.env.example
 
 # Piper voice models (scripts/piper-tts.py)
 .cache/
+metadata.json

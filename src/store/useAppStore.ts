@@ -57,9 +57,7 @@ interface AppState extends Progress {
   /** Narration & language (lang, narrationOn, rate, textOnly, langPromptSeen are persisted). */
   lang: string;
   narrationOn: boolean;
-  autoAdvance: boolean;
   rate: NarrationRate;
-  readAlong: boolean;
   /** Text only: no voice and no read-along highlight (for screen-reader users). */
   textOnly: boolean;
   langPromptSeen: boolean;
@@ -82,7 +80,7 @@ interface AppState extends Progress {
   markTransmission: (missionId: string) => void;
   setSound: (on: boolean) => void;
   setLang: (lang: string) => void;
-  setNarration: (n: Partial<Pick<AppState, 'narrationOn' | 'autoAdvance' | 'rate' | 'readAlong' | 'textOnly' | 'langPromptSeen'>>) => void;
+  setNarration: (n: Partial<Pick<AppState, 'narrationOn' | 'rate' | 'textOnly' | 'langPromptSeen'>>) => void;
   setCurrentLine: (id: string | null) => void;
   setFocused: (id: string | null) => void;
   setDiving: (id: string | null) => void;
@@ -170,9 +168,7 @@ export const useAppStore = create<AppState>()(
       soundOn: false,
       lang: 'en',
       narrationOn: true,
-      autoAdvance: false,
       rate: 1,
-      readAlong: true,
       textOnly: false,
       langPromptSeen: false,
       currentLineId: null,
@@ -276,7 +272,6 @@ export const useAppStore = create<AppState>()(
         soundOn: s.soundOn,
         narrationOn: s.narrationOn,
         rate: s.rate,
-        readAlong: s.readAlong,
         textOnly: s.textOnly,
         langPromptSeen: s.langPromptSeen,
       }),

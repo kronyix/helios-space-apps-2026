@@ -1,27 +1,27 @@
-/** One line to narrate. `text` is already in `lang` (or English when it fell back). */
 export interface SpeakLine {
   missionId: string;
   panelId: string;
-  /** Comic line id, e.g. "p01-c1". */
   id: string;
   text: string;
-  /** "narrator" or a character id. */
-  voice: string;
+  voice?: string;
+  speaker?: string;
+  kind?: 'caption' | 'speech';
 }
 
 export interface SpeakOptions {
-  /** Playback speed: 0.75, 1 or 1.25. */
-  rate?: number;
+  rate: number;
+  reduced?: boolean;
 }
 
-/**
- * Swappable voice source. `speak` resolves when the line ends or is stopped, and rejects when
- * this provider cannot voice the line (so a fallback provider can try).
- */
+export type ProviderId = 'file';
+
 export interface VoiceProvider {
-  speak(line: SpeakLine, lang: string, opts?: SpeakOptions): Promise<void>;
-  stop(): void;
+  readonly id: ProviderId;
   isAvailable(lang: string): boolean;
+  canSpeak(line: SpeakLine, lang: string): boolean;
+  speak(line: SpeakLine, lang: string, opts: SpeakOptions): Promise<void>;
+  stop(): void;
+  preload?(items: { line: SpeakLine; lang: string }[]): void;
 }
 
 export class CannotSpeak extends Error {
@@ -29,10 +29,4 @@ export class CannotSpeak extends Error {
     super(reason);
     this.name = 'CannotSpeak';
   }
-}
-
-/** "<panel>-<line>" file stem: line ids already start with the panel id ("p01-c1"). */
-export function audioKey(line: Pick<SpeakLine, 'missionId' | 'panelId' | 'id'>, lang: string) {
-  const stem = line.id.startsWith(`${line.panelId}-`) ? line.id : `${line.panelId}-${line.id}`;
-  return `${lang}/${line.missionId}/${stem}`;
 }

@@ -1,82 +1,120 @@
-import type { ComicIssue, ComicIssueMeta, ComicPanel, Line } from '../data/comics/opportunity-spirit';
+import type {
+  ComicIssue,
+  ComicIssueMeta,
+  ComicPanel,
+  Line,
+  Photo,
+} from '../data/comics/opportunity-spirit';
 import type { MissionsDict } from './locales';
-import { DEFAULT_LANG } from './languages';
-
-/** Looks up a dotted key ("opportunity.comic.p01.lines.p01-c1") in a locale dictionary. */
-export function resolveKey(dict: unknown, key: string): string | undefined {
-  let cur: unknown = dict;
-  for (const part of key.split('.')) {
-    if (cur == null || typeof cur !== 'object') return undefined;
-    cur = (cur as Record<string, unknown>)[part];
-  }
-  return typeof cur === 'string' && cur.trim() ? cur : undefined;
-}
+import { narrator } from '../narration/narrator';
 
 export interface NarratedLine extends Line {
-  /** Language the text is actually in (English when the translation is missing). */
-  textLang: string;
-  /** "narrator" or a character id (lower case). */
+  /** Speaker id for voice lookup ('narrator', 'spirit', 'opportunity', 'eagle', 'columbia', 'ingenuity'). */
   voice: string;
-  textKey: string;
+  /** Language code of `text` (falls back to 'en' when a translation is missing). */
+  textLang: string;
 }
 
 export interface LocalizedPanel extends Omit<ComicPanel, 'lines'> {
   lines: NarratedLine[];
-  /** True when a translation is missing and this panel falls back to English ("EN" tag). */
-  untranslated: boolean;
+  /** True when `lang !== 'en'` and this panel has no translated lines yet. */
+  untranslated?: boolean;
 }
 
 export interface LocalizedIssue {
+  missionId?: string;
   meta: ComicIssueMeta;
   panels: LocalizedPanel[];
 }
 
-export function lineTextKey(missionId: string, panelId: string, line: Line): string {
-  return line.narration?.textKey ?? `${missionId}.comic.${panelId}.lines.${line.id}`;
-}
+/**
+ * Pace = actual audio clip duration + 250ms inter-line gap.
+ */
+export const NARRATION_GAP_MS = 250;
 
-export function lineVoice(line: Line): string {
-  if (line.narration?.speaker) return line.narration.speaker;
-  return line.kind === 'speech' && line.speaker ? line.speaker.toLowerCase() : 'narrator';
+function speakerFor(line: Line): string {
+  if (line.narration?.speaker) return line.narration.speaker.toLowerCase();
+  if (line.kind === 'caption') return 'narrator';
+  return (line.speaker ?? 'narrator').toLowerCase();
 }
 
 /**
- * Applies a locale dictionary to a motion comic. Missing strings fall back to the English
- * source, never to blank. `dict` undefined means "still loading": English, no EN tag yet.
+ * Localizes a ComicIssue into `lang` and merges pre-generated audio durations
+ * (`durationMs + 250ms` gap) from the narration manifest for the active language
+ * so Play mode and scroll breakpoints follow the real audio across all 3 issues.
  */
-export function localizeIssue(issue: ComicIssue, lang: string, dict: MissionsDict | undefined, issueWord?: string): LocalizedIssue {
-  const mid = issue.missionId ?? '';
-  const loc = dict?.[mid];
-  const isEn = lang === DEFAULT_LANG;
-  const pick = (key: string, fallback: string) => (isEn ? undefined : resolveKey(dict, key)) ?? fallback;
+export function localizeIssue(
+  issue: ComicIssue,
+  lang: string,
+  dict?: MissionsDict,
+  issueWord = 'ISSUE',
+): LocalizedIssue {
+  const missionId = issue.missionId ?? 'opportunity';
+  const mLoc = lang === 'en' ? undefined : dict?.[missionId];
 
-  const meta: ComicIssueMeta = loc?.meta
-    ? {
-        ...issue.meta,
-        title: pick(`${mid}.meta.title`, issue.meta.title),
-        disclaimer: pick(`${mid}.meta.disclaimer`, issue.meta.disclaimer),
-        creditsNote: pick(`${mid}.meta.creditsNote`, issue.meta.creditsNote),
-      }
-    : issue.meta;
+  const num = issue.meta.issueCode.replace(/^\D+/, '');
+  const meta: ComicIssueMeta = {
+    ...issue.meta,
+    issueCode: num ? `${issueWord} ${num}` : issue.meta.issueCode,
+    title: mLoc?.meta?.title ?? issue.meta.title,
+    disclaimer: mLoc?.meta?.disclaimer ?? issue.meta.disclaimer,
+    creditsNote: mLoc?.meta?.creditsNote ?? issue.meta.creditsNote,
+  };
 
-  const panels = issue.panels.map((p): LocalizedPanel => {
-    let missing = false;
-    const lines = p.lines.map((l): NarratedLine => {
-      const textKey = lineTextKey(mid, p.id, l);
-      const t = isEn ? undefined : resolveKey(dict, textKey);
-      if (!isEn && dict && !t) missing = true;
-      return { ...l, text: t ?? l.text, textLang: t ? lang : DEFAULT_LANG, voice: lineVoice(l), textKey };
+  const panels: LocalizedPanel[] = issue.panels.map((p) => {
+    const pLoc = mLoc?.comic?.[p.id];
+    const stamp = pLoc?.stamp ?? p.stamp;
+
+    let anyTranslated = lang === 'en';
+    const lines: NarratedLine[] = p.lines.map((l) => {
+      const translatedText = pLoc?.lines?.[l.id];
+      if (translatedText) anyTranslated = true;
+      const textLang = translatedText ? lang : 'en';
+      const text = translatedText ?? l.text;
+      const clipDurationMs = narrator.getDurationMs(missionId, l.id, textLang);
+      const audio =
+        clipDurationMs !== undefined && clipDurationMs > 0
+          ? {
+              src: `/audio/${textLang}/${missionId}/${l.id}.mp3`,
+              durationMs: clipDurationMs + NARRATION_GAP_MS,
+            }
+          : l.audio;
+
+      return {
+        ...l,
+        text,
+        textLang,
+        voice: speakerFor(l),
+        audio,
+      };
     });
+
+    const photos: Photo[] = p.photos.map((ph) => {
+      const cap = mLoc?.photos?.[ph.id];
+      return cap ? { ...ph, caption: cap } : ph;
+    });
+
+    const introBanner =
+      p.introBanner && (mLoc?.meta?.title || mLoc?.meta?.disclaimer)
+        ? {
+            title: mLoc?.meta?.title ?? p.introBanner.title,
+            disclaimer: mLoc?.meta?.disclaimer ?? p.introBanner.disclaimer,
+          }
+        : p.introBanner;
+
     return {
       ...p,
-      stamp: pick(`${mid}.comic.${p.id}.stamp`, p.stamp),
-      introBanner: p.introBanner && {
-        title: `${issueWord ? issue.meta.issueCode.replace(/^\D+/, `${issueWord} `) : issue.meta.issueCode} · ${meta.title}`,
-        disclaimer: meta.disclaimer,
-      },
+      stamp,
+      introBanner,
       lines,
-      untranslated: missing,
+      photos,
+      untranslated: lang !== 'en' && !anyTranslated,
     };
   });
-  return { meta, panels };
+
+  return {
+    missionId,
+    meta,
+    panels,
+  };
 }
