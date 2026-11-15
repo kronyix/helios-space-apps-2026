@@ -14,10 +14,13 @@ export function AnchorProjector({
   els,
   prefix,
   facing = false,
+  reserveRight = 0,
 }: {
   els: React.RefObject<Record<string, HTMLElement | null>>;
   prefix: string;
   facing?: boolean;
+  /** px at the right of the canvas covered by DOM UI (e.g. the issue list); labels flip before reaching it. */
+  reserveRight?: number;
 }) {
   const { camera, scene, size } = useThree();
   const cache = useRef<Record<string, THREE.Object3D | undefined>>({});
@@ -48,8 +51,12 @@ export function AnchorProjector({
       const x = ((v.p.x + 1) / 2) * size.width;
       const y = ((1 - v.p.y) / 2) * size.height;
       el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`;
-      // Labels sit to the right of their marker unless that would cross the frame edge.
-      const side = x > size.width - 240 ? 'left' : 'right';
+      // Labels sit to the right of their marker unless their full (expanded) width would reach
+      // the frame edge or the UI covering the right of the canvas.
+      const label = el.querySelector<HTMLElement>('.beacon-label, .hotspot-label');
+      let lw = 200;
+      if (label) for (const c of label.children) lw = Math.max(lw, (c as HTMLElement).scrollWidth + 40);
+      const side = x + 44 + lw > size.width - reserveRight ? 'left' : 'right';
       if (el.dataset.side !== side) el.dataset.side = side;
       el.style.opacity = String(vis);
       el.style.visibility = vis < 0.01 ? 'hidden' : 'visible';

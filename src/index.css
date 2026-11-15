@@ -39,6 +39,12 @@
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --safe-b: env(safe-area-inset-bottom, 0px);
+  /* Warm deep-space backdrop (rust haze low-left, faint glow behind the globe) instead of flat black. */
+  --bg-space:
+    radial-gradient(ellipse 70% 55% at 30% 95%, rgb(122 52 22 / 0.42), transparent 70%),
+    radial-gradient(ellipse 55% 60% at 62% 55%, rgb(96 42 18 / 0.3), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 85% 0%, rgb(60 30 16 / 0.25), transparent 70%),
+    linear-gradient(180deg, #0b0907 0%, #110b08 60%, #160c07 100%);
 }
 
 [data-theme='rust'] {
@@ -71,7 +77,7 @@ body,
 
 body {
   margin: 0;
-  background: var(--color-void);
+  background: var(--bg-space) fixed, var(--color-void);
   color: var(--color-fg);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -524,9 +530,13 @@ button:disabled {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 60% 70% at 62% 45%, transparent 40%, rgb(5 5 7 / 0.55) 100%),
-    linear-gradient(90deg, rgb(5 5 7 / 0.85) 0%, rgb(5 5 7 / 0.35) 32%, transparent 55%),
-    linear-gradient(0deg, rgb(5 5 7 / 0.9) 0%, transparent 32%);
+    radial-gradient(ellipse 60% 70% at 62% 45%, transparent 45%, rgb(11 8 6 / 0.35) 100%),
+    linear-gradient(90deg, rgb(11 8 6 / 0.55) 0%, rgb(11 8 6 / 0.15) 32%, transparent 55%),
+    linear-gradient(0deg, rgb(11 8 6 / 0.45) 0%, transparent 28%);
+}
+/* The globe canvas is transparent; this paints the warm backdrop under it. */
+.screen__bg:has(.archive-vignette) {
+  background: var(--bg-space), var(--color-void);
 }
 .dive-flash {
   position: absolute;
@@ -1580,8 +1590,8 @@ button:disabled {
 @media (max-width: 899px) {
   .archive-vignette {
     background:
-      linear-gradient(0deg, rgb(5 5 7 / 0.96) 0%, rgb(5 5 7 / 0.82) 42%, rgb(5 5 7 / 0.2) 62%, transparent 75%),
-      radial-gradient(ellipse 90% 50% at 50% 30%, transparent 50%, rgb(5 5 7 / 0.5) 100%);
+      linear-gradient(0deg, rgb(17 11 8 / 0.96) 0%, rgb(17 11 8 / 0.7) 22%, transparent 45%),
+      radial-gradient(ellipse 90% 50% at 50% 40%, transparent 50%, rgb(11 8 6 / 0.45) 100%);
   }
 }
 
@@ -1626,6 +1636,20 @@ button:disabled {
   .screen__bg:has(.archive-vignette) {
     position: absolute;
     height: 64vh;
+  }
+}
+/* Phones: start the globe below the title lockup so beacon labels never sit on the title. */
+@media (max-width: 767px) {
+  .screen__bg:has(.archive-vignette) {
+    top: 200px;
+    height: 52vh;
+    background: none; /* the page's fixed warm backdrop shows through, so there is no seam */
+  }
+  .archive-vignette {
+    background: radial-gradient(ellipse 90% 50% at 50% 45%, transparent 55%, rgb(11 8 6 / 0.25) 100%);
+  }
+  .archive-hero {
+    padding-top: calc(52vh + 24px);
   }
 }
 
