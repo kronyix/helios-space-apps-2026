@@ -45,6 +45,7 @@ public/assets/
 # Piper voice models (scripts/piper-tts.py)
 .cache/
 metadata.json
+.vercel
 
 # Internal working files (AI assistant instructions, build prompts, review output); kept locally, not published
 CLAUDE.md

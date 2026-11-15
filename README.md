@@ -1,3 +1,5 @@
+<p align="center"><strong>▶ Live demo: <a href="https://helios-space-apps-2026.vercel.app">helios-space-apps-2026.vercel.app</a></strong></p>
+
 <p align="center">
   <img src="docs/readme/banner.svg" alt="Chronicles of the Silent Pioneers, by Team Helios" width="100%" />
 </p>
@@ -12,10 +14,11 @@
   <img alt="Tailwind CSS 4" src="https://img.shields.io/badge/Tailwind-4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white&labelColor=08090C" />
   <img alt="Zustand 5" src="https://img.shields.io/badge/Zustand-5-A6A8AE?style=flat-square&labelColor=08090C" />
   <img alt="NASA Space Apps Challenge 2026" src="https://img.shields.io/badge/Space%20Apps-2026-F6B96D?style=flat-square&labelColor=08090C" />
+  <a href="https://helios-space-apps-2026.vercel.app"><img alt="Live demo on Vercel" src="https://img.shields.io/badge/Live%20demo-Vercel-000000?style=flat-square&logo=vercel&logoColor=white&labelColor=08090C" /></a>
 </p>
 
 <p align="center">
-  <!-- TODO: live demo URL --><strong>Live demo</strong> (link coming)
+  <a href="https://helios-space-apps-2026.vercel.app"><strong>Live demo</strong></a>
   &nbsp;·&nbsp;
   <!-- TODO: demo video URL --><strong>Video</strong> (link coming)
   &nbsp;·&nbsp;
@@ -242,8 +245,9 @@ npm run preview    # http://localhost:4173
 | `verify:no-secrets` | `tsx scripts/verify-no-secrets.ts` | Check the build for leaked keys |
 | `review:capture` | `tsx scripts/review/capture.ts` | Playwright screenshots of every screen |
 | `review:metrics` | `tsx scripts/review/metrics.ts` | FPS, draw calls and bundle metrics |
+| `review:rover` | `tsx scripts/review/rover.ts` | Signal Delay Playwright E2E + perf sweep |
 
-Running the app needs no environment variables. Only narration generation does: copy `.env.example` to `.env.local` and set `FISH_API_KEY` (used first) or `GEMINI_API_KEY`. These keys are server-side only and never shipped to the client. Useful URL flags: `?nowebgl`, `?stage=hardware&mission=apollo11&hotspot=lrrr`, `?issue=2`, `?mode=archival`.
+Running the app needs no environment variables. Only narration generation does: copy `.env.example` to `.env.local` and set `FISH_API_KEY` (used first) or `GEMINI_API_KEY`. These keys are server-side only and never shipped to the client. Useful URL flags: `?nowebgl`, `?fps` (frame/draw-call telemetry), `?quality=high|med|low` (lock 3D tier), `?stage=hardware&mission=apollo11&hotspot=lrrr`, `?issue=2`, `?mode=archival`.
 
 ## Adding a new mission
 

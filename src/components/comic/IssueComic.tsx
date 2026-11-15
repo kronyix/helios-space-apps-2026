@@ -23,6 +23,9 @@ import { NarrationBar } from './NarrationBar';
 export interface IssueComicProps {
   issue: ComicIssue;
   onContinue: () => void;
+  onPlayRover?: () => void;
+  roverReturnOutcome?: { won: boolean } | null;
+  onDismissRoverOutcome?: () => void;
 }
 
 const PHOTO_KIND_KEY: Record<Photo['kind'], string> = {
@@ -1116,7 +1119,13 @@ function PhotoGalleryModal({
   );
 }
 
-export function IssueComic({ issue, onContinue }: IssueComicProps) {
+export function IssueComic({
+  issue,
+  onContinue,
+  onPlayRover,
+  roverReturnOutcome,
+  onDismissRoverOutcome,
+}: IssueComicProps) {
   const reduced = useReducedMotion();
   const t = useT();
   const lang = useAppStore((s) => s.lang);
@@ -1236,6 +1245,25 @@ export function IssueComic({ issue, onContinue }: IssueComicProps) {
     },
     [reduced, total],
   );
+
+  // When returning from Story's p05 game handoff, scroll smoothly to p06 on win (or p05 exit on loss).
+  useEffect(() => {
+    if (!roverReturnOutcome || issue.missionId !== 'opportunity') return;
+    const p05Idx = panels.findIndex((p) => p.id === 'p05');
+    if (p05Idx < 0) return;
+    const timer = window.setTimeout(() => {
+      if (roverReturnOutcome.won && p05Idx + 1 < panels.length) {
+        jumpToPanel(p05Idx + 1, false);
+      } else {
+        const el = sectionRefs.current[p05Idx];
+        if (el) {
+          const y = el.offsetTop + Math.max(0, el.offsetHeight - window.innerHeight * 0.45);
+          window.scrollTo({ top: y, behavior: reduced ? 'auto' : 'smooth' });
+        }
+      }
+    }, 80);
+    return () => window.clearTimeout(timer);
+  }, [roverReturnOutcome, issue.missionId, panels, jumpToPanel, reduced]);
 
   /** Scrolls just enough that a narrated line is on screen (never past its fade-out). */
   const revealLine = useCallback(
@@ -1634,9 +1662,46 @@ export function IssueComic({ issue, onContinue }: IssueComicProps) {
             registerRef={registerRef}
             creditsNote={localized.meta.creditsNote}
           />
-          {panel.id === 'p05' && (
-            /* TODO(handoff): game entry point */
-            null
+          {panel.id === 'p05' && issue.missionId === 'opportunity' && onPlayRover && (
+            <aside className="issue-handoff" aria-label={t('story.driveRover')}>
+              {roverReturnOutcome && (
+                <div
+                  className="issue-handoff__outcome"
+                  data-won={roverReturnOutcome.won ? 'true' : 'false'}
+                  role="status"
+                >
+                  <span>{t(roverReturnOutcome.won ? 'story.roverWon' : 'story.roverLost')}</span>
+                  {onDismissRoverOutcome && (
+                    <button
+                      type="button"
+                      className="issue-handoff__dismiss"
+                      onClick={onDismissRoverOutcome}
+                      aria-label="Dismiss note"
+                    >
+                      <IconClose size={16} />
+                    </button>
+                  )}
+                </div>
+              )}
+              <div className="issue-handoff__row">
+                <div className="issue-handoff__copy">
+                  <span className="kicker">Interactive mission · Sol delay</span>
+                  <p className="issue-handoff__title">Drive Opportunity to the blueberries outcrop</p>
+                </div>
+                <div className="issue-handoff__actions">
+                  <button type="button" className="btn-primary issue-handoff__play" onClick={onPlayRover}>
+                    {t('story.driveRover')} <IconArrowRight size={17} />
+                  </button>
+                  <button
+                    type="button"
+                    className="issue-handoff__skip"
+                    onClick={() => jumpToPanel(idx + 1, true)}
+                  >
+                    {t('story.continueStory')}
+                  </button>
+                </div>
+              </div>
+            </aside>
           )}
         </div>
       ))}

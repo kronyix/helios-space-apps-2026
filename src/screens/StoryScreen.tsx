@@ -52,6 +52,9 @@ export function MissionFile({ mission }: { mission: MissionData }) {
 
 export default function StoryScreen({ mission }: { mission: MissionData }) {
   const go = useAppStore((s) => s.go);
+  const openPlay = useAppStore((s) => s.openPlay);
+  const roverStoryOutcome = useAppStore((s) => s.roverStoryOutcome);
+  const clearRoverStoryOutcome = useAppStore((s) => s.clearRoverStoryOutcome);
 
   const motionComic = MOTION_COMICS[mission.issueNumber];
   if (motionComic) {
@@ -61,8 +64,11 @@ export default function StoryScreen({ mission }: { mission: MissionData }) {
         issue={motionComic}
         onContinue={() => {
           prefetch(mission.modelPath);
-          go('hardware');
+          go('hardware', mission.id);
         }}
+        onPlayRover={mission.id === 'opportunity' ? () => openPlay('rover-drive', true) : undefined}
+        roverReturnOutcome={mission.id === 'opportunity' ? roverStoryOutcome : null}
+        onDismissRoverOutcome={clearRoverStoryOutcome}
       />
     );
   }
@@ -86,7 +92,7 @@ export default function StoryScreen({ mission }: { mission: MissionData }) {
           mission={mission}
           step={1}
           onPrev={() => go('archive', null)}
-          onNext={() => go('hardware')}
+          onNext={() => go('hardware', mission.id)}
           nextLabel="Hardware"
         />
       }
@@ -137,7 +143,7 @@ export default function StoryScreen({ mission }: { mission: MissionData }) {
               onFocus={() => prefetch(mission.modelPath)}
               onClick={() => {
                 prefetch(mission.modelPath);
-                go('hardware');
+                go('hardware', mission.id);
               }}
             >
               Inspect the hardware <IconArrowRight size={18} />
