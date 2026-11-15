@@ -53,6 +53,7 @@ interface AppState extends Progress {
   activeHotspot: string | null;
   gamePhase: GamePhase;
   lastScore: number | null;
+  hwView: 'hub' | 'viewer';
   soundOn: boolean;
   /** Narration & language (lang, narrationOn, rate, textOnly, langPromptSeen are persisted). */
   lang: string;
@@ -76,6 +77,8 @@ interface AppState extends Progress {
   setNarrative: (n: Partial<{ page: number; turning: boolean }>) => void;
   setHotspot: (id: string | null) => void;
   setGamePhase: (p: GamePhase) => void;
+  setHwView: (v: 'hub' | 'viewer') => void;
+  openHardware: (missionId: string) => void;
   recordGame: (missionId: string, score: number, passed: boolean) => void;
   markTransmission: (missionId: string) => void;
   setSound: (on: boolean) => void;
@@ -94,7 +97,7 @@ interface AppState extends Progress {
  * Deep links: ?stage=hardware&mission=apollo11&hotspot=lrrr&game=intro&mode=archival
  * Read once at startup (sharing a chapter, review captures). Invalid values are ignored.
  */
-type UrlState = Partial<Pick<AppState, 'stage' | 'missionId' | 'activeHotspot' | 'gamePhase' | 'storyMode' | 'narrative' | 'play'>>;
+type UrlState = Partial<Pick<AppState, 'stage' | 'missionId' | 'activeHotspot' | 'gamePhase' | 'storyMode' | 'narrative' | 'play' | 'hwView'>>;
 function initialFromUrl(): UrlState {
   try {
     const q = new URLSearchParams(window.location.search);
@@ -107,10 +110,13 @@ function initialFromUrl(): UrlState {
     if (m) out.missionId = m.id;
     if (out.stage && ['story', 'hardware', 'reward'].includes(out.stage) && !out.missionId) out.missionId = missions[0].id;
     const mm = missions.find((x) => x.id === out.missionId);
-    if (out.stage === 'hardware' && mm) {
-      const h = q.get('hotspot');
-      if (h && mm.hotspots.some((x) => x.id === h)) out.activeHotspot = h;
-      if (q.get('game') === 'intro') out.gamePhase = 'intro';
+    if (out.stage === 'hardware') {
+      out.hwView = q.get('mission') ? 'viewer' : 'hub';
+      if (mm) {
+        const h = q.get('hotspot');
+        if (h && mm.hotspots.some((x) => x.id === h)) out.activeHotspot = h;
+        if (q.get('game') === 'intro') out.gamePhase = 'intro';
+      }
     }
     const issue = Number(q.get('issue'));
     const im = missions.find((x) => x.issueNumber === issue);
@@ -177,6 +183,7 @@ export const useAppStore = create<AppState>()(
       play: null,
       narrative: { page: 0, turning: false },
       ...fromUrl,
+      hwView: fromUrl.hwView ?? 'hub',
 
       go: (stage, missionId) => {
         const id = missionId === undefined ? get().missionId : missionId;
@@ -210,6 +217,18 @@ export const useAppStore = create<AppState>()(
         }),
 
       setGamePhase: (gamePhase) => set({ gamePhase }),
+      setHwView: (hwView) => set({ hwView }),
+      openHardware: (missionId) => {
+        set({
+          missionId,
+          hwView: 'viewer',
+          activeHotspot: null,
+          gamePhase: 'closed',
+          issuesOpened: get().issuesOpened.includes(missionId)
+            ? get().issuesOpened
+            : [...get().issuesOpened, missionId],
+        });
+      },
 
       recordGame: (missionId, score, passed) =>
         set((s) => {
