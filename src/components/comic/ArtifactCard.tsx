@@ -108,17 +108,17 @@ export default function ArtifactCard({ mission, unlocked }: { mission: MissionDa
         ) : null}
         {gl && !unlocked && (
           <span className="artifact-card__lock">
-            <IconLock size={16} /> ENCRYPTED
+            <IconLock size={16} /> Encrypted
           </span>
         )}
         {!gl && (
           <div className="grid h-full place-items-center text-fg-3">
             {unlocked ? (
-              <span className="font-mono text-xs tracking-[0.2em]">{a.designation}</span>
+              <span className="font-pixel text-[12px]">{a.designation}</span>
             ) : (
               <span className="flex flex-col items-center gap-3">
                 <IconLock size={34} />
-                <span className="font-mono text-[11px] tracking-[0.22em]">ENCRYPTED</span>
+                <span className="font-pixel text-[12px] uppercase">Encrypted</span>
               </span>
             )}
           </div>
@@ -127,8 +127,8 @@ export default function ArtifactCard({ mission, unlocked }: { mission: MissionDa
       </div>
       <div className="artifact-card__body">
         <p className="kicker">{unlocked ? 'Artifact recovered' : 'Artifact locked'}</p>
-        <h3 className="mt-1 font-display text-[24px] font-semibold leading-tight">{a.name}</h3>
-        <p className="mt-1 font-mono text-[11px] tracking-[0.14em] text-fg-3">{a.designation}</p>
+        <h3 className="mt-1 font-pixel text-[24px] leading-tight">{a.name}</h3>
+        <p className="mt-1 font-pixel text-[12px] text-fg-3">{a.designation}</p>
         <p className="mt-3 text-[14.5px] leading-relaxed text-fg-2">
           {unlocked ? a.description : `Pass the ${mission.miniGame.title} field test to recover this artifact.`}
         </p>

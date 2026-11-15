@@ -35,9 +35,13 @@
   inset: 0;
   display: grid;
   place-items: center;
-  font-family: var(--font-mono);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
   font-size: 12px;
-  letter-spacing: 0.24em;
   text-transform: uppercase;
   background: radial-gradient(circle at 50% 40%, #6b3a22, #1b0d07);
 }
@@ -72,22 +76,31 @@
 
 /* ---------- shared bits ---------- */
 .rd-label {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.2em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: var(--accent);
 }
 .rd-hint {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.06em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   color: var(--color-fg-3);
 }
 .rd-title {
-  font-family: var(--font-display);
-  font-size: clamp(24px, 3vw, 34px);
-  font-weight: 600;
+  font-family: var(--font-hero);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  font-size: 24px;
   line-height: 1.1;
   margin-top: 4px;
 }
@@ -191,18 +204,26 @@
   min-width: 120px;
 }
 .rd-stat__k {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: var(--color-fg-3);
 }
 .rd-stat__v {
-  font-family: var(--font-display);
-  font-size: 20px;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 16px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
-  line-height: 1.1;
 }
 .rd-stat__v small {
   font-size: 12px;
@@ -267,7 +288,12 @@
   gap: 2px;
 }
 .rd-faults li span {
-  font-family: var(--font-mono);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
   color: var(--color-fg-3);
   margin-right: 4px;
 }
@@ -293,9 +319,13 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--rd-line);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   display: inline-grid;
   place-items: center;
@@ -313,8 +343,13 @@
   position: absolute;
   bottom: calc(var(--rd-safe-b) + 8px);
   right: calc(var(--rd-safe-r) + 8px);
-  font-family: var(--font-mono);
-  font-size: 11px;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   padding: 2px 6px;
   background: rgb(0 0 0 / 0.6);
   border-radius: 4px;
@@ -357,8 +392,13 @@
   border-radius: 999px;
   border: 0;
   background: transparent;
-  font-family: var(--font-mono);
-  font-size: 13px;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
 }
 .rd-seg__btn[aria-checked='true'] {
   background: var(--accent);
@@ -418,9 +458,13 @@
   padding: 0 6px;
   background: none;
   border: 0;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: var(--color-fg-2) !important;
 }
@@ -450,8 +494,13 @@
   background: rgb(255 79 51 / 0.18);
 }
 .rd-queue__n {
-  font-family: var(--font-mono);
-  font-size: 11px;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   color: var(--color-fg-3);
 }
 .rd-mini {
@@ -513,8 +562,13 @@
   pointer-events: none;
 }
 .rd-uplink__t {
-  font-family: var(--font-display);
-  font-size: clamp(54px, 9vw, 96px);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 40px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   text-shadow: 0 2px 24px rgb(0 0 0 / 0.5);
@@ -551,9 +605,13 @@
   border-radius: 999px;
   background: var(--rd-glass);
   border: 1px solid var(--rd-line);
-  font-family: var(--font-mono);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
   font-size: 12px;
-  letter-spacing: 0.08em;
   white-space: nowrap;
 }
 .rd-dot {
@@ -610,22 +668,36 @@
   background: rgb(255 255 255 / 0.05);
 }
 .rd-sum dt {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.16em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: var(--color-fg-3);
 }
 .rd-sum dd {
-  font-family: var(--font-display);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
   font-size: 16px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 .rd-sum__sub {
   display: block;
-  font-family: var(--font-mono);
-  font-size: 10px;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   font-weight: 400;
   color: var(--color-ok);
 }
@@ -651,8 +723,13 @@
   color: var(--accent);
 }
 .rd-score__n {
-  font-family: var(--font-display);
-  font-size: 36px;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 40px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
@@ -669,9 +746,14 @@
   border: 1px dashed rgb(var(--accent-rgb) / 0.6);
 }
 .rd-badge__n {
-  font-family: var(--font-display);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
   font-weight: 600;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 /* ---------- briefing ---------- */
@@ -686,11 +768,11 @@
   max-width: 560px;
 }
 .rd-brief__title {
-  font-family: var(--font-display);
-  font-size: clamp(44px, 8vw, 92px);
-  font-weight: 600;
+  font-family: var(--font-hero);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  font-size: 40px;
   line-height: 0.95;
-  letter-spacing: -0.02em;
   margin-top: 6px;
 }
 .rd-brief__lines {
@@ -723,10 +805,14 @@
 }
 .rd-keys {
   margin-top: 16px;
-  font-family: var(--font-mono);
-  font-size: 11px;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   color: var(--color-fg-3);
-  line-height: 1.6;
 }
 
 /* ---------- 2D map ---------- */
@@ -825,8 +911,7 @@
   }
   .rd-icon {
     padding: 0 6px;
-    font-size: 10px;
-    letter-spacing: 0.06em;
+    font-size: 12px;
   }
   .rd-l-full {
     display: none;

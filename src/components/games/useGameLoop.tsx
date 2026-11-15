@@ -42,7 +42,7 @@ export function TimerBar({ remaining, total }: { remaining: number; total: numbe
   const frac = Math.max(0, remaining / total);
   return (
     <div className="flex items-center gap-3" role="timer" aria-live="off" aria-label={`${Math.ceil(remaining)} seconds left`}>
-      <span className="font-mono text-[13px] tabular-nums text-[var(--color-fg)] w-[52px]">{Math.max(0, remaining).toFixed(1)}s</span>
+      <span className="font-pixel text-[12px] tabular-nums text-[var(--color-fg)] w-[52px]">{Math.max(0, remaining).toFixed(1)}s</span>
       <span className="relative h-[3px] flex-1 overflow-hidden rounded bg-[var(--color-line-2)]">
         <span
           className="absolute inset-y-0 left-0 rounded"
