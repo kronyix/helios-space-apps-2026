@@ -954,20 +954,20 @@
 }
 
 /* App chrome slides away while the game is open (this sheet only loads with the game). */
-.app__chrome nav[aria-label='Primary'] {
+.app__chrome .comic-nav {
   transition: transform 0.42s var(--ease-out), opacity 0.42s var(--ease-out);
 }
-.app__chrome[data-hidden] nav[aria-label='Primary'] {
+.app__chrome[data-hidden] .comic-nav {
   transform: translateY(100%);
   opacity: 0;
 }
 @media (min-width: 900px) {
-  .app__chrome[data-hidden] nav[aria-label='Primary'] {
+  .app__chrome[data-hidden] .comic-nav {
     transform: translateX(-100%);
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .app__chrome nav[aria-label='Primary'] {
+  .app__chrome .comic-nav {
     transition: opacity 0.12s linear;
   }
 }

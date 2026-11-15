@@ -35,7 +35,7 @@
   --accent-deep: #c9772f;
   --accent-rgb: 246 180 107;
   --scene-tint: #2a140a;
-  --rail-w: 152px;
+  --rail-w: 184px;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --safe-b: env(safe-area-inset-bottom, 0px);
@@ -613,11 +613,43 @@ button:disabled {
   background: rgb(var(--accent-rgb) / 0.06);
 }
 .issue-row__thumb {
+  position: relative;
+  display: block;
   width: 76px;
   height: 64px;
   flex-shrink: 0;
-  object-fit: cover;
+  overflow: hidden;
   border-radius: 2px;
+}
+.issue-row__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* AI-generated illustration mark: tiny, bottom-right corner, never on archival photos. */
+.ai-mark {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  z-index: 3;
+  padding: 2px 5px;
+  font-family: var(--font-pixel, monospace);
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: rgb(255 255 255 / 0.85);
+  background: rgb(0 0 0 / 0.55);
+  border: 1px solid rgb(255 255 255 / 0.25);
+  border-radius: 2px;
+  pointer-events: none;
+  user-select: none;
+}
+.ai-mark--sm {
+  right: 3px;
+  bottom: 3px;
+  padding: 1px 3px;
+  font-size: 8px;
 }
 .body-switch {
   display: inline-flex;
@@ -1721,20 +1753,6 @@ button:disabled {
   .issue-row__coord {
     display: none;
   }
-}
-
-/* Story → hardware: the panel-3 illustration dissolves into the live scene. */
-.panel-dissolve {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  overflow: hidden;
-}
-.panel-dissolve img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 /* Short desktop/tablet viewports (e.g. 1024×768): tighten the hero so the strip clears the chapter track. */
@@ -3598,6 +3616,12 @@ body:has(.issue-comic),
   .comic-nav__list--mobile {
     display: none;
   }
+  .comic-nav__list--desktop .comic-tab {
+    width: 144px;
+    height: 48px;
+    padding: 0 10px;
+    gap: 8px;
+  }
   .comic-nav__list--desktop {
     display: flex;
     flex-direction: column;
@@ -3652,5 +3676,42 @@ body:has(.issue-comic),
   }
   .comic-tab:active {
     box-shadow: 1px 1px 0 var(--tab-shadow);
+  }
+}
+
+/* Hardware page loader: Helios mark until the diorama has loaded. */
+.hardware-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(ellipse at center, #0d0b0a, #050506 70%);
+}
+@media (min-width: 768px) {
+  .hardware-loader {
+    left: var(--rail-w);
+  }
+}
+.hardware-loader__mark {
+  display: block;
+  animation: helios-loader-pulse 1.6s ease-in-out infinite;
+}
+@keyframes helios-loader-pulse {
+  0%,
+  100% {
+    transform: scale(0.92) rotate(0deg);
+    opacity: 0.75;
+    filter: drop-shadow(0 0 0 rgb(246 180 107 / 0));
+  }
+  50% {
+    transform: scale(1.04) rotate(12deg);
+    opacity: 1;
+    filter: drop-shadow(0 0 18px rgb(246 180 107 / 0.55));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hardware-loader__mark {
+    animation: none;
   }
 }

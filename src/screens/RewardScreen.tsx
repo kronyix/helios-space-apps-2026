@@ -3,7 +3,7 @@ import type { MissionData } from '../data/types';
 import { nextMission, pad2, panelsForStage } from '../lib/missions';
 import { useAppStore } from '../store/useAppStore';
 import { ScreenFrame } from '../components/ui/Layout';
-import { ImageLabel } from '../components/comic/ComicPage';
+import { AiMark, ImageLabel } from '../components/comic/ComicPage';
 import { ScrollComic } from '../components/comic/ScrollComic';
 import ArtifactCard from '../components/comic/ArtifactCard';
 import { IconExternal } from '../components/ui/Icons';
@@ -85,14 +85,17 @@ export default function RewardScreen({ mission }: { mission: MissionData }) {
           {mission.epilogue && (
             <figure className="epilogue">
               <ImageLabel kind="illustration" extra={mission.epilogue.label.toUpperCase()} />
-              <img
-                src={mission.epilogue.image}
-                alt={mission.epilogue.alt}
-                width={1280}
-                height={720}
-                loading="lazy"
-                decoding="async"
-              />
+              <div className="relative">
+                <img
+                  src={mission.epilogue.image}
+                  alt={mission.epilogue.alt}
+                  width={1280}
+                  height={720}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <AiMark />
+              </div>
               <figcaption className="mt-3 text-[13.5px] leading-relaxed text-fg-2">
                 {mission.epilogue.caption}{' '}
                 <a href={mission.epilogue.source.url} target="_blank" rel="noreferrer noopener" className="credit-link">

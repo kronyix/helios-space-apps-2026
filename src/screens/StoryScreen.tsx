@@ -1,3 +1,4 @@
+import { AiMark } from '../components/comic/ComicPage';
 import type { MissionData } from '../data/types';
 import { formatCoord, pad2, panelsForStage } from '../lib/missions';
 import { useAppStore } from '../store/useAppStore';
@@ -77,6 +78,7 @@ export default function StoryScreen({ mission }: { mission: MissionData }) {
       background={
         <div className="story-bg" aria-hidden="true">
           <img src={mission.comicPanels[2].comicImage} alt="" width={1280} height={720} decoding="async" />
+          <AiMark />
         </div>
       }
       footer={
