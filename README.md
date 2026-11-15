@@ -14,10 +14,11 @@
   <img alt="Tailwind CSS 4" src="https://img.shields.io/badge/Tailwind-4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white&labelColor=08090C" />
   <img alt="Zustand 5" src="https://img.shields.io/badge/Zustand-5-A6A8AE?style=flat-square&labelColor=08090C" />
   <img alt="NASA Space Apps Challenge 2026" src="https://img.shields.io/badge/Space%20Apps-2026-F6B96D?style=flat-square&labelColor=08090C" />
+  <a href="https://helios-space-apps-2026.vercel.app"><img alt="Live demo on Vercel" src="https://img.shields.io/badge/Live%20demo-Vercel-000000?style=flat-square&logo=vercel&logoColor=white&labelColor=08090C" /></a>
 </p>
 
 <p align="center">
-  <https://helios-space-apps-2026.vercel.app/><strong>Live demo</strong>
+  <a href="https://helios-space-apps-2026.vercel.app"><strong>Live demo</strong></a>
   &nbsp;·&nbsp;
   <!-- TODO: demo video URL --><strong>Video</strong> (link coming)
   &nbsp;·&nbsp;
