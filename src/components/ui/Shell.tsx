@@ -1,23 +1,26 @@
 import { useAppStore, type Stage } from '../../store/useAppStore';
 import { getMission, missions } from '../../lib/missions';
-import { HeliosMark } from './HeliosMark';
-import { IconBook, IconCube, IconGamepad, IconGlobe, IconMute, IconSignal, IconSound, IconSpark, IconTrophy } from './Icons';
+import { HeliosWordmark } from './HeliosMark';
+import { IconMute, IconSound, IconSpark } from './Icons';
+import { BookOpen, Car, Ellipsis, Gamepad2, Info, Medal, Orbit, Satellite, type LucideIcon } from 'lucide-react';
 import { setSoundEnabled, blip } from '../../lib/audio';
-import type { ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type MouseEvent, type ReactNode } from 'react';
 import { useT } from '../../i18n/useT';
 import { LANGUAGES } from '../../i18n/languages';
 
 type NavId = 'archive' | 'story' | 'hardware' | 'games' | 'drive' | 'badges';
 
-/** `label` is a key in src/data/locales/<lang>/ui.json. */
-const NAV: { id: NavId; label: string; icon: ReactNode }[] = [
-  { id: 'archive', label: 'nav.archive', icon: <IconGlobe size={22} /> },
-  { id: 'story', label: 'nav.story', icon: <IconBook size={22} /> },
-  { id: 'hardware', label: 'nav.hardware', icon: <IconCube size={22} /> },
-  { id: 'games', label: 'nav.games', icon: <IconGamepad size={22} /> },
-  { id: 'drive', label: 'nav.drive', icon: <IconSignal size={22} /> },
-  { id: 'badges', label: 'nav.badges', icon: <IconTrophy size={22} /> },
+/** `label` is a key in src/data/locales/<lang>/ui.json. `tilt` is the fixed, hand-placed rotation (deg). */
+const NAV: { id: NavId; label: string; Icon: LucideIcon; tilt: number }[] = [
+  { id: 'archive', label: 'nav.archive', Icon: Orbit, tilt: -3 },
+  { id: 'story', label: 'nav.story', Icon: BookOpen, tilt: 2 },
+  { id: 'hardware', label: 'nav.hardware', Icon: Satellite, tilt: -2 },
+  { id: 'games', label: 'nav.games', Icon: Gamepad2, tilt: 3 },
+  { id: 'drive', label: 'nav.drive', Icon: Car, tilt: -1 },
+  { id: 'badges', label: 'nav.badges', Icon: Medal, tilt: 2 },
 ];
+/** Mobile bottom bar: five tabs, Drive lives under "More". */
+const MOBILE_IDS: NavId[] = ['archive', 'story', 'hardware', 'games', 'badges'];
 
 function useNavActive(): NavId {
   const stage = useAppStore((s) => s.stage);
@@ -45,7 +48,22 @@ export function navigate(id: NavId) {
   s.go(id as Stage);
 }
 
-/** Desktop: vertical rail on the left. Mobile: bottom tab bar. */
+/** Tabs are real links (the app has no URL routes, so the click is handled in-page). */
+function onNav(id: NavId, after?: () => void) {
+  return (e: MouseEvent<HTMLAnchorElement>) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    e.preventDefault();
+    navigate(id);
+    after?.();
+  };
+}
+
+function goCredits() {
+  navigate('badges');
+  window.setTimeout(() => document.getElementById('credits')?.scrollIntoView({ block: 'start' }), 450);
+}
+
+/** Desktop: comic-panel tabs in a 152 px left column. Mobile (<768 px): bottom tab bar with "More". */
 export function NavRail() {
   const t = useT();
   const active = useNavActive();
@@ -55,80 +73,137 @@ export function NavRail() {
   const body = m?.celestialBody ?? 'mars';
 
   return (
-    <nav
-      aria-label={t('nav.primary')}
-      className="fixed z-40 flex border-[var(--color-line)] bg-[rgb(9_9_12/0.88)] backdrop-blur-md
-        inset-x-0 bottom-0 h-[calc(64px+var(--safe-b))] pb-[var(--safe-b)] border-t
-        min-[900px]:inset-y-0 min-[900px]:left-0 min-[900px]:right-auto min-[900px]:h-auto min-[900px]:w-[var(--rail-w)] min-[900px]:flex-col min-[900px]:border-t-0 min-[900px]:border-r min-[900px]:pb-0"
-    >
-      <button
-        type="button"
-        onClick={() => navigate('archive')}
-        className="hidden min-[900px]:flex flex-col items-center gap-3 pt-9 pb-10 text-[var(--color-fg-2)] hover:text-[var(--color-fg)]"
-        aria-label={t('nav.home')}
-      >
-        <HeliosMark />
-        <span className="font-pixel text-[12px]">HELIOS</span>
-      </button>
+    <nav aria-label={t('nav.primary')} className="comic-nav">
+      <a href="#archive" onClick={onNav('archive')} className="comic-nav__logo" aria-label={t('nav.home')}>
+        <HeliosWordmark width={120} />
+      </a>
 
-      <ul className="flex w-full justify-around min-[900px]:mt-[12vh] min-[900px]:flex-col min-[900px]:justify-start">
-        {NAV.map((n) => {
-          const on = active === n.id;
-          return (
-            <li key={n.id} className="flex-1 min-[900px]:flex-none">
-              <button
-                type="button"
-                aria-current={on ? 'page' : undefined}
-                onClick={() => navigate(n.id)}
-                className={`group relative flex h-16 w-full flex-col items-center justify-center gap-1.5 text-[11px] transition-colors min-[900px]:h-[74px] min-[900px]:text-[13px]
-                  ${on ? 'text-[var(--accent)] min-[900px]:bg-[rgb(var(--accent-rgb)/0.07)]' : 'text-[var(--color-fg-2)] hover:text-[var(--color-fg)]'}`}
-              >
-                <span
-                  aria-hidden="true"
-                  className={`absolute bg-[var(--accent)] transition-opacity top-0 inset-x-6 h-[2px] min-[900px]:inset-x-auto min-[900px]:left-0 min-[900px]:inset-y-3 min-[900px]:h-auto min-[900px]:w-[3px] ${on ? 'opacity-100' : 'opacity-0'}`}
-                />
-                {n.icon}
-                <span>{t(n.label)}</span>
-              </button>
-            </li>
-          );
-        })}
+      <ul className="comic-nav__list comic-nav__list--desktop">
+        {NAV.map((n) => (
+          <li key={n.id}>
+            <ComicTab item={n} on={active === n.id} />
+          </li>
+        ))}
       </ul>
 
-      <button
-        type="button"
-        onClick={() => {
-          navigate('badges');
-          window.setTimeout(() => document.getElementById('credits')?.scrollIntoView({ block: 'start' }), 450);
-        }}
-        className="mt-auto hidden min-h-[44px] font-pixel text-[12px] uppercase text-fg-3 hover:text-fg min-[900px]:block"
-      >
-        {t('nav.credits')}
-      </button>
-      <div className="hidden flex-col items-center gap-2 pb-8 min-[900px]:flex">
-        <div
-          aria-hidden="true"
-          className="h-16 w-16 rounded-full"
-          style={{
-            background:
-              body === 'moon'
-                ? 'radial-gradient(circle at 35% 30%, #e8e6e1, #8a8780 55%, #2a2a2c 100%)'
-                : 'radial-gradient(circle at 35% 30%, #e0875a, #a2401f 55%, #3a140a 100%)',
-            boxShadow: '0 0 30px -6px rgb(var(--accent-rgb) / 0.5)',
-          }}
-        />
-        <span className="text-[13px] text-[var(--color-fg)]">{m ? t(body === 'moon' ? 'body.moon' : 'body.mars') : t('nav.archive')}</span>
-        <span className="font-pixel text-[12px] uppercase text-[var(--color-fg-3)]">
-          {m ? t('nav.issue', { n: String(m.issueNumber).padStart(2, '0') }) : t('nav.issuesCount', { opened, total: missions.length })}
-        </span>
-        <span className="relative mt-1 h-[2px] w-16 overflow-hidden rounded bg-[var(--color-line-2)]" aria-hidden="true">
-          <span
-            className="absolute inset-y-0 left-0 bg-[var(--accent)]"
-            style={{ width: `${(opened / missions.length) * 100}%` }}
+      <ul className="comic-nav__list comic-nav__list--mobile">
+        {NAV.filter((n) => MOBILE_IDS.includes(n.id)).map((n) => (
+          <li key={n.id}>
+            <ComicTab item={n} on={active === n.id} />
+          </li>
+        ))}
+        <li>
+          <MoreMenu />
+        </li>
+      </ul>
+
+      <div className="comic-nav__foot">
+        <a href="#credits" onClick={(e) => (e.preventDefault(), goCredits())} className="comic-nav__credits font-pixel">
+          {t('nav.credits')}
+        </a>
+        <div className="comic-nav__issue">
+          <div
+            aria-hidden="true"
+            className="h-14 w-14 rounded-full"
+            style={{
+              background:
+                body === 'moon'
+                  ? 'radial-gradient(circle at 35% 30%, #e8e6e1, #8a8780 55%, #2a2a2c 100%)'
+                  : 'radial-gradient(circle at 35% 30%, #e0875a, #a2401f 55%, #3a140a 100%)',
+              boxShadow: '0 0 30px -6px rgb(var(--accent-rgb) / 0.5)',
+            }}
           />
-        </span>
+          <span className="font-pixel text-[12px] text-[#BFC4CA]">{m ? t(body === 'moon' ? 'body.moon' : 'body.mars') : t('nav.archive')}</span>
+          <span className="font-pixel text-[12px] uppercase text-[#A6A8AE]">
+            {m ? t('nav.issue', { n: String(m.issueNumber).padStart(2, '0') }) : t('nav.issuesCount', { opened, total: missions.length })}
+          </span>
+          <span className="relative mt-1 h-[2px] w-16 overflow-hidden rounded bg-[var(--color-line-2)]" aria-hidden="true">
+            <span className="absolute inset-y-0 left-0 bg-[var(--accent)]" style={{ width: `${(opened / missions.length) * 100}%` }} />
+          </span>
+        </div>
       </div>
     </nav>
+  );
+}
+
+function ComicTab({ item, on, onDone }: { item: (typeof NAV)[number]; on: boolean; onDone?: () => void }) {
+  const t = useT();
+  const { Icon } = item;
+  return (
+    <a
+      href={`#${item.id}`}
+      aria-current={on ? 'page' : undefined}
+      onClick={onNav(item.id, onDone)}
+      className="comic-tab"
+      style={{ ['--tilt' as string]: `${item.tilt}deg` }}
+    >
+      <Icon size={18} strokeWidth={2.25} aria-hidden="true" className="comic-tab__icon" />
+      <span className="comic-tab__label">{t(item.label)}</span>
+    </a>
+  );
+}
+
+/** Mobile overflow: holds Drive. Closes on Escape, outside press or selection. */
+function MoreMenu() {
+  const t = useT();
+  const [open, setOpen] = useState(false);
+  const wrap = useRef<HTMLDivElement>(null);
+  const btn = useRef<HTMLButtonElement>(null);
+  const id = useId();
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setOpen(false);
+        btn.current?.focus();
+      }
+    };
+    const onDown = (e: PointerEvent) => {
+      if (!wrap.current?.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('pointerdown', onDown);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('pointerdown', onDown);
+    };
+  }, [open]);
+  const drive = NAV.find((n) => n.id === 'drive')!;
+  return (
+    <div ref={wrap} className="relative h-full">
+      <button
+        ref={btn}
+        type="button"
+        className="comic-tab"
+        aria-expanded={open}
+        aria-controls={id}
+        onClick={() => setOpen((v) => !v)}
+      >
+        <Ellipsis size={18} strokeWidth={2.25} aria-hidden="true" className="comic-tab__icon" />
+        <span className="comic-tab__label">{t('nav.more')}</span>
+      </button>
+      {open && (
+        <ul id={id} className="comic-nav__more">
+          <li>
+            <ComicTab item={drive} on={false} onDone={() => setOpen(false)} />
+          </li>
+          <li>
+            <a
+              href="#credits"
+              className="comic-tab"
+              onClick={(e) => {
+                e.preventDefault();
+                setOpen(false);
+                goCredits();
+              }}
+            >
+              <Info size={18} strokeWidth={2.25} aria-hidden="true" className="comic-tab__icon" />
+              <span className="comic-tab__label">{t('nav.credits')}</span>
+            </a>
+          </li>
+        </ul>
+      )}
+    </div>
   );
 }
 
@@ -192,7 +267,7 @@ export function SoundToggle() {
 
 export function StatusPill({ children }: { children: ReactNode }) {
   return (
-    <div className="hidden h-12 items-center gap-3 rounded-full border border-[var(--color-line-2)] bg-[rgb(0_0_0/0.3)] px-5 text-[15px] text-[var(--color-fg)] sm:inline-flex">
+    <div className="hidden h-12 items-center gap-3 rounded-full border border-[var(--color-line-2)] bg-[rgb(0_0_0/0.3)] px-5 font-pixel text-[12px] uppercase text-[var(--color-fg)] sm:inline-flex">
       <IconSpark size={16} className="text-[var(--accent)]" />
       {children}
     </div>
