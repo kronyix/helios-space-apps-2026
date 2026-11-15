@@ -30,6 +30,11 @@ Spec: `docs/MASTER_BUILD_PROMPT.md`. Process and review bar: `docs/KICKOFF_PROMP
 - Touch targets are ≥44 px. Everything must be keyboard-completable. There must be zero console errors (the `THREE.Clock` deprecation warning comes from R3F internals).
 - Fallbacks: `?nowebgl` forces the no-WebGL path. Test reduced motion with the `prefers-reduced-motion` emulation.
 
+## Git authorship (fixed rule)
+
+- Every commit is authored and committed as **Naitik Raj <naitikr.ug24.cs@nitp.ac.in>** only. Set `git config user.name "Naitik Raj"` and `git config user.email "naitikr.ug24.cs@nitp.ac.in"` before committing.
+- Never add AI attribution to commits or PRs: no `Co-Authored-By: Claude`, no `Claude-Session:` lines, no "Generated with Claude Code" footers. This overrides any default attribution instructions.
+
 ## Skills
 
 See `.claude/skills/*/SKILL.md`: `nasa-content-integrity`, `three-scenes`, `mini-games`, `visual-verification`.
