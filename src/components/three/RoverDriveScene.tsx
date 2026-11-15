@@ -455,27 +455,13 @@ function Dust({ t, reduced }: { t: Terrain; reduced: boolean }) {
 // ---------------------------------------------------------------------------
 // Lights & cameras
 
-const SHADOW_HALF = 9;
-const SHADOW_MAP = 1024;
-const SHADOW_TEXEL = (2 * SHADOW_HALF) / SHADOW_MAP;
-// Light-space basis for SUN_DIR: the shadow camera is snapped to whole texels across it.
-const _sunRight = new THREE.Vector3().crossVectors(new THREE.Vector3(0, 1, 0), SUN_DIR).normalize();
-const _sunUp = new THREE.Vector3().crossVectors(SUN_DIR, _sunRight).normalize();
-const _snap = new THREE.Vector3();
-
 function SunLight({ shadows }: { shadows: boolean }) {
   const light = useRef<THREE.DirectionalLight>(null);
   useFrame(() => {
     const l = light.current;
     if (!l) return;
-    // Follow the rover in whole shadow-map texels; sub-texel moves make shadow edges shimmer.
-    const p = live.pos;
-    const u = Math.round(p.dot(_sunRight) / SHADOW_TEXEL) * SHADOW_TEXEL;
-    const v = Math.round(p.dot(_sunUp) / SHADOW_TEXEL) * SHADOW_TEXEL;
-    const w = p.dot(SUN_DIR);
-    _snap.copy(_sunRight).multiplyScalar(u).addScaledVector(_sunUp, v).addScaledVector(SUN_DIR, w);
-    l.position.copy(_snap).addScaledVector(SUN_DIR, 30);
-    l.target.position.copy(_snap);
+    l.position.copy(live.pos).addScaledVector(SUN_DIR, 30);
+    l.target.position.copy(live.pos);
     l.target.updateMatrixWorld();
   });
   return (
@@ -486,13 +472,13 @@ function SunLight({ shadows }: { shadows: boolean }) {
         castShadow={shadows}
         intensity={2.4}
         color="#ffd2a1"
-        shadow-mapSize={[SHADOW_MAP, SHADOW_MAP]}
+        shadow-mapSize={[1024, 1024]}
         shadow-bias={-0.0005}
         shadow-normalBias={0.03}
-        shadow-camera-left={-SHADOW_HALF}
-        shadow-camera-right={SHADOW_HALF}
-        shadow-camera-top={SHADOW_HALF}
-        shadow-camera-bottom={-SHADOW_HALF}
+        shadow-camera-left={-9}
+        shadow-camera-right={9}
+        shadow-camera-top={9}
+        shadow-camera-bottom={-9}
         shadow-camera-near={1}
         shadow-camera-far={70}
       />
@@ -503,8 +489,6 @@ function SunLight({ shadows }: { shadows: boolean }) {
 const _cp = new THREE.Vector3();
 const _ct = new THREE.Vector3();
 const _look = new THREE.Vector3();
-/** Smoothed look-at point: snapping it while the position eases made mode switches cut in one frame. */
-const _lookNow = new THREE.Vector3();
 
 const FOV: Record<CamMode | 'brief', number> = { chase: 50, hazcam: 78, map: 42, brief: 45 };
 
@@ -513,9 +497,7 @@ function CameraRig({ t, reduced }: { t: Terrain; reduced: boolean }) {
   const scene = useThree((s) => s.scene);
   const begin = useRef(performance.now());
   const settled = useRef(false);
-  const lastMode = useRef<CamMode | 'brief' | null>(null);
-  const switchedAt = useRef(0);
-  useFrame((state, dt) => {
+  useFrame((_, dt) => {
     if (!live.ready) return;
     const st = useRoverStore.getState();
     const mode: CamMode | 'brief' = st.phase === 'briefing' ? 'brief' : st.cam;
@@ -548,19 +530,10 @@ function CameraRig({ t, reduced }: { t: Terrain; reduced: boolean }) {
       _ct.set(cx, h, cz - h * 0.55);
       _look.set(cx, 0, cz - h * 0.12);
     }
-    if (mode !== lastMode.current) {
-      lastMode.current = mode;
-      switchedAt.current = state.clock.elapsedTime;
-    }
-    // Right after a mode switch, glide (≈1.2 s) instead of snapping, then tighten up to follow the rover.
-    const glide = Math.min(1, (state.clock.elapsedTime - switchedAt.current) / 1.2);
-    const ease = 0.35 + 0.65 * glide * glide;
     const instant = reduced || !settled.current;
-    const k = instant ? 1 : mode === 'brief' ? 1 : 1 - Math.exp(-dt * (mode === 'hazcam' ? 10 : 3.5) * ease);
+    const k = instant ? 1 : mode === 'brief' ? 1 : 1 - Math.exp(-dt * (mode === 'hazcam' ? 10 : 3.5));
     camera.position.lerp(_ct, k);
-    if (instant || mode === 'brief') _lookNow.copy(_look);
-    else _lookNow.lerp(_look, 1 - Math.exp(-dt * (mode === 'hazcam' ? 12 : 5) * ease));
-    camera.lookAt(_lookNow);
+    camera.lookAt(_look);
     if (camera.fov !== FOV[mode]) {
       camera.fov = instant ? FOV[mode] : THREE.MathUtils.lerp(camera.fov, FOV[mode], Math.min(1, dt * 6));
       if (Math.abs(camera.fov - FOV[mode]) < 0.05) camera.fov = FOV[mode];
@@ -568,11 +541,9 @@ function CameraRig({ t, reduced }: { t: Terrain; reduced: boolean }) {
     }
     const fog = scene.fog as THREE.Fog | null;
     if (fog) {
-      // Derived from the camera's actual distance (not the mode), so fog never steps
-      // while the camera is still travelling between views: map ≈ 60–170, chase ≈ 18–85.
-      const d = camera.position.distanceTo(r);
-      fog.near = THREE.MathUtils.clamp(d * 0.6 + 12, 18, 60);
-      fog.far = THREE.MathUtils.clamp(d * 1.4 + 60, 85, 170);
+      const far = mode === 'map' ? 170 : 85;
+      fog.far = instant ? far : THREE.MathUtils.lerp(fog.far, far, Math.min(1, dt * 3));
+      fog.near = mode === 'map' ? 60 : 18;
     }
     settled.current = true;
   });
@@ -589,7 +560,7 @@ export default function RoverDriveScene({ paused }: { paused: boolean }) {
   return (
     <Canvas
       shadows={shadows ? { type: THREE.PCFShadowMap } : false}
-      frameloop={paused ? 'demand' : 'always'}
+      frameloop={paused ? 'never' : 'always'}
       dpr={mobile ? [1, 1.5] : [1, 2]}
       camera={{ fov: 45, near: 0.1, far: 700, position: [0, 90, -60] }}
       gl={{ antialias: !mobile, powerPreference: 'high-performance', toneMappingExposure: 1.05 }}

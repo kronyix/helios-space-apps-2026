@@ -1,8 +1,7 @@
 /* Signal Delay — full-screen rover game. Scoped under .rd; uses the app's tokens. */
 
 .rd {
-  /* Opaque enough to read without backdrop-filter, which flickers over WebGL in Firefox/Linux. */
-  --rd-glass: rgb(12 9 8 / 0.82);
+  --rd-glass: rgb(12 9 8 / 0.72);
   --rd-line: rgb(255 228 196 / 0.16);
   --rd-safe-t: env(safe-area-inset-top, 0px);
   --rd-safe-r: env(safe-area-inset-right, 0px);
@@ -57,7 +56,14 @@
 .rd[data-cam='hazcam'] .rd-stage canvas {
   filter: saturate(0.35) contrast(1.15) brightness(0.95);
 }
-/* Grain stays static: a stepped full-screen animation read as flicker. */
+.rd[data-cam='hazcam']:not([data-reduced]) .rd-hazcam {
+  animation: rd-grain 0.4s steps(3) infinite;
+}
+@keyframes rd-grain {
+  0% { background-position: 0 0, 0 0; }
+  50% { background-position: 0 0, 40px 70px; }
+  100% { background-position: 0 0, -60px 20px; }
+}
 
 .rd-layer {
   position: absolute;
@@ -106,6 +112,8 @@
 }
 .rd-glass {
   background: var(--rd-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--rd-line);
 }
 
@@ -164,6 +172,8 @@
   border-radius: 14px;
   overflow: hidden;
   background: var(--rd-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--rd-line);
   max-width: calc(100vw - 2 * var(--rd-gut) - var(--rd-safe-l) - var(--rd-safe-r));
 }
@@ -280,6 +290,8 @@
   padding: 0 12px;
   border-radius: 12px;
   background: var(--rd-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--rd-line);
   font-family: var(--font-mono);
   font-size: 11px;
@@ -290,11 +302,6 @@
 }
 .rd-l-short {
   display: none;
-}
-.rd-icon__k {
-  margin-right: 6px;
-  color: var(--color-fg-3);
-  font-size: 0.82em;
 }
 .rd-icon--sq {
   padding: 0;
@@ -326,6 +333,8 @@
   padding: 14px;
   border-radius: 18px;
   background: var(--rd-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--rd-line);
   max-width: 1180px;
   margin: 0 auto;
@@ -369,12 +378,7 @@
   background: rgb(255 255 255 / 0.05);
   font-size: 12px;
   line-height: 1.15;
-  /* Labels like "Forward 5 m" wrap inside narrow buttons instead of overflowing. */
-  white-space: normal;
-  text-align: center;
-  text-wrap: balance;
-  overflow-wrap: anywhere;
-  min-width: 0;
+  white-space: nowrap;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -429,20 +433,9 @@
 .rd-queue {
   display: grid;
   gap: 4px;
-  /* Exactly 4 rows (44px + 4px gap), so a row is never cut mid-way; more rows scroll. */
-  max-height: 188px;
+  max-height: 168px;
   overflow-y: auto;
   overscroll-behavior: contain;
-  scrollbar-width: thin;
-}
-.rd-queue[data-more-down] {
-  mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent);
-}
-.rd-queue[data-more-up] {
-  mask-image: linear-gradient(to top, #000 calc(100% - 28px), transparent);
-}
-.rd-queue[data-more-up][data-more-down] {
-  mask-image: linear-gradient(to bottom, transparent, #000 28px, #000 calc(100% - 28px), transparent);
 }
 .rd-queue__item {
   display: grid;
@@ -580,6 +573,8 @@
   border-radius: 20px;
   padding: 20px;
   background: rgb(14 10 9 / 0.86);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--rd-line);
   box-shadow: 0 30px 80px -30px rgb(0 0 0 / 0.7);
   width: min(440px, calc(100vw - 2 * var(--rd-gut)));
@@ -789,8 +784,7 @@
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
   .rd-queue {
-    /* Small screens: 3 full rows. */
-    max-height: 140px;
+    max-height: 120px;
   }
   .rd-dock__send {
     grid-template-columns: 1fr auto;

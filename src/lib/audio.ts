@@ -4,9 +4,14 @@
  */
 let ctx: AudioContext | null = null;
 let master: GainNode | null = null;
-let drone: { stop: () => void } | null = null;
+let drone: { stop: () => void; gain: GainNode } | null = null;
 // Tracked here: AudioParam.value doesn't reflect scheduled ramps in every browser (Firefox reports 0).
 let enabled = false;
+let narrationDucked = false;
+
+const DRONE_BASE_GAIN = 0.05;
+// -8 dB amplitude ratio = 10^(-8/20) ≈ 0.3981 -> 0.05 * 0.3981 ≈ 0.02
+const DRONE_DUCKED_GAIN = 0.02;
 
 function ensure() {
   if (!ctx) {
@@ -17,6 +22,25 @@ function ensure() {
     master.connect(ctx.destination);
   }
   return { ctx: ctx!, master: master! };
+}
+
+/**
+ * Lowers the ambient drone gain by ~8 dB over a 300ms ramp while narration plays,
+ * and restores it after. Respects reduced motion and mute state.
+ */
+export function setNarrationDucking(ducked: boolean, reduced = false) {
+  narrationDucked = ducked;
+  if (!ctx || !drone || !enabled) return;
+  try {
+    const now = ctx.currentTime;
+    const rampSec = reduced ? 0.04 : 0.3;
+    const target = ducked ? DRONE_DUCKED_GAIN : DRONE_BASE_GAIN;
+    drone.gain.gain.cancelScheduledValues(now);
+    drone.gain.gain.setValueAtTime(drone.gain.gain.value, now);
+    drone.gain.gain.linearRampToValueAtTime(target, now + rampSec);
+  } catch {
+    /* ignore */
+  }
 }
 
 export function setSoundEnabled(on: boolean) {
@@ -40,7 +64,7 @@ export function setSoundEnabled(on: boolean) {
 
 function startDrone(ctx: AudioContext, out: GainNode) {
   const g = ctx.createGain();
-  g.gain.value = 0.05;
+  g.gain.value = narrationDucked ? DRONE_DUCKED_GAIN : DRONE_BASE_GAIN;
   const lp = ctx.createBiquadFilter();
   lp.type = 'lowpass';
   lp.frequency.value = 420;
@@ -61,6 +85,7 @@ function startDrone(ctx: AudioContext, out: GainNode) {
   lfo.start();
   lp.connect(g).connect(out);
   return {
+    gain: g,
     stop: () => {
       oscs.forEach((o) => o.stop());
       lfo.stop();

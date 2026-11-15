@@ -7,6 +7,8 @@ Spec: `docs/MASTER_BUILD_PROMPT.md`. Process and review bar: `docs/KICKOFF_PROMP
 
 - `npm run dev` · `npm run build` (runs `tsc -b`, then `vite build`) · `npm run preview` (port 4173)
 - `npx tsc -b` must pass before every commit.
+- `npm run narration:plan` · `npm run narration:audition` · `npm run narration:generate` · `npm run narration:verify` — pre-generates and verifies static Gemini TTS narration MP3s in `public/audio/` using `GEMINI_API_KEY` from `.env.local`.
+- `npx tsx scripts/verify-no-secrets.ts` verifies no API keys or `VITE_*` TTS secrets leak into `src/`, `public/`, or `dist/`.
 - `npx tsx scripts/gen-comics.ts` regenerates the SVG comic panels in `public/images/comics/`.
 - `npx tsx scripts/inspect-glb.ts public/models/*.glb` prints model bounds, meshes and materials.
 
@@ -15,6 +17,7 @@ Spec: `docs/MASTER_BUILD_PROMPT.md`. Process and review bar: `docs/KICKOFF_PROMP
 - **State router** in `src/App.tsx`: `archive → story → hardware → reward` (+ `badges`). There is one live WebGL canvas per state.
 - **Store**: `src/store/useAppStore.ts` (Zustand, persisted progress). Use narrow selectors, or `useShallow` for objects. Never subscribe to the whole store.
 - **Data**: `src/data/missions.json` is the single source of truth. Types are in `src/data/types.ts`. You may *add* fields, but never rename or remove blueprint fields. No mission copy is hardcoded in components.
+- **Narration**: `src/narration/FileVoiceProvider.ts` is the sole voice provider, playing pre-rendered MP3s from `public/audio/<lang>/<mission>/<lineId>.mp3` indexed by `public/audio/manifest.json`. Voice direction lives in `src/data/narration/{voices,delivery,pronunciations}.json`, spoken expansion in `scripts/lib/spoken.ts`, and language config in `src/data/locales/languages.json` (`en`, `hi`, `es`, `fr`, `pt-BR`).
 - **3D**: `src/components/three/`
   - `OrbitalGlobe` (archive) and `HardwareViewer` (dioramas; per-mission `scene` config in the JSON).
   - `Environment.tsx` holds the art direction per body. Mars: warm haze, soft shadows. Moon: one hard sun, black sky, earthshine fill.

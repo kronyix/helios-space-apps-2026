@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "defaultVoice": "Charon",
+  "voices": {
+    "narrator": {
+      "speaker": "narrator",
+      "voiceName": "Charon",
+      "fishVoiceName": "Ethan",
+      "fishReferenceId": "536d3a5e000945adb7038665781a4aca",
+      "styleDirection": "Warm, awe-struck documentary storyteller for ages 10 to 16; clear, unhurried, and grounded in wonder."
+    },
+    "spirit": {
+      "speaker": "spirit",
+      "voiceName": "Kore",
+      "fishVoiceName": "Sarah",
+      "fishReferenceId": "933563129e564b19a115bedd57b7406a",
+      "styleDirection": "Fictionalized first-person voice of the Spirit Mars rover: steady, quiet, resilient, and determined, never melodramatic."
+    },
+    "opportunity": {
+      "speaker": "opportunity",
+      "voiceName": "Puck",
+      "fishVoiceName": "Verity",
+      "fishReferenceId": "711cf3ed00ab441a8f54a45058047b7a",
+      "styleDirection": "Fictionalized first-person voice of the Opportunity Mars rover: bright, curious, observant, and warm-hearted."
+    },
+    "eagle": {
+      "speaker": "eagle",
+      "voiceName": "Fenrir",
+      "fishVoiceName": "Adrian",
+      "fishReferenceId": "bf322df2096a46f18c579d0baa36f41d",
+      "styleDirection": "Fictionalized first-person voice of the Apollo 11 Lunar Module Eagle descent stage: calm, focused, steadfast, and quietly proud."
+    },
+    "columbia": {
+      "speaker": "columbia",
+      "voiceName": "Aoede",
+      "fishVoiceName": "Slax",
+      "fishReferenceId": "c5f56a6cc2ec4fa8920cb4c5889a3fb7",
+      "styleDirection": "Fictionalized first-person voice of the Apollo 11 Command Module Columbia: warm, relieved, and welcoming at splashdown."
+    },
+    "ingenuity": {
+      "speaker": "ingenuity",
+      "voiceName": "Zephyr",
+      "fishVoiceName": "Jasphina",
+      "fishReferenceId": "e9b134e4c0b547a3894793be502314f1",
+      "styleDirection": "Fictionalized first-person voice of the Ingenuity Mars Helicopter: light, eager, playful, and brave, turning gentle and reflective at Flight 72."
+    }
+  }
+}

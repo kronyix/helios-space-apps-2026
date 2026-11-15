@@ -7,15 +7,14 @@ import { IconExternal, IconLock, IconTrophy } from '../components/ui/Icons';
 import { useT } from '../i18n/useT';
 import { narrator, useVoicesVersion } from '../narration/narrator';
 
-/** Names the voice source: the generated-audio provider when files exist, plus the device-voice fallback. */
+/** Names the voice source: pre-rendered Google Gemini TTS static audio files. */
 function NarrationCredit() {
   const t = useT();
   useVoicesVersion();
-  const provider = narrator.files.providerName;
+  const provider = narrator.files.providerName ?? 'Google Gemini TTS';
   return (
     <p className="mt-2 max-w-[70ch] text-[14px] leading-relaxed text-fg-2">
-      {provider ? `${t('credits.narration', { provider })} ` : ''}
-      {t('credits.narrationDevice')}
+      {t('credits.narration', { provider })}
     </p>
   );
 }

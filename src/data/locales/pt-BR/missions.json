@@ -1,0 +1,287 @@
+{
+  "reviewStatus": "machine-translated",
+  "opportunity": {
+    "reviewStatus": "machine-translated",
+    "meta": {
+      "reviewStatus": "machine-translated",
+      "title": "OS ROVERS DE 90 DIAS",
+      "disclaimer": "Os balões de fala são dramatizados (narração ficcionalizada). As caixas de legenda são história documentada.",
+      "creditsNote": "Datas publicadas pela NASA Science (horário do Pacífico dos EUA); em UTC, os pousos ocorreram um dia depois."
+    },
+    "comic": {
+      "p01": {
+        "reviewStatus": "machine-translated",
+        "stamp": "SPIRIT · CRATERA GUSEV · 3 JAN 2004",
+        "lines": {
+          "p01-c1": "Janeiro de 2004. Dois robôs gêmeos idênticos são enviados para lados opostos de Marte em busca de sinais de água antiga. Spirit pousa primeiro, amortecido por airbags, na Cratera Gusev.",
+          "p01-s1": "Quica... quica... quica... será que conseguimos?"
+        }
+      },
+      "p02": {
+        "reviewStatus": "machine-translated",
+        "stamp": "OPPORTUNITY · MERIDIANI PLANUM · 24 JAN 2004",
+        "lines": {
+          "p02-c1": "Três semanas depois, Opportunity pousa em Meridiani Planum, onde minerais indicavam um passado úmido. Ambos os rovers foram planejados para apenas 90 sóis, cerca de três meses.",
+          "p02-s1": "Noventa sóis. Essa é a promessa. Vamos fazer cada um valer a pena."
+        }
+      },
+      "p03": {
+        "reviewStatus": "machine-translated",
+        "stamp": "SPIRIT · CRATERA GUSEV",
+        "lines": {
+          "p03-c1": "Mais tarde na missão, uma das seis rodas de Spirit parou de girar. A equipe continuou dirigindo, arrastando a roda travada.",
+          "p03-s1": "Uma roda parou de funcionar. Ainda tenho mais cinco e um lugar para chegar."
+        }
+      },
+      "p04": {
+        "reviewStatus": "machine-translated",
+        "stamp": "SPIRIT · HOME PLATE · MARÇO 2007",
+        "lines": {
+          "p04-c1": "Março de 2007. A roda arrastada de Spirit revolve um solo brilhante: cerca de 90% de sílica pura, em um lugar chamado Home Plate. Na Terra, sílica assim se forma em fontes termais e fendas de vapor.",
+          "p04-s1": "Minha roda quebrada acabou de desenterrar uma pista!"
+        }
+      },
+      "p05": {
+        "reviewStatus": "machine-translated",
+        "stamp": "OPPORTUNITY · PERTO DA CRATERA FRAM · ABRIL 2004",
+        "lines": {
+          "p05-c1": "Abril de 2004. Opportunity examina minúsculos grãos redondos de hematita, um mineral que geralmente se forma na água. Os cientistas os apelidaram de «mirtilos».",
+          "p05-s1": "Pequenas esferas por toda parte. As rochas estão falando!"
+        }
+      },
+      "p06": {
+        "reviewStatus": "machine-translated",
+        "stamp": "OPPORTUNITY · MERIDIANI PLANUM",
+        "lines": {
+          "p06-c1": "As pistas se encaixaram: água antiga encharcou Meridiani Planum. Mas era salgada e ácida, um ambiente difícil para a vida, não um mar azul brilhante.",
+          "p06-s1": "Imagine só: água, bem onde estou agora."
+        }
+      },
+      "p07": {
+        "reviewStatus": "machine-translated",
+        "stamp": "OPPORTUNITY",
+        "lines": {
+          "p07-c1": "A poeira se acumulou nos painéis solares de Opportunity. Não havia ninguém lá para limpá-la.",
+          "p07-s1": "Se ao menos alguém pudesse varrer essa poeira..."
+        }
+      },
+      "p08": {
+        "reviewStatus": "machine-translated",
+        "stamp": "OPPORTUNITY · 10 JUN 2018",
+        "lines": {
+          "p08-c1": "10 de junho de 2018. Uma tempestade de poeira em todo o planeta cobre a região de Opportunity. É o último contato do rover com a Terra.",
+          "p08-s1": "O céu está escurecendo. Mas olhe quanta coisa nós vimos."
+        }
+      },
+      "p09": {
+        "reviewStatus": "machine-translated",
+        "stamp": "SPIRIT E OPPORTUNITY",
+        "lines": {
+          "p09-c1": "Planejado para cerca de três meses, Opportunity trabalhou por 14 anos e percorreu 28,06 milhas (45,16 km). Spirit percorreu 4,8 milhas (7,7 km) e encerrou sua missão em 2010.",
+          "p09-c2": "Opportunity manteve o recorde de distância percorrida fora da Terra até 11 de outubro de 2026, quando Perseverance o superou.",
+          "p09-c3": "Construídos para 90 sóis. Eles reescreveram a história de Marte."
+        }
+      }
+    }
+  },
+  "apollo11": {
+    "reviewStatus": "machine-translated",
+    "meta": {
+      "reviewStatus": "machine-translated",
+      "title": "A TROCA DE PESO",
+      "disclaimer": "Os balões de fala são dramatizados (narração ficcionalizada). As caixas de legenda são história documentada.",
+      "creditsNote": "As datas estão no horário do Leste dos EUA, conforme divulgadas pela NASA durante a missão."
+    },
+    "comic": {
+      "p01": {
+        "reviewStatus": "machine-translated",
+        "stamp": "APOLLO 11 · CENTRO ESPACIAL KENNEDY · 16 JUL 1969",
+        "lines": {
+          "p01-c1": "16 de julho de 1969. Um foguete Saturn V, com 110 metros de altura, lança a Apollo 11 da plataforma no Centro Espacial Kennedy com três astronautas a bordo.",
+          "p01-s1": "Dobrado dentro de um foguete, rumo à Lua."
+        }
+      },
+      "p02": {
+        "reviewStatus": "machine-translated",
+        "stamp": "EAGLE E COLUMBIA · ÓRBITA LUNAR · 20 JUL 1969",
+        "lines": {
+          "p02-c1": "20 de julho de 1969. Em órbita ao redor da Lua, o módulo lunar Eagle se separa do módulo de comando Columbia. Michael Collins permanece a bordo da Columbia.",
+          "p02-s1": "Até logo, Columbia. Deixe as luzes acesas para nós."
+        }
+      },
+      "p03": {
+        "reviewStatus": "machine-translated",
+        "stamp": "EAGLE · DESCIDA PROPULSIONADA",
+        "lines": {
+          "p03-c1": "O computador está guiando a nave para um campo de rochas. Neil Armstrong assume o controle manual e passa por cima dele, pousando com pouquíssimo combustível de reserva.",
+          "p03-s1": "Rochas lá embaixo! Devagar… devagar… o combustível está acabando."
+        }
+      },
+      "p04": {
+        "reviewStatus": "machine-translated",
+        "stamp": "EAGLE · TRANQUILITY BASE · 20 JUL 1969",
+        "lines": {
+          "p04-c1": "20 de julho de 1969. «Houston, aqui é Tranquility Base. A Eagle pousou.»",
+          "p04-s1": "Motor desligado. Poeira baixando. Chegamos."
+        }
+      },
+      "p05": {
+        "reviewStatus": "machine-translated",
+        "stamp": "TRANQUILITY BASE · PRIMEIROS PASSOS",
+        "lines": {
+          "p05-c1": "Neil Armstrong pisa na Lua, seguido por Buzz Aldrin. Não há vento nem chuva na Lua para apagar suas pegadas.",
+          "p05-s1": "Os primeiros passos deles. Aqui em cima, nada apaga as pegadas."
+        }
+      },
+      "p06": {
+        "reviewStatus": "machine-translated",
+        "stamp": "TRANQUILITY BASE · SISMÔMETRO E RETRORREFLETOR",
+        "lines": {
+          "p06-c1": "Aldrin instala um sismômetro para sentir tremores lunares e um retrorrefletor a laser: um painel de 100 prismas que reflete a luz direto de volta para onde ela veio.",
+          "p06-s1": "Um espelho e um ouvinte. Presentes para deixar para trás."
+        }
+      },
+      "p07": {
+        "reviewStatus": "machine-translated",
+        "stamp": "TRANQUILITY BASE · 21,55 KG DE LUA",
+        "lines": {
+          "p07-c1": "A tripulação coleta 21,55 kg de rocha e solo lunar e os sela em caixas para a viagem de volta.",
+          "p07-s1": "Cada rocha que eles guardam é um motivo para deixar algo para trás."
+        }
+      },
+      "p08": {
+        "reviewStatus": "machine-translated",
+        "stamp": "EAGLE · DECOLAGEM DA LUA · 21 JUL 1969",
+        "lines": {
+          "p08-c1": "21 de julho de 1969. O estágio superior da Eagle decola, usando o estágio de descida dourado como plataforma de lançamento. Cada quilograma deixado para trás é combustível economizado para voltar para casa.",
+          "p08-s1": "Podem ir. Eu fico. Dou uma boa plataforma de lançamento."
+        }
+      },
+      "p09": {
+        "reviewStatus": "machine-translated",
+        "stamp": "COLUMBIA · OCEANO PACÍFICO · 24 JUL 1969",
+        "lines": {
+          "p09-c1": "24 de julho de 1969. Columbia pousa nas águas do Oceano Pacífico, e o navio de resgate USS Hornet recolhe a tripulação e suas rochas lunares.",
+          "p09-s1": "Pouso no mar! Vinte e um quilogramas de Lua, em casa em segurança."
+        }
+      },
+      "p10": {
+        "reviewStatus": "machine-translated",
+        "stamp": "TRANQUILITY BASE · HOJE",
+        "lines": {
+          "p10-c1": "Hoje. O estágio de descida ainda permanece em Tranquility Base. Observatórios na Terra ainda disparam lasers no retrorrefletor para medir a distância da Lua com precisão de milímetros.",
+          "p10-s1": "Ainda estou aqui. Ainda mandando a sua luz de volta."
+        }
+      },
+      "p11": {
+        "reviewStatus": "machine-translated",
+        "stamp": "APOLLO 11 · A TROCA DE PESO",
+        "lines": {
+          "p11-c1": "Para trazer 21,55 kg de Lua para casa, a Apollo 11 deixou o pesado estágio de descida para trás. Ele se tornou a plataforma de lançamento para a viagem de volta.",
+          "p11-c2": "A luz de laser disparada da Terra alcança o retrorrefletor e volta em cerca de 2,5 segundos, medindo a distância da Lua mais de 50 anos depois.",
+          "p11-c3": "Deixado para trás de propósito. Ainda respondendo."
+        }
+      }
+    }
+  },
+  "ingenuity": {
+    "reviewStatus": "machine-translated",
+    "meta": {
+      "reviewStatus": "machine-translated",
+      "title": "VOO 72",
+      "disclaimer": "Os balões de fala são dramatizados (narração ficcionalizada). As caixas de legenda são história documentada.",
+      "creditsNote": "Datas conforme publicadas pela NASA (horário dos EUA)."
+    },
+    "comic": {
+      "p01": {
+        "reviewStatus": "machine-translated",
+        "stamp": "INGENUITY · CRATERA JEZERO · 18 FEV 2021",
+        "lines": {
+          "p01-c1": "18 de fevereiro de 2021. Um guindaste aéreo desce o rover Perseverance na Cratera Jezero. Dobrado sob sua barriga viaja Ingenuity, um helicóptero de 1,8 kg.",
+          "p01-s1": "Segure firme. Próxima parada: Cratera Jezero."
+        }
+      },
+      "p02": {
+        "reviewStatus": "machine-translated",
+        "stamp": "INGENUITY · CRATERA JEZERO · 3 ABR 2021",
+        "lines": {
+          "p02-c1": "3 de abril de 2021. Perseverance coloca Ingenuity no chão da cratera e se afasta. Pela primeira vez, o helicóptero está por conta própria.",
+          "p02-s1": "Certo. Agora sou só eu."
+        }
+      },
+      "p03": {
+        "reviewStatus": "machine-translated",
+        "stamp": "INGENUITY · PRIMEIRA NOITE SOZINHO",
+        "lines": {
+          "p03-c1": "Sua primeira noite sozinho. As temperaturas podem cair para cerca de −90 °C, então Ingenuity precisa manter seus circuitos aquecidos com a energia da bateria até o Sol voltar.",
+          "p03-s1": "Que frio… mantenha os aquecedores ligados. Espere pelo Sol."
+        }
+      },
+      "p04": {
+        "reviewStatus": "machine-translated",
+        "stamp": "INGENUITY · VOO 1 · 19 ABR 2021",
+        "lines": {
+          "p04-c1": "19 de abril de 2021. Ingenuity sobe 3 metros e paira por cerca de 30 segundos: o primeiro voo motorizado e controlado em outro planeta.",
+          "p04-s1": "Estou voando. Em Marte!"
+        }
+      },
+      "p05": {
+        "reviewStatus": "machine-translated",
+        "stamp": "INGENUITY · BATEDOR DO PERSEVERANCE",
+        "lines": {
+          "p05-c1": "Ingenuity foi planejado para apenas cinco voos de teste. Depois de completá-los, torna-se um batedor, voando à frente para fotografar o caminho do rover.",
+          "p05-s1": "Vou verificar o caminho à frente. Siga-me!"
+        }
+      },
+      "p06": {
+        "reviewStatus": "machine-translated",
+        "stamp": "INGENUITY · INVERNO MARCIANO",
+        "lines": {
+          "p06-c1": "O inverno marciano traz poeira, luz solar mais fraca e noites mais frias. Com menos energia para recarregar as baterias, cada voo fica mais difícil.",
+          "p06-s1": "Poeira no meu painel solar. Só mais um pouquinho de sol, por favor."
+        }
+      },
+      "p07": {
+        "reviewStatus": "machine-translated",
+        "stamp": "INGENUITY · 72 VOOS",
+        "lines": {
+          "p07-c1": "Em quase três anos, Ingenuity voa 72 vezes, percorrendo cerca de 17 km e subindo até 24 metros de altura.",
+          "p07-s1": "Planejado para cinco voos. Olhe para mim agora!"
+        }
+      },
+      "p08": {
+        "reviewStatus": "machine-translated",
+        "stamp": "INGENUITY · VOO 72 · 18 JAN 2024",
+        "lines": {
+          "p08-c1": "18 de janeiro de 2024. Sobre dunas de areia lisas e sem marcas, sua câmera de navegação não consegue rastrear o solo. Ingenuity pousa com força e as pás do rotor se quebram.",
+          "p08-s1": "Não consigo ver o chão… segure firme!"
+        }
+      },
+      "p09": {
+        "reviewStatus": "machine-translated",
+        "stamp": "INGENUITY · 25 JAN 2024",
+        "lines": {
+          "p09-c1": "25 de janeiro de 2024. A NASA anuncia que os dias de voo de Ingenuity terminaram. Semanas depois, Perseverance fotografa seu velho amigo de longe antes de seguir viagem.",
+          "p09-s1": "Pode seguir, Perseverance. Eu fico por aqui."
+        }
+      },
+      "p10": {
+        "reviewStatus": "machine-translated",
+        "stamp": "INGENUITY · HOJE",
+        "lines": {
+          "p10-c1": "Hoje. Ingenuity não pode mais voar, mas continua ativo como uma estação fixa, ainda coletando dados na superfície de Marte.",
+          "p10-s1": "Não posso mais voar. Mas ainda estou escutando."
+        }
+      },
+      "p11": {
+        "reviewStatus": "machine-translated",
+        "stamp": "INGENUITY · VOO 72",
+        "lines": {
+          "p11-c1": "O ar de Marte tem cerca de 1% da densidade do ar da Terra. Para decolar, os rotores de Ingenuity precisavam girar a cerca de 2.537 RPM.",
+          "p11-c2": "Planejado para até cinco voos em 30 sóis, Ingenuity voou 72 vezes em quase três anos.",
+          "p11-c3": "Construído para provar que podia voar. Ele abriu o céu de outro mundo."
+        }
+      }
+    }
+  }
+}

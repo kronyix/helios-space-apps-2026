@@ -1,65 +1,65 @@
 import { useSyncExternalStore } from 'react';
 import { FileVoiceProvider } from './FileVoiceProvider';
-import { WebSpeechProvider } from './WebSpeechProvider';
-import { CannotSpeak, type SpeakLine, type SpeakOptions, type VoiceProvider } from './VoiceProvider';
+import type { SpeakLine, SpeakOptions } from './VoiceProvider';
 
-const listeners = new Set<() => void>();
-let version = 0;
-const changed = () => {
-  version++;
-  listeners.forEach((l) => l());
-};
+/**
+ * Coordinates comic voice playback using ONLY pre-generated Gemini TTS static files
+ * (`FileVoiceProvider`). Browser Web Speech / runtime TTS calls are never made.
+ */
+class Narrator {
+  private version = 0;
+  private listeners = new Set<() => void>();
+  readonly files: FileVoiceProvider;
 
-/** Pre-generated audio first; browser speech when a file is missing. */
-class Narrator implements VoiceProvider {
-  readonly files = new FileVoiceProvider(changed);
-  readonly speech = new WebSpeechProvider(changed);
-  private active: VoiceProvider | null = null;
-
-  isAvailable(lang: string) {
-    return this.files.isAvailable(lang) || this.speech.isAvailable(lang);
+  constructor() {
+    this.files = new FileVoiceProvider(() => this.bump());
   }
 
-  /** Can this exact line be voiced in `lang` (file, or an installed browser voice)? */
-  canSpeak(line: SpeakLine, lang: string) {
-    return this.files.has(line, lang) || this.speech.isAvailable(lang);
+  private bump(): void {
+    this.version += 1;
+    this.listeners.forEach((l) => l());
   }
 
-  async speak(line: SpeakLine, lang: string, opts?: SpeakOptions) {
-    this.stop();
-    if (this.files.has(line, lang)) {
-      this.active = this.files;
-      try {
-        return await this.files.speak(line, lang, opts);
-      } catch (e) {
-        if (!(e instanceof CannotSpeak)) throw e;
-        // File missing or broken: fall through to the browser voice.
-      }
-    }
-    this.active = this.speech;
-    return this.speech.speak(line, lang, opts);
+  subscribe = (cb: () => void): (() => void) => {
+    this.listeners.add(cb);
+    return () => this.listeners.delete(cb);
+  };
+
+  getVersion = (): number => this.version;
+
+  getDurationMs(missionId: string, lineId: string, lang: string): number | undefined {
+    return this.files.getDurationMs(missionId, lineId, lang);
   }
 
-  stop() {
-    this.active?.stop();
-    this.active = null;
+  /**
+   * Play mode is available for all languages: when pre-rendered clips exist they
+   * play; if a clip is missing, Play mode stays silent and paces that line by
+   * reading speed.
+   */
+  isAvailable(lang: string): boolean {
+    return this.files.isAvailable(lang) || true;
   }
 
-  /** Audio for the current and next panel only. */
-  preload(items: { line: SpeakLine; lang: string }[]) {
+  canSpeak(line: SpeakLine, lang: string): boolean {
+    return this.files.canSpeak(line, lang);
+  }
+
+  speak(line: SpeakLine, lang: string, opts: SpeakOptions): Promise<void> {
+    return this.files.speak(line, lang, opts);
+  }
+
+  stop(): void {
+    this.files.stop();
+  }
+
+  preload(items: { line: SpeakLine; lang: string }[]): void {
     this.files.preload(items);
   }
 }
 
 export const narrator = new Narrator();
 
-/** Re-renders when the manifest or browser voices load. Returns a change counter. */
-export function useVoicesVersion() {
-  return useSyncExternalStore(
-    (cb) => {
-      listeners.add(cb);
-      return () => listeners.delete(cb);
-    },
-    () => version,
-  );
+/** Re-renders the caller when the audio manifest finishes loading. */
+export function useVoicesVersion(): number {
+  return useSyncExternalStore(narrator.subscribe, narrator.getVersion, narrator.getVersion);
 }
