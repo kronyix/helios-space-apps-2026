@@ -597,14 +597,14 @@
       "type": "spectrometer_scan",
       "targetValue": "Fe2O3_Hematite",
       "title": "Spectrometer Scan",
-      "tagline": "Lock the crosshair on hematite \"blueberry\" spikes in the soil.",
+      "tagline": "Help Opportunity find hematite \"blueberries\" hiding in the Martian soil!",
       "instructions": [
-        "A stylized soil spectrum scrolls past. The ghost trace shows hematite's reference pattern.",
-        "Move the crosshair over a spike that matches the reference, then lock it.",
-        "Find all three hematite features in 15 seconds. Wrong locks cost points."
+        "A wavy line of soil readings slides across the screen. The faint ghost line shows what hematite looks like.",
+        "When a spike matches the ghost line, move your crosshair onto it and lock it.",
+        "Find all 3 hematite spikes in 15 seconds. Careful: locking the wrong spike loses points!"
       ],
-      "controls": "Mouse or touch: move and tap to lock · Keyboard: ← → move, Space/Enter lock",
-      "science": "Minerals absorb and emit energy at their own characteristic positions, which gives each one a spectral fingerprint. Opportunity's Mössbauer spectrometer and its thermal-infrared Mini-TES both identified hematite at Meridiani, a mineral that usually forms with water. The spectrum in this game is simplified for play.",
+      "controls": "Mouse or touch: tap a spike to lock it · Keyboard: ← → to move, Space or Enter to lock",
+      "science": "Every mineral gives off its own pattern of energy, like a fingerprint. Opportunity carried two tools that read these patterns (the Mössbauer spectrometer and Mini-TES), and both found hematite at Meridiani. Hematite usually forms with water, so it was a clue that Mars was once wet. The readings in this game are simplified to make it playable.",
       "durationSec": 15,
       "successThreshold": 67,
       "badgeThreshold": 80,

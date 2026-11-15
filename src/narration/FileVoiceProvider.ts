@@ -34,7 +34,7 @@ function warnOnceDev(key: string, msg: string): void {
 }
 
 /**
- * Plays pre-generated Gemini TTS MP3 files listed in `/audio/manifest.json`.
+ * Plays pre-generated TTS MP3 files (Fish Audio or Google Gemini TTS) listed in `/audio/manifest.json`.
  *
  * FileVoiceProvider is the ONLY narration provider at runtime. Visitors never
  * trigger browser TTS or external API calls. If a clip is missing or fails to
@@ -72,9 +72,10 @@ export class FileVoiceProvider implements VoiceProvider {
 
   get providerName(): string | null {
     if (!this.manifest) return null;
-    if (this.manifest.model) return `Google Gemini TTS (${this.manifest.model})`;
+    const model = this.manifest.model;
+    if (model) return `${model.startsWith('fish') ? 'Fish Audio' : 'Google Gemini TTS'} (${model})`;
     if (this.manifest.provider) return this.manifest.provider;
-    return 'Google Gemini TTS';
+    return 'Fish Audio';
   }
 
   private entryFor(key: string): ManifestClipEntry | undefined {

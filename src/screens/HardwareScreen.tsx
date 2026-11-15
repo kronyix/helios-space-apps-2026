@@ -1,5 +1,6 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
+import { createPortal } from 'react-dom';
 import { useProgress } from '@react-three/drei';
 import type { MissionData } from '../data/types';
 import { panelsForStage, pad2 } from '../lib/missions';
@@ -8,8 +9,8 @@ import { hasWebGL } from '../lib/device';
 import { dur, ease } from '../lib/motion';
 import { useReducedMotion } from '../lib/useReducedMotion';
 import { AccentTitle, ScreenFrame } from '../components/ui/Layout';
-import { ComicPanel } from '../components/comic/ComicPage';
 import { IconArrowLeft, IconClock, IconClose, IconPlay, IconTarget, IconTrophy } from '../components/ui/Icons';
+import { HeliosMark } from '../components/ui/HeliosMark';
 import { ChapterNav } from './ChapterNav';
 import MiniGameModal from '../components/comic/MiniGameModal';
 import HardwareHubScreen from './HardwareHubScreen';
@@ -34,52 +35,67 @@ const HOTSPOT_GAMEPLAY: Record<string, Record<string, string>> = {
 
 const HardwareViewer = lazy(() => import('../components/three/HardwareViewer'));
 
-/**
- * The comic panel the reader just left stays full-bleed over the canvas, then
- * dissolves (fade + blur + slight push) into the live 3D scene once the model has
- * loaded. That turns the model download into part of the transition, so the reader
- * never sees an empty canvas.
- */
-function PanelDissolve({ src, focus }: { src: string; focus?: string }) {
-  const { active, progress } = useProgress();
-  const reduced = useReducedMotion();
-  const [minDone, setMinDone] = useState(false);
-  const [gone, setGone] = useState(false);
-  useEffect(() => {
-    const id = window.setTimeout(() => setMinDone(true), reduced ? 0 : 650);
-    const cap = window.setTimeout(() => setGone(true), 4000);
-    return () => {
-      window.clearTimeout(id);
-      window.clearTimeout(cap);
-    };
-  }, [reduced]);
-  const ready = minDone && !active && progress >= 100;
-  if (reduced && ready) return null;
-  return (
-    <AnimatePresence>
-      {!gone && (
-        <motion.div
-          className="panel-dissolve"
-          aria-hidden="true"
-          initial={{ opacity: 1 }}
-          animate={ready ? { opacity: 0, filter: 'blur(12px)', scale: 1.06 } : { opacity: 1, filter: 'blur(0px)', scale: 1 }}
-          transition={{ duration: reduced ? dur.instant : dur.cinematic * 0.85, ease: ease.inOut }}
-          onAnimationComplete={() => ready && setGone(true)}
-        >
-          <img src={src} alt="" style={focus ? { objectPosition: focus } : undefined} />
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
+/** Mounts once the lazy viewer chunk has resolved. */
+function ChunkReady({ onReady }: { onReady: () => void }) {
+  useEffect(onReady, [onReady]);
+  return null;
 }
 
-function ModelProgress() {
+/**
+ * Helios-mark loader shown until the viewer chunk and the model assets have loaded.
+ * Cached models never report progress, so an idle grace period also counts as done.
+ */
+function HardwareLoader({ chunkReady }: { chunkReady: boolean }) {
   const { active, progress } = useProgress();
-  if (!active) return null;
-  return (
-    <div className="pointer-events-none absolute bottom-28 right-10 font-pixel text-[12px] text-fg-2" role="status">
-      RECEIVING MODEL · {Math.round(progress)}%
-    </div>
+  const reduced = useReducedMotion();
+  const [visible, setVisible] = useState(true);
+  const sawActive = useRef(false);
+  if (active) sawActive.current = true;
+
+  useEffect(() => {
+    if (!visible || !chunkReady) return;
+    const done = sawActive.current && progress >= 100 && !active;
+    if (!done && active) return;
+    const id = window.setTimeout(() => setVisible(false), done ? 250 : 900);
+    return () => window.clearTimeout(id);
+  }, [active, progress, chunkReady, visible]);
+
+  // Safety: never trap the user behind the loader.
+  useEffect(() => {
+    const id = window.setTimeout(() => setVisible(false), 10000);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  const pct = Math.round(chunkReady ? progress : 0);
+  // Portalled so it sits above the page cards (the stage lives in the z-0 background layer).
+  return createPortal(
+    <AnimatePresence>
+      {visible && (
+        <motion.div
+          className="hardware-loader"
+          role="status"
+          aria-live="polite"
+          aria-label={`Receiving model, ${pct} percent`}
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: reduced ? dur.instant : dur.base, ease: ease.inOut }}
+        >
+          <div className="flex flex-col items-center gap-5">
+            <span className="hardware-loader__mark">
+              <HeliosMark size={72} />
+            </span>
+            <p className="font-pixel text-[12px] uppercase text-fg-2">Receiving model</p>
+            <div className="flex w-[200px] items-center gap-3">
+              <span className="relative h-px flex-1 bg-[var(--color-line-2)]">
+                <span className="absolute inset-y-0 left-0 bg-[var(--accent)] transition-[width]" style={{ width: `${pct}%` }} />
+              </span>
+              <span className="w-10 text-right font-pixel text-[12px] tabular-nums text-fg-2">{pct}%</span>
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>,
+    document.body,
   );
 }
 
@@ -102,6 +118,8 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
   const hIndex = mission.hotspots.findIndex((x) => x.id === active);
   const g = mission.miniGame;
   const badgeAt = g.badgeThreshold ?? 80;
+  const [chunkReady, setChunkReady] = useState(false);
+  const markChunkReady = useCallback(() => setChunkReady(true), []);
 
   if (hwView === 'hub') {
     return (
@@ -148,9 +166,9 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
                 missionId={mission.id}
                 onBackgroundClick={() => setHotspot(null)}
               />
+              <ChunkReady onReady={markChunkReady} />
             </Suspense>
-            <ModelProgress />
-            <PanelDissolve src={panel.comicImage} focus={panel.comicFocus} />
+            <HardwareLoader key={mission.id} chunkReady={chunkReady} />
             <div className="hardware-scrim" aria-hidden="true" />
           </div>
         ) : (
@@ -207,17 +225,7 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
                   </div>
                 )}
               </motion.article>
-            ) : (
-              <motion.div
-                key="panel"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: dur.fast }}
-              >
-                <ComicPanel panel={panel} mission={mission} total={mission.comicPanels.length} size="md" priority />
-              </motion.div>
-            )}
+            ) : null}
           </AnimatePresence>
         </div>
 

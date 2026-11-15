@@ -6,7 +6,7 @@ import { dur, ease } from '../../lib/motion';
 import { useReducedMotion } from '../../lib/useReducedMotion';
 import { useAppStore } from '../../store/useAppStore';
 import { IconArrowLeft, IconArrowRight, IconExternal } from '../ui/Icons';
-import { ImageLabel, ModeToggle } from './ComicPage';
+import { AiMark, ImageLabel, ModeToggle } from './ComicPage';
 
 export interface ScrollComicProps {
   mission: MissionData;
@@ -291,6 +291,7 @@ export function ScrollComic({ mission, panels, header, footer }: ScrollComicProp
                   </AnimatePresence>
 
                   {!archival && <div className="scroll-panel__scrim" aria-hidden="true" />}
+                  {!archival && <AiMark />}
 
                   <ImageLabel
                     kind={archival ? 'archival' : (panel.imageKind ?? 'illustration')}

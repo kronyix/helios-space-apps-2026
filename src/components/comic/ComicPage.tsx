@@ -17,6 +17,15 @@ const FRAMES = [
   'polygon(0 0, 99% 1.5%, 100% 98.5%, 1% 100%)',
 ];
 
+/** Small corner mark required on every AI-generated illustration (not on archival photos). */
+export function AiMark({ className = '' }: { className?: string }) {
+  return (
+    <span className={`ai-mark ${className}`} role="img" aria-label="AI-generated illustration" title="AI-generated illustration">
+      AI
+    </span>
+  );
+}
+
 /**
  * The one image label used everywhere: ILLUSTRATION, or ARCHIVAL · <exact credit>
  * (linked to the source record). Rendered by the UI, never baked into the image.
@@ -113,6 +122,7 @@ export function ComicPanel({
             />
           </motion.div>
         </AnimatePresence>
+        {!archival && <AiMark />}
 
         {!archival &&
           captions.map((line) => (

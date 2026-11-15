@@ -1,3 +1,4 @@
+import { AiMark } from '../components/comic/ComicPage';
 import { lazy, Suspense, useState } from 'react';
 import { motion } from 'motion/react';
 import { missions, pad2, formatCoord } from '../lib/missions';
@@ -172,7 +173,10 @@ export default function ArchiveScreen() {
                   }}
                   onBlur={() => setFocused(null)}
                 >
-                  <img src={m.comicPanels[2].comicImage} alt="" className="issue-row__thumb" loading="lazy" />
+                  <span className="issue-row__thumb">
+                    <img src={m.comicPanels[2].comicImage} alt="" loading="lazy" />
+                    <AiMark className="ai-mark--sm" />
+                  </span>
                   <span className="min-w-0 flex-1 text-left">
                     <span className="block font-pixel text-[12px] uppercase text-[var(--accent)]">
                       Issue {pad2(m.issueNumber)}
