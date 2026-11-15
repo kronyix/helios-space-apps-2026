@@ -259,20 +259,21 @@ export default function RpmThrottle({ durationSec, params, successThreshold, onF
               finalScore >= successThreshold,
               `Ingenuity landed smoothly on Airfield Beta! Flight distance: 2.2 km · Cleared ${s.ringsPassed}/5 waypoint rings · ${Math.round(h.battery)}% flight battery preserved`,
             );
-          } else if (h.y > groundY - 9) {
-            if (Math.abs(h.vy) > 125 || !isLevel) {
-              setGameOver(true);
-              blip('bad');
-              handleFinish(
-                score,
-                false,
-                'Helicopter suffered hard ground impact outside flight envelope',
-              );
-            } else {
-              h.y = groundY - 16;
-              h.vy = 0;
-              h.onGround = true;
-            }
+          } else if (!h.onGround && (Math.abs(h.vy) > 125 || (!isLevel && Math.abs(h.vy) > 30))) {
+            // Hard crash on terrain: only a real airborne impact counts, not tilting while parked.
+            setGameOver(true);
+            blip('bad');
+            handleFinish(
+              score,
+              false,
+              'Helicopter suffered hard ground impact outside flight envelope',
+            );
+          } else {
+            // Resting on (or gently touching) the ground: snap to the surface so gravity can't sink it.
+            h.y = groundY - 16;
+            h.vy = Math.min(0, h.vy);
+            h.vx *= Math.pow(0.05, dt);
+            h.onGround = true;
           }
         } else {
           h.onGround = false;
