@@ -63,9 +63,9 @@ export default function BadgesScreen() {
                 {b.earned ? <IconTrophy size={22} /> : <IconLock size={20} />}
               </span>
               <div>
-                <h2 className="font-display text-[19px] font-semibold">{tOr(`badge.${b.id}.name`, b.name)}</h2>
+                <h2 className="font-pixel text-[16px]">{tOr(`badge.${b.id}.name`, b.name)}</h2>
                 <p className="mt-1 text-[14px] text-fg-2">{tOr(`badge.${b.id}.criteria`, b.criteria, { n: totalHotspots })}</p>
-                <p className="mt-2 font-mono text-[10.5px] tracking-[0.2em]" style={{ color: b.earned ? 'var(--color-ok)' : 'var(--color-fg-3)' }}>
+                <p className="mt-2 font-pixel text-[12px]" style={{ color: b.earned ? 'var(--color-ok)' : 'var(--color-fg-3)' }}>
                   {t(b.earned ? 'badges.earned' : 'badges.lockedCaps').toLocaleUpperCase()}
                 </p>
               </div>
@@ -81,7 +81,7 @@ export default function BadgesScreen() {
               <li key={m.id} className="plate" data-theme={m.theme}>
                 <p className="kicker">{t('nav.issue', { n: pad2(m.issueNumber) })}</p>
                 <h3 className="plate__title">{m.shortName}</h3>
-                <dl className="mt-2 grid grid-cols-2 gap-y-1 font-mono text-[12px] text-fg-2">
+                <dl className="mt-2 grid grid-cols-2 gap-y-1 font-pixel text-[12px] text-fg-2">
                   <dt>{t('badges.opened')}</dt>
                   <dd className="text-right">{progress.issuesOpened.includes(m.id) ? t('badges.yes') : '—'}</dd>
                   <dt>{t('badges.hotspots')}</dt>

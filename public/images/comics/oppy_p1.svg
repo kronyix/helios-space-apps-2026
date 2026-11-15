@@ -15,6 +15,6 @@
 </g>
 <path d="M560 420 q-30 30 -70 26 M660 420 q30 30 70 24" fill="none" stroke="#16100c" stroke-width="3"/>
 <ellipse cx="610" cy="452" rx="120" ry="12" fill="#7a3518" opacity=".7"/>
-<text x="120" y="400" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="64" fill="#ffe6c4" stroke="#16100c" stroke-width="3" transform="rotate(-8 120 400)">BOUNCE!</text>
+<text x="120" y="400" font-family="Luckiest Guy, sans-serif" font-weight="700" font-size="64" fill="#ffe6c4" stroke="#16100c" stroke-width="3" transform="rotate(-8 120 400)">BOUNCE!</text>
 <rect width="960" height="600" filter="url(#grain-x)" opacity=".9"/>
 </svg>

@@ -4,9 +4,11 @@
    NASA Archival Futurism: near-black space, Helios amber, hairlines,
    mono annotation. Mission themes override --accent* via [data-theme]. */
 @theme {
-  --font-display: 'Space Grotesk Variable', 'Space Grotesk', 'Noto Sans Devanagari', system-ui, sans-serif;
+  /* Exactly three families: Luckiest Guy (hero display), Silkscreen (labels, headings, UI, data), Inter (body).
+     Noto Sans Devanagari is only a per-glyph fallback for Hindi. */
+  --font-hero: 'Luckiest Guy', 'Noto Sans Devanagari', system-ui, sans-serif;
+  --font-pixel: 'Silkscreen', 'Noto Sans Devanagari', ui-monospace, monospace;
   --font-sans: 'Inter Variable', 'Inter', 'Noto Sans Devanagari', system-ui, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', 'Noto Sans Devanagari', monospace;
 
   --color-void: #07070a;
   --color-ink: #0c0c10;
@@ -103,23 +105,48 @@ button:disabled {
 
 /* ───────────────────────── Primitives ───────────────────────── */
 
+/* Silkscreen is a bitmap-style face: no subpixel smoothing, allowed sizes 12/16/24/32/40 px only. */
+.font-pixel {
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+}
+.font-hero {
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
 .kicker {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.22em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: var(--accent);
 }
 
 .mono {
-  font-family: var(--font-mono);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
   letter-spacing: 0.04em;
+  line-height: 1.25;
 }
 
 .label-caps {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.2em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: var(--color-fg-3);
 }
@@ -146,9 +173,14 @@ button:disabled {
   border-radius: 999px;
   background: var(--accent);
   color: #1b1209;
-  font-family: var(--font-display);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 16px;
   box-shadow: 0 10px 40px -12px rgb(var(--accent-rgb) / 0.75), inset 0 1px 0 rgb(255 255 255 / 0.4);
   transition: transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out), background 220ms;
 }
@@ -170,7 +202,12 @@ button:disabled {
   border: 1px solid rgb(var(--accent-rgb) / 0.45);
   color: var(--color-fg);
   background: rgb(0 0 0 / 0.25);
-  font-family: var(--font-display);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
   font-weight: 500;
   transition: border-color 200ms, background 200ms, transform 200ms var(--ease-out);
 }
@@ -253,7 +290,7 @@ button:disabled {
   background: #fffaf0;
   color: #1a140e;
   border-radius: 18px;
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   box-shadow: 0 8px 24px -10px rgb(0 0 0 / 0.8);
 }
 .balloon::after {
@@ -376,11 +413,11 @@ button:disabled {
 }
 .screen__title {
   margin-top: 8px;
-  font-family: var(--font-display);
-  font-weight: 600;
+  font-family: var(--font-hero);
+  font-weight: 400;
+  letter-spacing: 0.01em;
   font-size: clamp(30px, 4.2vw, 46px);
   line-height: 1.02;
-  letter-spacing: -0.01em;
 }
 .screen__body {
   flex: 1;
@@ -424,10 +461,14 @@ button:disabled {
 }
 .plate__title {
   margin-top: 8px;
-  font-family: var(--font-display);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
   font-weight: 600;
-  font-size: 21px;
-  line-height: 1.15;
+  font-size: 16px;
 }
 .plate__text {
   margin-top: 6px;
@@ -467,8 +508,13 @@ button:disabled {
     conic-gradient(var(--accent) calc(var(--p) * 1%), rgb(255 255 255 / 0.08) 0);
 }
 .progress-ring span {
-  font-family: var(--font-display);
-  font-size: 20px;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 16px;
 }
 
 /* ═════════════════════════ Archive ═════════════════════════ */
@@ -508,16 +554,20 @@ button:disabled {
 }
 .archive-headline {
   margin-top: 14px;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(48px, 6.6vw, 92px);
-  line-height: 0.98;
-  letter-spacing: -0.025em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-weight: 400;
+  font-size: 24px;
+  text-transform: uppercase;
 }
 .archive-lede {
   margin-top: 18px;
   max-width: 30ch;
-  font-size: clamp(17px, 1.35vw, 20px);
+  font-size: 17px;
   line-height: 1.5;
   color: var(--color-fg);
   text-shadow: 0 1px 12px rgb(0 0 0 / 0.7);
@@ -570,9 +620,13 @@ button:disabled {
   min-height: 40px;
   padding: 0 16px;
   border-radius: 999px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.16em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: var(--color-fg-2);
 }
@@ -597,7 +651,7 @@ button:disabled {
     align-self: start;
   }
   .archive-headline {
-    font-size: clamp(44px, min(5.6vw, 8.4vh), 88px);
+    font-size: 32px;
   }
   .issue-list {
     grid-column: 2;
@@ -608,9 +662,13 @@ button:disabled {
     display: block;
     grid-column: 1 / -1;
     justify-self: end;
-    font-family: var(--font-mono);
-    font-size: 10.5px;
-    letter-spacing: 0.2em;
+    font-family: var(--font-pixel);
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+    text-rendering: optimizeSpeed;
+    letter-spacing: 0.04em;
+    line-height: 1.25;
+    font-size: 12px;
     text-transform: uppercase;
     color: var(--color-fg-3);
   }
@@ -727,14 +785,23 @@ button:disabled {
   pointer-events: none;
 }
 .beacon-name {
-  font-family: var(--font-display);
-  font-size: 15px;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   color: var(--color-fg);
 }
 .beacon-meta {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.14em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   color: var(--accent);
   max-width: 0;
   max-height: 0;
@@ -775,9 +842,13 @@ button:disabled {
   position: absolute;
   left: 10px;
   top: 8px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.2em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: var(--color-fg);
 }
@@ -796,8 +867,13 @@ button:disabled {
   border: 1px solid var(--accent);
   border-radius: 999px;
   background: rgb(0 0 0 / 0.7);
-  font-family: var(--font-mono);
-  font-size: 11px;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   color: var(--color-fg);
 }
 
@@ -946,9 +1022,13 @@ button:disabled {
 .comic-speaker {
   display: block;
   margin-bottom: 2px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.2em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   color: #8a5a2b;
 }
 .comic-panel__num {
@@ -957,9 +1037,13 @@ button:disabled {
   bottom: 10px;
   padding: 3px 8px;
   background: rgb(0 0 0 / 0.55);
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.2em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   color: #f1e8d6;
 }
 .comic-balloon[data-side='right'] ~ .comic-panel__num {
@@ -990,7 +1074,7 @@ button:disabled {
     line-height: 1.3;
   }
   .comic-speaker {
-    font-size: 9px;
+    font-size: 12px;
   }
   .comic-panel__num {
     display: none;
@@ -1036,11 +1120,14 @@ button:disabled {
 }
 .story-hardware {
   margin-top: 10px;
-  font-family: var(--font-display);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
   font-weight: 500;
-  font-size: clamp(24px, 2.4vw, 36px);
-  line-height: 1.1;
-  letter-spacing: -0.01em;
+  font-size: 24px;
   max-width: 20ch;
   color: var(--color-fg);
 }
@@ -1135,7 +1222,12 @@ button:disabled {
   border: 1.5px solid var(--accent);
   background: rgb(6 6 8 / 0.7);
   color: var(--color-fg);
-  font-family: var(--font-mono);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
   font-size: 12px;
   pointer-events: auto;
   box-shadow: 0 0 0 6px rgb(var(--accent-rgb) / 0.12);
@@ -1157,9 +1249,13 @@ button:disabled {
   padding: 4px 10px;
   border-left: 1px solid var(--accent);
   background: rgb(6 6 8 / 0.78);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   white-space: nowrap;
   color: var(--color-fg);
   opacity: 0;
@@ -1207,9 +1303,13 @@ button:disabled {
 }
 .hotspot-chip[data-seen]::after {
   content: 'SEEN';
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.2em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   color: var(--color-fg-3);
 }
 
@@ -1321,9 +1421,13 @@ button:disabled {
   background-size: 24px 24px;
 }
 .signal-lock {
-  font-family: var(--font-mono);
-  font-size: clamp(20px, 3vw, 30px);
-  letter-spacing: 0.4em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 24px;
   animation: lock-in 700ms var(--ease-out);
 }
 @keyframes lock-in {
@@ -1544,14 +1648,19 @@ button:disabled {
   padding: 4px 9px;
   background: rgb(6 6 8 / 0.82);
   border: 1px dashed var(--accent);
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.2em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: var(--accent);
 }
 
 .artifact-card__lock {
+  text-transform: uppercase;
   position: absolute;
   left: 50%;
   bottom: 16px;
@@ -1562,9 +1671,13 @@ button:disabled {
   padding: 5px 12px;
   border: 1px solid var(--color-line-2);
   background: rgb(6 6 8 / 0.75);
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.22em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   color: var(--color-fg-2);
 }
 
@@ -1581,7 +1694,7 @@ button:disabled {
     padding: 8px 10px;
   }
   .issue-row__thumb,
-  .issue-row .font-mono.text-\[10px\] {
+  .issue-row__coord {
     display: none;
   }
 }
@@ -1606,7 +1719,7 @@ button:disabled {
     padding-top: 4px;
   }
   .archive-headline {
-    font-size: clamp(40px, min(5vw, 7.4vh), 72px);
+    font-size: 32px;
   }
   .archive-lede {
     margin-top: 10px;
@@ -1631,10 +1744,13 @@ button:disabled {
   padding: 3px 8px;
   background: rgb(6 6 8 / 0.78);
   border: 1px solid rgb(255 255 255 / 0.16);
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.18em;
-  line-height: 1.4;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: #f1e8d6;
   white-space: nowrap;
@@ -1665,8 +1781,7 @@ a.image-label:hover {
     right: 6px;
     top: 6px;
     padding: 2px 6px;
-    font-size: 8.5px;
-    letter-spacing: 0.14em;
+    font-size: 12px;
   }
 }
 
@@ -1729,9 +1844,13 @@ a.image-label:hover {
   border-radius: 999px;
   border: 1px solid var(--color-line-2);
   background: rgb(0 0 0 / 0.35);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: var(--color-fg-2);
   transition: border-color 200ms, background 200ms, color 200ms;
@@ -1778,8 +1897,8 @@ a.image-label:hover {
   padding: 8px 12px;
   border-left: 2px solid var(--accent);
   background: rgb(9 9 12 / 0.78);
-  font-family: var(--font-mono);
-  font-size: 11px;
+  font-family: var(--font-sans);
+  font-size: 12px;
   line-height: 1.45;
   letter-spacing: 0.08em;
   color: var(--color-fg-2);
@@ -1815,9 +1934,13 @@ a.image-label:hover {
 }
 
 .scroll-comic__telemetry dt {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.16em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: var(--color-fg-3);
 }
@@ -1875,9 +1998,13 @@ a.image-label:hover {
 }
 
 .scroll-panel__index {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.2em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   color: var(--accent);
 }
 
@@ -1886,9 +2013,13 @@ a.image-label:hover {
   border-radius: 999px;
   border: 1px solid rgb(var(--accent-rgb) / 0.45);
   background: rgb(var(--accent-rgb) / 0.1);
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: var(--accent-2);
 }
@@ -1951,9 +2082,13 @@ a.image-label:hover {
 .scroll-panel__log-tag {
   display: block;
   margin-bottom: 4px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: #6e451d;
 }
@@ -2014,7 +2149,7 @@ a.image-label:hover {
 
 .scroll-comic__cta-lede {
   margin: 4px 0 0;
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: clamp(19px, 2.2vw, 24px);
   font-weight: 600;
   line-height: 1.2;
@@ -2184,11 +2319,14 @@ body:has(.issue-comic),
 
 .issue-stamp {
   display: inline-block;
-  font-family: var(--font-mono);
-  font-size: clamp(9.5px, 1vw, 11px);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.14em;
-  line-height: 1.3;
   text-transform: uppercase;
   color: rgb(255 255 255 / 0.9);
   text-shadow: 0 1px 8px rgb(0 0 0 / 0.9);
@@ -2203,18 +2341,18 @@ body:has(.issue-comic),
 }
 
 .issue-intro-banner__title {
-  font-family: var(--font-display);
-  font-size: clamp(11px, 1.15vw, 12.5px);
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-family: var(--font-hero);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  font-size: 16px;
   text-transform: uppercase;
   color: rgb(255 255 255 / 0.95);
   text-shadow: 0 1px 8px rgb(0 0 0 / 0.9);
 }
 
 .issue-intro-banner__disclaimer {
-  font-family: var(--font-mono);
-  font-size: 9.5px;
+  font-family: var(--font-sans);
+  font-size: 11px;
   line-height: 1.32;
   letter-spacing: 0.02em;
   color: rgb(255 255 255 / 0.72);
@@ -2252,11 +2390,14 @@ body:has(.issue-comic),
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-family: var(--font-mono);
-  font-size: clamp(9.5px, 0.98vw, 11px);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.06em;
-  line-height: 1.3;
   color: rgb(255 255 255 / 0.86);
   text-shadow: 0 1px 8px rgb(0 0 0 / 0.92);
   white-space: nowrap;
@@ -2308,17 +2449,21 @@ body:has(.issue-comic),
 .issue-balloon__speaker {
   display: block;
   margin-bottom: 3px;
-  font-family: var(--font-mono);
-  font-size: 10px;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #9e4b14;
 }
 
 .issue-balloon__text {
   margin: 0;
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: clamp(13.5px, 1.4vw, 15.5px);
   font-weight: 600;
   line-height: 1.32;
@@ -2363,7 +2508,7 @@ body:has(.issue-comic),
 
 .issue-caption__text {
   margin: 0;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: clamp(12px, 1.25vw, 14px);
   line-height: 1.46;
   letter-spacing: 0.01em;
@@ -2629,8 +2774,8 @@ body:has(.issue-comic),
   flex-wrap: wrap;
   align-items: center;
   gap: 6px;
-  font-family: var(--font-mono);
-  font-size: clamp(10.5px, 1vw, 11.5px);
+  font-family: var(--font-sans);
+  font-size: 12px;
   color: rgb(255 255 255 / 0.68);
 }
 
@@ -2689,8 +2834,8 @@ body:has(.issue-comic),
 }
 
 .issue-credits-note {
-  font-family: var(--font-mono);
-  font-size: 10px;
+  font-family: var(--font-sans);
+  font-size: 12px;
   line-height: 1.35;
   color: rgb(255 255 255 / 0.72);
   text-shadow: 0 1px 6px rgb(0 0 0 / 0.9);
@@ -2735,7 +2880,12 @@ body:has(.issue-comic),
   display: flex;
   align-items: center;
   gap: 8px;
-  font-family: var(--font-mono);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
   font-size: 12px;
   color: rgb(255 255 255 / 0.85);
   font-variant-numeric: tabular-nums;
@@ -2766,7 +2916,12 @@ body:has(.issue-comic),
   border: 1px solid rgb(255 255 255 / 0.25);
   background: rgb(16 18 24 / 0.85);
   color: #fff;
-  font-family: var(--font-mono);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
   font-size: 12px;
   display: inline-flex;
   align-items: center;
@@ -2883,8 +3038,8 @@ body:has(.issue-comic),
   align-items: center;
   justify-content: center;
   gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 11.5px;
+  font-family: var(--font-sans);
+  font-size: 12px;
   color: rgb(255 255 255 / 0.68);
 }
 
@@ -2995,9 +3150,13 @@ body:has(.issue-comic),
 }
 .narration-toggle__meta {
   display: none;
-  font-family: var(--font-mono);
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
   font-size: 12px;
-  letter-spacing: 0.08em;
 }
 .narration-panel {
   position: fixed;
@@ -3032,9 +3191,13 @@ body:has(.issue-comic),
 .narration-panel__label {
   margin-bottom: 8px;
   padding: 0;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   text-transform: uppercase;
   color: var(--color-fg-3);
 }
@@ -3125,17 +3288,27 @@ body:has(.issue-comic),
   padding: 1px 6px;
   border-radius: 3px;
   border: 1px solid rgb(255 255 255 / 0.4);
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  font-size: 12px;
   color: rgb(255 255 255 / 0.85);
   vertical-align: middle;
 }
 
 /* ── Hindi (Devanagari): letter-spacing breaks the headline stroke and conjuncts; matras need room. ── */
 :root:lang(hi) {
-  /* Plex Mono has no Devanagari and its wide space splits Hindi words apart: use the sans stack. */
-  --font-mono: 'Inter Variable', 'Inter', 'Noto Sans Devanagari', system-ui, sans-serif;
+  /* Silkscreen and Luckiest Guy have no Devanagari: Hindi labels and titles use the sans stack. */
+  --font-pixel: 'Inter Variable', 'Inter', 'Noto Sans Devanagari', system-ui, sans-serif;
+  --font-hero: 'Inter Variable', 'Inter', 'Noto Sans Devanagari', system-ui, sans-serif;
+}
+:root:lang(hi) .font-pixel,
+:root:lang(hi) body * {
+  -webkit-font-smoothing: antialiased !important;
+  text-rendering: optimizeLegibility !important;
 }
 :root:lang(hi) body * {
   letter-spacing: normal !important;

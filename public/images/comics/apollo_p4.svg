@@ -15,6 +15,6 @@
   <path d="M300 300 L320 230 M660 300 L640 230" stroke-width="6"/>
 </g>
 <g fill="#e9c46a" opacity=".85"><ellipse cx="380" cy="240" rx="34" ry="20" stroke="#16100c" stroke-width="3"/><ellipse cx="470" cy="228" rx="34" ry="20" stroke="#16100c" stroke-width="3"/><ellipse cx="560" cy="240" rx="34" ry="20" stroke="#16100c" stroke-width="3"/></g>
-<text x="290" y="540" font-family="IBM Plex Mono, monospace" font-size="30" fill="#e8e8e2">21.55 kg</text>
+<text x="290" y="540" font-family="Silkscreen, monospace" font-size="30" fill="#e8e8e2">21.55 kg</text>
 <rect width="960" height="600" filter="url(#grain-x)" opacity=".9"/>
 </svg>

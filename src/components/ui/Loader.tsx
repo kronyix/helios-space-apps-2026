@@ -87,16 +87,16 @@ export function Loader({ gatesScene }: { gatesScene: boolean }) {
         >
           <div className="flex flex-col items-center gap-6">
             <HeliosMark size={52} />
-            <p className="font-mono text-[11px] tracking-[0.42em] text-fg-2">ACQUIRING TRANSMISSION</p>
+            <p className="font-pixel text-[12px] uppercase text-fg-2">Acquiring transmission</p>
             <canvas ref={canvas} width={220} height={40} className="h-10 w-[220px]" aria-hidden="true" />
-            <p className="font-display text-[34px] font-medium tracking-[0.12em] text-fg">
-              SILENT <span className="text-[var(--accent)]">PIONEERS</span>
+            <p className="font-hero text-[34px] text-fg">
+              Silent <span className="text-[var(--accent)]">Pioneers</span>
             </p>
             <div className="flex w-[220px] items-center gap-3">
               <span className="relative h-px flex-1 bg-[var(--color-line-2)]">
                 <span className="absolute inset-y-0 left-0 bg-[var(--accent)]" style={{ width: `${pct}%` }} />
               </span>
-              <span className="w-10 text-right font-mono text-[11px] tabular-nums text-fg-2">{pct}%</span>
+              <span className="w-10 text-right font-pixel text-[12px] tabular-nums text-fg-2">{pct}%</span>
             </div>
           </div>
         </motion.div>

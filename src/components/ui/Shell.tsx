@@ -68,7 +68,7 @@ export function NavRail() {
         aria-label={t('nav.home')}
       >
         <HeliosMark />
-        <span className="font-mono text-[10px] tracking-[0.32em]">HELIOS</span>
+        <span className="font-pixel text-[12px]">HELIOS</span>
       </button>
 
       <ul className="flex w-full justify-around min-[900px]:mt-[12vh] min-[900px]:flex-col min-[900px]:justify-start">
@@ -101,7 +101,7 @@ export function NavRail() {
           navigate('badges');
           window.setTimeout(() => document.getElementById('credits')?.scrollIntoView({ block: 'start' }), 450);
         }}
-        className="mt-auto hidden min-h-[44px] font-mono text-[10px] tracking-[0.24em] uppercase text-fg-3 hover:text-fg min-[900px]:block"
+        className="mt-auto hidden min-h-[44px] font-pixel text-[12px] uppercase text-fg-3 hover:text-fg min-[900px]:block"
       >
         {t('nav.credits')}
       </button>
@@ -118,7 +118,7 @@ export function NavRail() {
           }}
         />
         <span className="text-[13px] text-[var(--color-fg)]">{m ? t(body === 'moon' ? 'body.moon' : 'body.mars') : t('nav.archive')}</span>
-        <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[var(--color-fg-3)]">
+        <span className="font-pixel text-[12px] uppercase text-[var(--color-fg-3)]">
           {m ? t('nav.issue', { n: String(m.issueNumber).padStart(2, '0') }) : t('nav.issuesCount', { opened, total: missions.length })}
         </span>
         <span className="relative mt-1 h-[2px] w-16 overflow-hidden rounded bg-[var(--color-line-2)]" aria-hidden="true">
@@ -147,7 +147,7 @@ export function StateTrack() {
   const idx = STATES.findIndex((s) => s.id === stage);
   return (
     <nav aria-label={t('nav.chapter')} className="hidden min-[900px]:block">
-      <ol className="flex items-center gap-5 font-mono text-[11px] tracking-[0.22em] uppercase">
+      <ol className="flex items-center gap-5 font-pixel text-[12px] uppercase">
         {STATES.map((s, i) => {
           const on = s.id === stage;
           const done = idx > i;

@@ -97,7 +97,7 @@ For each dimension, give a score, 3–6 concrete findings with evidence, and the
 
 ### 2. Typography & hierarchy
 - Can you tell the reading order of every screen within one second?
-- Are Space Grotesk / Inter / IBM Plex Mono doing distinct jobs, or used interchangeably?
+- Are Luckiest Guy / Silkscreen / Inter doing distinct jobs, or used interchangeably?
 - Check the type scale ratio, line length (45–75 characters for body text), tracking on uppercase labels, and mono metadata alignment.
 - Look for orphans, ragged comic captions, text over busy 3D with no contrast protection, and fluid type that breaks at 1024px.
 

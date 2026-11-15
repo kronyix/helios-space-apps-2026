@@ -840,7 +840,7 @@ export default function SpectrometerScan({ durationSec, params: _params, success
         />
 
         {/* Arcade HUD Overlay */}
-        <div className="absolute inset-x-0 top-0 flex flex-wrap items-center justify-between border-b border-black/40 bg-black/60 px-3 py-1.5 font-mono text-[11px] text-white">
+        <div className="absolute inset-x-0 top-0 flex flex-wrap items-center justify-between border-b border-black/40 bg-black/60 px-3 py-1.5 font-pixel text-[12px] text-white">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5">
               <span className="h-2 w-2 rounded-full bg-[var(--color-ok)] animate-pulse" />
@@ -871,7 +871,7 @@ export default function SpectrometerScan({ durationSec, params: _params, success
 
         {/* Scanning Active Status Badge */}
         {isArmActive && (
-          <div className="absolute top-10 left-3 rounded bg-black/75 px-2.5 py-1 font-mono text-[11px] text-[#ffaa44] border border-[#ffaa44]/50 animate-pulse">
+          <div className="absolute top-10 left-3 rounded bg-black/75 px-2.5 py-1 font-pixel text-[12px] text-[#ffaa44] border border-[#ffaa44]/50 animate-pulse">
             ANALYZING ROCK SPECIMEN WITH APXS SPECTROMETER...
           </div>
         )}
@@ -879,8 +879,8 @@ export default function SpectrometerScan({ durationSec, params: _params, success
         {/* Game Over Screen */}
         {gameOver && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 p-6 text-center">
-            <h3 className="font-display text-2xl font-bold text-[var(--color-bad)]">EXPEDITION ABORTED</h3>
-            <p className="mt-1 font-mono text-sm text-[var(--color-fg-2)]">
+            <h3 className="font-hero text-[24px] uppercase text-[var(--color-bad)]">Expedition aborted</h3>
+            <p className="mt-1 text-sm text-[var(--color-fg-2)]">
               {health <= 0
                 ? 'Rover chassis compromised by terrain collision or boulder impact.'
                 : battery <= 0
@@ -898,11 +898,11 @@ export default function SpectrometerScan({ durationSec, params: _params, success
         {/* Victory Screen */}
         {victory && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 p-6 text-center">
-            <h3 className="font-display text-2xl font-bold text-[var(--color-ok)]">EXPEDITION SUCCESSFUL!</h3>
-            <p className="mt-1 font-mono text-sm text-[var(--color-fg)]">
+            <h3 className="font-hero text-[24px] uppercase text-[var(--color-ok)]">Expedition successful!</h3>
+            <p className="mt-1 text-sm text-[var(--color-fg)]">
               Opportunity safely crossed 2.5 km of rugged Martian terrain and analyzed {samplesCount} scientific samples!
             </p>
-            <p className="mt-2 font-mono text-xs text-[var(--color-fg-3)]">
+            <p className="mt-2 font-pixel text-[12px] text-[var(--color-fg-3)]">
               Final Score: <b>{score} / 100</b> · Chassis Health: {health}%
             </p>
           </div>
@@ -914,7 +914,7 @@ export default function SpectrometerScan({ durationSec, params: _params, success
         <div className="flex gap-2">
           <button
             type="button"
-            className="btn-ghost flex-1 py-3 text-center font-mono font-bold select-none active:bg-white/20"
+            className="btn-ghost flex-1 py-3 text-center font-pixel font-bold select-none active:bg-white/20"
             onPointerDown={() => (touchLeft.current = true)}
             onPointerUp={() => (touchLeft.current = false)}
             onPointerCancel={() => (touchLeft.current = false)}
@@ -923,7 +923,7 @@ export default function SpectrometerScan({ durationSec, params: _params, success
           </button>
           <button
             type="button"
-            className="btn-ghost flex-1 py-3 text-center font-mono font-bold select-none active:bg-white/20"
+            className="btn-ghost flex-1 py-3 text-center font-pixel font-bold select-none active:bg-white/20"
             onPointerDown={() => (touchRight.current = true)}
             onPointerUp={() => (touchRight.current = false)}
             onPointerCancel={() => (touchRight.current = false)}
@@ -934,7 +934,7 @@ export default function SpectrometerScan({ durationSec, params: _params, success
         <div className="flex gap-2">
           <button
             type="button"
-            className="btn-ghost flex-1 py-3 text-center font-mono font-bold text-amber-300 select-none active:bg-white/20"
+            className="btn-ghost flex-1 py-3 text-center font-pixel font-bold text-amber-300 select-none active:bg-white/20"
             onPointerDown={() => (touchJump.current = true)}
             onPointerUp={() => (touchJump.current = false)}
             onPointerCancel={() => (touchJump.current = false)}
@@ -943,7 +943,7 @@ export default function SpectrometerScan({ durationSec, params: _params, success
           </button>
           <button
             type="button"
-            className="btn-primary flex-1 py-3 text-center font-mono font-bold select-none"
+            className="btn-primary flex-1 py-3 text-center font-pixel font-bold select-none"
             onPointerDown={() => (touchSample.current = true)}
             onPointerUp={() => (touchSample.current = false)}
             onPointerCancel={() => (touchSample.current = false)}
@@ -954,7 +954,7 @@ export default function SpectrometerScan({ durationSec, params: _params, success
       </div>
 
       {/* Desktop Instructions Bar */}
-      <div className="hidden sm:flex items-center justify-between font-mono text-[11px] text-[var(--color-fg-3)]">
+      <div className="hidden sm:flex items-center justify-between font-pixel text-[12px] text-[var(--color-fg-3)]">
         <span>Controls: <b>A / D</b> or <b>← →</b> Drive · <b>W / Space</b> Hop · <b>S / E / Down</b> Deploy Arm</span>
         <span>Goal: Traverse to 2500m Outpost · Stop near rocks and deploy arm to analyze hematite</span>
       </div>

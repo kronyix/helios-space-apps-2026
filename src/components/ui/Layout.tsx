@@ -32,7 +32,7 @@ export function ScreenFrame({
       <div className="screen__scroll">
         <header className="screen__header">
           <div className="min-w-0">
-            <p className="flex items-center gap-4 font-mono text-[11px] tracking-[0.32em] text-fg-2 uppercase">
+            <p className="flex items-center gap-4 font-pixel text-[12px] text-fg-2 uppercase">
               {kicker}
               <span aria-hidden="true" className="h-px w-10 bg-[var(--accent)]" />
             </p>
