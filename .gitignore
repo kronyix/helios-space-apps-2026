@@ -45,3 +45,4 @@ public/assets/
 # Piper voice models (scripts/piper-tts.py)
 .cache/
 metadata.json
+.vercel
