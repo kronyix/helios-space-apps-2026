@@ -257,7 +257,7 @@ The globe, reader, diorama, reward screen and badges all pick up the new mission
 
 ## Performance and accessibility
 
-Measured during our internal review (`review/TOP15.md`, desktop GPU, Playwright):
+Measured during our internal review (desktop GPU, Playwright):
 
 | Metric | Result |
 |---|---|
@@ -323,7 +323,7 @@ All mission facts and images are sourced in `src/data/missions.json`, and the in
 
 | Tool | Used for |
 |---|---|
-| **Google Gemini** (image generation) | Comic panel illustrations, generated from Team Helios prompts (`docs/ASSET_PROMPTS.md`), then art-directed, cropped and reviewed by the team. They are dramatizations, labeled **ILLUSTRATION** on the site, and every image file carries a visible **AI-GENERATED** watermark. None shows a NASA logo, flag or mission identifier. |
+| **Google Gemini** (image generation) | Comic panel illustrations, generated from Team Helios prompts, then art-directed, cropped and reviewed by the team. They are dramatizations, labeled **ILLUSTRATION** on the site, and every image file carries a visible **AI-GENERATED** watermark. None shows a NASA logo, flag or mission identifier. |
 | **Anthropic Claude** (Claude Code) | Code assistance (application code, 3D scenes, games, review tooling), drafting captions and hotspot copy, and help with the factual review against NASA/JPL/NSSDC sources. |
 | **Fish Audio** text-to-speech (`fish-s2.1-pro-free`; the pipeline can also use Google Gemini TTS) | Narration voices, pre-rendered at build time and credited in the app. |
 | Machine-assisted translation | Hindi, Spanish, French and Portuguese (Brazil) UI and narration, under review. Names, numbers and hardware names are kept exactly as in the English source. |

@@ -1,8 +1,0 @@
-{
-  "01-opportunity-hardware-hotspot-arrays-1440": [
-    "[error] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED"
-  ],
-  "01-archive-beacon-hover-1440-nowebgl": [
-    "[capture-error] locator.hover: Timeout 30000ms exceeded."
-  ]
-}

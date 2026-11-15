@@ -45,3 +45,13 @@ public/assets/
 # Piper voice models (scripts/piper-tts.py)
 .cache/
 metadata.json
+
+# Internal working files (AI assistant instructions, build prompts, review output); kept locally, not published
+CLAUDE.md
+.claude/
+docs/KICKOFF_PROMPT.md
+docs/MASTER_BUILD_PROMPT.md
+docs/CHANGE_REQUEST_page_turn.md
+docs/ASSET_PROMPTS.md
+docs/ASSET_PROMPTS_LONG.md
+review/
