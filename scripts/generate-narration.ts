@@ -8,12 +8,25 @@
  * and public/audio/manifest.json. Lines whose text and voice are unchanged (same hash) are skipped.
  * A missing translation is skipped too: the app then falls back to English text and voice.
  * The key is read from the environment or .env only; it never reaches client code.
+ *
+ * Free offline alternative (no key): Piper neural voices via uv (see scripts/piper-tts.py).
+ *   npx tsx scripts/generate-narration.ts --engine=piper [--lang=hi]
  */
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
+import { spawnSync } from 'node:child_process';
 
-const PROVIDER = 'Google Cloud Text-to-Speech';
+const args = process.argv.slice(2);
+const engine = args.find((a) => a.startsWith('--engine='))?.slice(9) ?? 'google';
+const PROVIDER = engine === 'piper' ? 'Piper TTS (offline)' : 'Google Cloud Text-to-Speech';
+/** Piper voice models per language: narrator, and one shared voice for character speech. */
+const PIPER: Record<string, { narrator: string; characters: string }> = {
+  en: { narrator: 'en_US-ryan-high', characters: 'en_US-amy-medium' },
+  es: { narrator: 'es_ES-davefx-medium', characters: 'es_ES-sharvard-medium' },
+  fr: { narrator: 'fr_FR-tom-medium', characters: 'fr_FR-siwis-medium' },
+  hi: { narrator: 'hi_IN-pratham-medium', characters: 'hi_IN-priyamvada-medium' },
+};
 const ENDPOINT = 'https://texttospeech.googleapis.com/v1/text:synthesize';
 const MANIFEST = 'public/audio/manifest.json';
 
@@ -23,7 +36,6 @@ interface Line { id: string; kind: 'caption' | 'speech'; speaker?: string; text:
 interface Issue { missionId?: string; panels: { id: string; lines: Line[] }[] }
 interface Manifest { version: number; provider: string; lines: Record<string, { src: string; hash: string }> }
 
-const args = process.argv.slice(2);
 const dry = args.includes('--dry');
 const onlyLang = args.find((a) => a.startsWith('--lang='))?.slice(7);
 
@@ -33,7 +45,7 @@ try {
   /* no .env: use the environment */
 }
 const KEY = process.env.GOOGLE_TTS_API_KEY;
-if (!KEY && !dry) {
+if (engine === 'google' && !KEY && !dry) {
   console.error('GOOGLE_TTS_API_KEY is not set (see .env.example). Use --dry to list what would be generated.');
   process.exit(1);
 }
@@ -71,10 +83,15 @@ async function synthesize(text: string, lang: Lang, v: Voice): Promise<Buffer> {
 
 let made = 0, kept = 0, skipped = 0;
 const failed: string[] = [];
+const piperJobs: { text: string; model: string; out: string; key: string; src: string; hash: string }[] = [];
 for (const lang of langs) {
   if (onlyLang && lang.code !== onlyLang) {
     // Keep other languages' entries untouched.
     for (const [k, e] of Object.entries(old.lines)) if (k.startsWith(`${lang.code}/`)) next.lines[k] = e;
+    continue;
+  }
+  if (engine === 'piper' && !PIPER[lang.code]) {
+    console.warn(`! ${lang.code}: no Piper voice mapped, skipped`);
     continue;
   }
   if (!lang.tts) {
@@ -91,7 +108,10 @@ for (const lang of langs) {
           skipped++;
           continue;
         }
-        const voice = lang.tts.characters?.[voiceId(l)] ?? lang.tts.narrator;
+        const voice: Voice =
+          engine === 'piper'
+            ? { name: voiceId(l) === 'narrator' ? PIPER[lang.code].narrator : PIPER[lang.code].characters }
+            : (lang.tts.characters?.[voiceId(l)] ?? lang.tts.narrator);
         const hash = createHash('sha1').update(JSON.stringify([text, lang.bcp47, voice.name, voice.pitch ?? 0])).digest('hex');
         const key = audioKey(lang.code, mid, p.id, l.id);
         const src = `/audio/${key}.mp3`;
@@ -104,6 +124,10 @@ for (const lang of langs) {
         if (dry) {
           console.log(`would generate ${key} (${voice.name})`);
           made++;
+          continue;
+        }
+        if (engine === 'piper') {
+          piperJobs.push({ text, model: voice.name, out: file, key, src, hash });
           continue;
         }
         try {
@@ -119,6 +143,25 @@ for (const lang of langs) {
       }
     }
   }
+}
+
+if (piperJobs.length) {
+  // One Python process for all lines, so each voice model loads once.
+  const jobs = JSON.stringify(piperJobs.map(({ text, model, out }) => ({ text, model, out })));
+  const r = spawnSync('uv', ['run', '--quiet', 'scripts/piper-tts.py'], { input: jobs, encoding: 'utf8', stdio: ['pipe', 'pipe', 'inherit'], maxBuffer: 1 << 26 });
+  if (r.error) throw r.error;
+  const ok = new Set(r.stdout.split('\n').filter((x) => x.startsWith('ok ')).map((x) => x.slice(3)));
+  for (const line of r.stdout.split('\n')) {
+    if (!line.startsWith('fail ')) continue;
+    const [out, ...why] = line.slice(5).split(' ');
+    failed.push(`${piperJobs.find((j) => j.out === out)?.key ?? out}: ${why.join(' ')}`);
+  }
+  for (const j of piperJobs) {
+    if (!ok.has(j.out)) continue;
+    next.lines[j.key] = { src: j.src, hash: j.hash };
+    made++;
+  }
+  console.log(`piper: ${ok.size}/${piperJobs.length} lines synthesized`);
 }
 
 if (!dry) {

@@ -1,5 +1,1046 @@
 {
   "version": 1,
-  "provider": "",
-  "lines": {}
+  "provider": "Piper TTS (offline)",
+  "lines": {
+    "en/opportunity/p01-c1": {
+      "src": "/audio/en/opportunity/p01-c1.mp3",
+      "hash": "f76f82cde7f80a93b9f4533b06a23c02bee9d601"
+    },
+    "en/opportunity/p01-s1": {
+      "src": "/audio/en/opportunity/p01-s1.mp3",
+      "hash": "451ac1d1590b87fd983c62114798cd716ed02d5a"
+    },
+    "en/opportunity/p02-c1": {
+      "src": "/audio/en/opportunity/p02-c1.mp3",
+      "hash": "2a61d6206955687ffc13b16081acf1a25eaa02a4"
+    },
+    "en/opportunity/p02-s1": {
+      "src": "/audio/en/opportunity/p02-s1.mp3",
+      "hash": "d41db7f72afa5389b84c572196b181ba1dff5c15"
+    },
+    "en/opportunity/p03-c1": {
+      "src": "/audio/en/opportunity/p03-c1.mp3",
+      "hash": "f26762f1a93e7f754e8a0c03c8754b149e56893e"
+    },
+    "en/opportunity/p03-s1": {
+      "src": "/audio/en/opportunity/p03-s1.mp3",
+      "hash": "9526a0bbd907bbec3073953d1772e6e55ade3757"
+    },
+    "en/opportunity/p04-c1": {
+      "src": "/audio/en/opportunity/p04-c1.mp3",
+      "hash": "acdbcc09c70b13c777bcd0a13c7ecf193852b011"
+    },
+    "en/opportunity/p04-s1": {
+      "src": "/audio/en/opportunity/p04-s1.mp3",
+      "hash": "dd111f51df8f7b834d95ff45bfd027c7827f5e2b"
+    },
+    "en/opportunity/p05-c1": {
+      "src": "/audio/en/opportunity/p05-c1.mp3",
+      "hash": "74e71a47adb1703d9ba29d57727538bbaa729570"
+    },
+    "en/opportunity/p05-s1": {
+      "src": "/audio/en/opportunity/p05-s1.mp3",
+      "hash": "c21315af3f01bb7d0940196b0de26c8b8ffaa632"
+    },
+    "en/opportunity/p06-c1": {
+      "src": "/audio/en/opportunity/p06-c1.mp3",
+      "hash": "a95a2b1743544e3f0773a42afa279a491822e5f0"
+    },
+    "en/opportunity/p06-s1": {
+      "src": "/audio/en/opportunity/p06-s1.mp3",
+      "hash": "379b23dc867e27a0a8e6d4f68a588b777be873fa"
+    },
+    "en/opportunity/p07-c1": {
+      "src": "/audio/en/opportunity/p07-c1.mp3",
+      "hash": "da0024c26d875b0b289beb2fdb65baea90f8518b"
+    },
+    "en/opportunity/p07-s1": {
+      "src": "/audio/en/opportunity/p07-s1.mp3",
+      "hash": "fb82fda4a98657997f0c2a8a34d9a03ded666d10"
+    },
+    "en/opportunity/p08-c1": {
+      "src": "/audio/en/opportunity/p08-c1.mp3",
+      "hash": "051d076809791d65d9acbd4a36bdfb2187412b95"
+    },
+    "en/opportunity/p08-s1": {
+      "src": "/audio/en/opportunity/p08-s1.mp3",
+      "hash": "ba3349b6bbab4e124e015a2483e532ad3c666958"
+    },
+    "en/opportunity/p09-c1": {
+      "src": "/audio/en/opportunity/p09-c1.mp3",
+      "hash": "0cec1a61c0a06fd9568b227da23cc07cd8c04154"
+    },
+    "en/opportunity/p09-c2": {
+      "src": "/audio/en/opportunity/p09-c2.mp3",
+      "hash": "93ead554e2185f71080bcb43263a72fa7f06444e"
+    },
+    "en/opportunity/p09-c3": {
+      "src": "/audio/en/opportunity/p09-c3.mp3",
+      "hash": "2604adace3d90a9f85b7698a7240f95c6cfbd9bc"
+    },
+    "en/apollo11/p01-c1": {
+      "src": "/audio/en/apollo11/p01-c1.mp3",
+      "hash": "38765e99dc25300ab7675153c55247bba57f18e3"
+    },
+    "en/apollo11/p01-s1": {
+      "src": "/audio/en/apollo11/p01-s1.mp3",
+      "hash": "0f7a55116ca9b53fc6d9178f725e683bbe3ee1ca"
+    },
+    "en/apollo11/p02-c1": {
+      "src": "/audio/en/apollo11/p02-c1.mp3",
+      "hash": "26e3b651edcee42cb68288c135692de624df03a6"
+    },
+    "en/apollo11/p02-s1": {
+      "src": "/audio/en/apollo11/p02-s1.mp3",
+      "hash": "5099f4734bdfe7d95007b5992760d21fb240afba"
+    },
+    "en/apollo11/p03-c1": {
+      "src": "/audio/en/apollo11/p03-c1.mp3",
+      "hash": "ee38f00b2ecabb664fb7e6659825c0df093de3b5"
+    },
+    "en/apollo11/p03-s1": {
+      "src": "/audio/en/apollo11/p03-s1.mp3",
+      "hash": "5e1f857896bde5caaa7f601057ba190258583c9d"
+    },
+    "en/apollo11/p04-c1": {
+      "src": "/audio/en/apollo11/p04-c1.mp3",
+      "hash": "a7b3110d89873deb1c6443091b83b81789ab7e74"
+    },
+    "en/apollo11/p04-s1": {
+      "src": "/audio/en/apollo11/p04-s1.mp3",
+      "hash": "c9d82e25d1b03d628fe0b906c65486bf29e9ca61"
+    },
+    "en/apollo11/p05-c1": {
+      "src": "/audio/en/apollo11/p05-c1.mp3",
+      "hash": "5dc3264e1e730acf8192d7dfb22afe09c1faf928"
+    },
+    "en/apollo11/p05-s1": {
+      "src": "/audio/en/apollo11/p05-s1.mp3",
+      "hash": "5e51573863fe891abf279bfee38ab6aa28c2e3b5"
+    },
+    "en/apollo11/p06-c1": {
+      "src": "/audio/en/apollo11/p06-c1.mp3",
+      "hash": "b3829ce2cd50952ecec2f521855b66d3ff9c5eec"
+    },
+    "en/apollo11/p06-s1": {
+      "src": "/audio/en/apollo11/p06-s1.mp3",
+      "hash": "8b7c84a1ae00a638314b1f85557172cccc69a1a7"
+    },
+    "en/apollo11/p07-c1": {
+      "src": "/audio/en/apollo11/p07-c1.mp3",
+      "hash": "24531d49b34f99e12e387bb0445da5df4fc5d7a5"
+    },
+    "en/apollo11/p07-s1": {
+      "src": "/audio/en/apollo11/p07-s1.mp3",
+      "hash": "f720b510ad05c942745281c1b0475cbaa148d124"
+    },
+    "en/apollo11/p08-c1": {
+      "src": "/audio/en/apollo11/p08-c1.mp3",
+      "hash": "837413cbb14ba4974ea3d005e227a4a9412686ac"
+    },
+    "en/apollo11/p08-s1": {
+      "src": "/audio/en/apollo11/p08-s1.mp3",
+      "hash": "63afb1e8f95f8ff60290e59ff8988ef8fd6af4a5"
+    },
+    "en/apollo11/p09-c1": {
+      "src": "/audio/en/apollo11/p09-c1.mp3",
+      "hash": "dd989699455d1271a43377c4426e526a2eede15b"
+    },
+    "en/apollo11/p09-s1": {
+      "src": "/audio/en/apollo11/p09-s1.mp3",
+      "hash": "4f8333904d2ddc5d2e8e7e17ef249587e6261579"
+    },
+    "en/apollo11/p10-c1": {
+      "src": "/audio/en/apollo11/p10-c1.mp3",
+      "hash": "3ad80561f4178069cf064b871548a33cc9ec4fda"
+    },
+    "en/apollo11/p10-s1": {
+      "src": "/audio/en/apollo11/p10-s1.mp3",
+      "hash": "ae9984093176f4dab37b0fa79b0fcc2efbc54f77"
+    },
+    "en/apollo11/p11-c1": {
+      "src": "/audio/en/apollo11/p11-c1.mp3",
+      "hash": "c152086301f051f9f3801fffe5cca16984cfe013"
+    },
+    "en/apollo11/p11-c2": {
+      "src": "/audio/en/apollo11/p11-c2.mp3",
+      "hash": "8deb23bf1c7d04b5ae10b8140857af6cdad96da9"
+    },
+    "en/apollo11/p11-c3": {
+      "src": "/audio/en/apollo11/p11-c3.mp3",
+      "hash": "15927ce6bb0cea550ef2a0dbfd24892b8f9fc8df"
+    },
+    "en/ingenuity/p01-c1": {
+      "src": "/audio/en/ingenuity/p01-c1.mp3",
+      "hash": "762ba5163bde634d8467e4160623725226c3995b"
+    },
+    "en/ingenuity/p01-s1": {
+      "src": "/audio/en/ingenuity/p01-s1.mp3",
+      "hash": "ea416c2afa93d8df0cb2b9ffd3778942ce9c59dc"
+    },
+    "en/ingenuity/p02-c1": {
+      "src": "/audio/en/ingenuity/p02-c1.mp3",
+      "hash": "584ad00ae6517010a16fa1e6c3e4605773f9de26"
+    },
+    "en/ingenuity/p02-s1": {
+      "src": "/audio/en/ingenuity/p02-s1.mp3",
+      "hash": "93c579f70a48e59ed68fff8df24663c393f36f3d"
+    },
+    "en/ingenuity/p03-c1": {
+      "src": "/audio/en/ingenuity/p03-c1.mp3",
+      "hash": "6be3f9b4dd455e562849785d6f5c215e04384eb6"
+    },
+    "en/ingenuity/p03-s1": {
+      "src": "/audio/en/ingenuity/p03-s1.mp3",
+      "hash": "ad5f0cbdee3a1faa51651168fed7e53b2aa6d136"
+    },
+    "en/ingenuity/p04-c1": {
+      "src": "/audio/en/ingenuity/p04-c1.mp3",
+      "hash": "ad0e450a5b4f5e868dab415b0330a4639b6b295b"
+    },
+    "en/ingenuity/p04-s1": {
+      "src": "/audio/en/ingenuity/p04-s1.mp3",
+      "hash": "9a9dffcb2a0c763fa8e1d62fa8dc88022ecb64a1"
+    },
+    "en/ingenuity/p05-c1": {
+      "src": "/audio/en/ingenuity/p05-c1.mp3",
+      "hash": "11ff24b473e594d6fb4e36483d0ba1dd0bf57b1d"
+    },
+    "en/ingenuity/p05-s1": {
+      "src": "/audio/en/ingenuity/p05-s1.mp3",
+      "hash": "f37c322697c2c7c6ee88fefa035ed02318f4675f"
+    },
+    "en/ingenuity/p06-c1": {
+      "src": "/audio/en/ingenuity/p06-c1.mp3",
+      "hash": "27f32a5c19b95a4ef0d94946f593ad18a687c638"
+    },
+    "en/ingenuity/p06-s1": {
+      "src": "/audio/en/ingenuity/p06-s1.mp3",
+      "hash": "5d98a5dc7d918e20a42086ab3bba36ced8f10843"
+    },
+    "en/ingenuity/p07-c1": {
+      "src": "/audio/en/ingenuity/p07-c1.mp3",
+      "hash": "f15985f889bf60483194b4d022a688d6d24159b0"
+    },
+    "en/ingenuity/p07-s1": {
+      "src": "/audio/en/ingenuity/p07-s1.mp3",
+      "hash": "417e0938f84028c15d28959738c302c9c88d395b"
+    },
+    "en/ingenuity/p08-c1": {
+      "src": "/audio/en/ingenuity/p08-c1.mp3",
+      "hash": "9ae4ae25a917bcdc4a83210eefbd9764459818ab"
+    },
+    "en/ingenuity/p08-s1": {
+      "src": "/audio/en/ingenuity/p08-s1.mp3",
+      "hash": "ecac6bc1577187f8121d56f286e5c6e1ab42f862"
+    },
+    "en/ingenuity/p09-c1": {
+      "src": "/audio/en/ingenuity/p09-c1.mp3",
+      "hash": "10ed5bbcd62d536ce0d685a4e004ea7cb202ead4"
+    },
+    "en/ingenuity/p09-s1": {
+      "src": "/audio/en/ingenuity/p09-s1.mp3",
+      "hash": "04e8e4cc1e3ef3e13f3e4f510de5995cfa1f1d35"
+    },
+    "en/ingenuity/p10-c1": {
+      "src": "/audio/en/ingenuity/p10-c1.mp3",
+      "hash": "842747a462a25a37af57a76ecd46b69def1e925a"
+    },
+    "en/ingenuity/p10-s1": {
+      "src": "/audio/en/ingenuity/p10-s1.mp3",
+      "hash": "76833674da816b6d38dec1af3382b848c19dcfbe"
+    },
+    "en/ingenuity/p11-c1": {
+      "src": "/audio/en/ingenuity/p11-c1.mp3",
+      "hash": "ff586bcb0110ca6f9f7f1d78ed8ae70b056adb36"
+    },
+    "en/ingenuity/p11-c2": {
+      "src": "/audio/en/ingenuity/p11-c2.mp3",
+      "hash": "59dfdaf6535bb28b024a79898f98c57937495c9f"
+    },
+    "en/ingenuity/p11-c3": {
+      "src": "/audio/en/ingenuity/p11-c3.mp3",
+      "hash": "616a1b67400229a4f283f73b38322185364973f2"
+    },
+    "es/opportunity/p01-c1": {
+      "src": "/audio/es/opportunity/p01-c1.mp3",
+      "hash": "935ef61a78fd9842d1de94a068e032c336770cf4"
+    },
+    "es/opportunity/p01-s1": {
+      "src": "/audio/es/opportunity/p01-s1.mp3",
+      "hash": "357acebd21aee4c74d249f056954e8cede206c90"
+    },
+    "es/opportunity/p02-c1": {
+      "src": "/audio/es/opportunity/p02-c1.mp3",
+      "hash": "4644e01646c88aa9c4565fd1e24a3edd666c1310"
+    },
+    "es/opportunity/p02-s1": {
+      "src": "/audio/es/opportunity/p02-s1.mp3",
+      "hash": "d76fced5f74101158b5263b29778f26011617239"
+    },
+    "es/opportunity/p03-c1": {
+      "src": "/audio/es/opportunity/p03-c1.mp3",
+      "hash": "30a8ccdb4959677aee2816420fafc347c4fe6480"
+    },
+    "es/opportunity/p03-s1": {
+      "src": "/audio/es/opportunity/p03-s1.mp3",
+      "hash": "068905aeb6400d7ce2e47ed8cd7b29a6bcaaae1e"
+    },
+    "es/opportunity/p04-c1": {
+      "src": "/audio/es/opportunity/p04-c1.mp3",
+      "hash": "66b661dd63d9a677663c5def9fcb95821935b244"
+    },
+    "es/opportunity/p04-s1": {
+      "src": "/audio/es/opportunity/p04-s1.mp3",
+      "hash": "72290f844ea84914ccee85940cf15003400ed4b4"
+    },
+    "es/opportunity/p05-c1": {
+      "src": "/audio/es/opportunity/p05-c1.mp3",
+      "hash": "1309e91e62c0bce1cf1afe189088ad48dddb6318"
+    },
+    "es/opportunity/p05-s1": {
+      "src": "/audio/es/opportunity/p05-s1.mp3",
+      "hash": "117bb542f6a1379526f3af18123c9bf708dc1fe1"
+    },
+    "es/opportunity/p06-c1": {
+      "src": "/audio/es/opportunity/p06-c1.mp3",
+      "hash": "f8edd7f1630a15325dca39cce166f8936bf4d6b0"
+    },
+    "es/opportunity/p06-s1": {
+      "src": "/audio/es/opportunity/p06-s1.mp3",
+      "hash": "6144247685bc4c4c234367687d0f9609e4c5668f"
+    },
+    "es/opportunity/p07-c1": {
+      "src": "/audio/es/opportunity/p07-c1.mp3",
+      "hash": "d5cff70afed2d46d4cafe3d12d49f2eb71d59533"
+    },
+    "es/opportunity/p07-s1": {
+      "src": "/audio/es/opportunity/p07-s1.mp3",
+      "hash": "b7b1895f26be94b3218374ebc112fa4fff241add"
+    },
+    "es/opportunity/p08-c1": {
+      "src": "/audio/es/opportunity/p08-c1.mp3",
+      "hash": "b0f712a503b20ef5bc4f1c9fae7c7df28a89f050"
+    },
+    "es/opportunity/p08-s1": {
+      "src": "/audio/es/opportunity/p08-s1.mp3",
+      "hash": "b9f3dbe20a3958235dc8b4c9938792024f3e6e26"
+    },
+    "es/opportunity/p09-c1": {
+      "src": "/audio/es/opportunity/p09-c1.mp3",
+      "hash": "1e950d081cb4addddba497a6d64d678bf0cb8dc4"
+    },
+    "es/opportunity/p09-c2": {
+      "src": "/audio/es/opportunity/p09-c2.mp3",
+      "hash": "d4160e87323f032f8c1fedbab911fbad9c521c34"
+    },
+    "es/opportunity/p09-c3": {
+      "src": "/audio/es/opportunity/p09-c3.mp3",
+      "hash": "079343fea81a456396a6be703bdddf4d7a98902b"
+    },
+    "es/apollo11/p01-c1": {
+      "src": "/audio/es/apollo11/p01-c1.mp3",
+      "hash": "31a2782ed5275a524a176ed915a2b87f5c7f3e45"
+    },
+    "es/apollo11/p01-s1": {
+      "src": "/audio/es/apollo11/p01-s1.mp3",
+      "hash": "4ad4975e42f2f39c3e5cf565ec6fcda44b6c2267"
+    },
+    "es/apollo11/p02-c1": {
+      "src": "/audio/es/apollo11/p02-c1.mp3",
+      "hash": "d2b346ff3655466f2117169fcb96e8e9d00552a9"
+    },
+    "es/apollo11/p02-s1": {
+      "src": "/audio/es/apollo11/p02-s1.mp3",
+      "hash": "ae0e8aa0d319b774480d90cf38e2127909fb6760"
+    },
+    "es/apollo11/p03-c1": {
+      "src": "/audio/es/apollo11/p03-c1.mp3",
+      "hash": "436a60bf6457b1b559f99be8cabddd41408c35c1"
+    },
+    "es/apollo11/p03-s1": {
+      "src": "/audio/es/apollo11/p03-s1.mp3",
+      "hash": "4781b41e3a933557f2c28c885da8e80f92865647"
+    },
+    "es/apollo11/p04-c1": {
+      "src": "/audio/es/apollo11/p04-c1.mp3",
+      "hash": "296551425a01b758bdeed8a4aa04eb3e700864ea"
+    },
+    "es/apollo11/p04-s1": {
+      "src": "/audio/es/apollo11/p04-s1.mp3",
+      "hash": "e4b10b844e4028730c7f97345c70b409541789d8"
+    },
+    "es/apollo11/p05-c1": {
+      "src": "/audio/es/apollo11/p05-c1.mp3",
+      "hash": "f59afeda11541ca1fcedd0d5a30bc3362dd4e624"
+    },
+    "es/apollo11/p05-s1": {
+      "src": "/audio/es/apollo11/p05-s1.mp3",
+      "hash": "3d7f3b114053d130196a542a353a896e9c517aea"
+    },
+    "es/apollo11/p06-c1": {
+      "src": "/audio/es/apollo11/p06-c1.mp3",
+      "hash": "7252ef1c22dc4a1f58342b2258daaefd7a359a41"
+    },
+    "es/apollo11/p06-s1": {
+      "src": "/audio/es/apollo11/p06-s1.mp3",
+      "hash": "8c7f9b2b63a44bb38dfb7f80d34d646dea48b6de"
+    },
+    "es/apollo11/p07-c1": {
+      "src": "/audio/es/apollo11/p07-c1.mp3",
+      "hash": "8833368e30f2b8989fe98f1c49aa807c7a62c07f"
+    },
+    "es/apollo11/p07-s1": {
+      "src": "/audio/es/apollo11/p07-s1.mp3",
+      "hash": "944a39dfb26714384379b1eb0bcde4d398533a49"
+    },
+    "es/apollo11/p08-c1": {
+      "src": "/audio/es/apollo11/p08-c1.mp3",
+      "hash": "3685b141a7153367c409511a9276c60a776161a9"
+    },
+    "es/apollo11/p08-s1": {
+      "src": "/audio/es/apollo11/p08-s1.mp3",
+      "hash": "2f4f5b694c4ef851217aeab4d37d2d4edb00c457"
+    },
+    "es/apollo11/p09-c1": {
+      "src": "/audio/es/apollo11/p09-c1.mp3",
+      "hash": "0b2403dbd0cff3fbfa1f69bfd22d0bb7d519c436"
+    },
+    "es/apollo11/p09-s1": {
+      "src": "/audio/es/apollo11/p09-s1.mp3",
+      "hash": "76b35c4b5b595c6969d4dc03bdaceeeee981e149"
+    },
+    "es/apollo11/p10-c1": {
+      "src": "/audio/es/apollo11/p10-c1.mp3",
+      "hash": "5bbe2111418de42320108b36f755d3719a2f8288"
+    },
+    "es/apollo11/p10-s1": {
+      "src": "/audio/es/apollo11/p10-s1.mp3",
+      "hash": "09c89bf26b1aecac7fe6348398ff85226c5c8a84"
+    },
+    "es/apollo11/p11-c1": {
+      "src": "/audio/es/apollo11/p11-c1.mp3",
+      "hash": "6ef37e70fdbc78c30b107169f25d91d0b06e4ecb"
+    },
+    "es/apollo11/p11-c2": {
+      "src": "/audio/es/apollo11/p11-c2.mp3",
+      "hash": "787cbf198414afe8bb93d93e6a62a6b0a654de4d"
+    },
+    "es/apollo11/p11-c3": {
+      "src": "/audio/es/apollo11/p11-c3.mp3",
+      "hash": "f4ff8bb926daf1fc34705fab7ba402824e7aa415"
+    },
+    "es/ingenuity/p01-c1": {
+      "src": "/audio/es/ingenuity/p01-c1.mp3",
+      "hash": "67a6b64c24591a5a9721fae31e9bb5070af4c026"
+    },
+    "es/ingenuity/p01-s1": {
+      "src": "/audio/es/ingenuity/p01-s1.mp3",
+      "hash": "f20e4eae523c51688ebf9823354cfce2cd20c0d5"
+    },
+    "es/ingenuity/p02-c1": {
+      "src": "/audio/es/ingenuity/p02-c1.mp3",
+      "hash": "03ea72a60bfdb871fdd9d5f6a012e690660c089e"
+    },
+    "es/ingenuity/p02-s1": {
+      "src": "/audio/es/ingenuity/p02-s1.mp3",
+      "hash": "dff66484bf51cc432c1e9351975174c622f94b73"
+    },
+    "es/ingenuity/p03-c1": {
+      "src": "/audio/es/ingenuity/p03-c1.mp3",
+      "hash": "678547aed380c314b768a6a23f8fb7073fe8889d"
+    },
+    "es/ingenuity/p03-s1": {
+      "src": "/audio/es/ingenuity/p03-s1.mp3",
+      "hash": "3cf19287e8e078354e245ecf8bc06cef1ac812a8"
+    },
+    "es/ingenuity/p04-c1": {
+      "src": "/audio/es/ingenuity/p04-c1.mp3",
+      "hash": "eaaae1efa5f4c6f2581d57942443df2686e0ecb1"
+    },
+    "es/ingenuity/p04-s1": {
+      "src": "/audio/es/ingenuity/p04-s1.mp3",
+      "hash": "7af0d58690da1d793f79efd490ec3f95689be9e4"
+    },
+    "es/ingenuity/p05-c1": {
+      "src": "/audio/es/ingenuity/p05-c1.mp3",
+      "hash": "be96e0392a131c101f1307d8b50bce2ecd009c10"
+    },
+    "es/ingenuity/p05-s1": {
+      "src": "/audio/es/ingenuity/p05-s1.mp3",
+      "hash": "f77a3baa8b78d60ca2cc87fba4d590742d74d5bb"
+    },
+    "es/ingenuity/p06-c1": {
+      "src": "/audio/es/ingenuity/p06-c1.mp3",
+      "hash": "710c34a09070332a73f9063595895de40cb12a18"
+    },
+    "es/ingenuity/p06-s1": {
+      "src": "/audio/es/ingenuity/p06-s1.mp3",
+      "hash": "0b20059a481ebd51253c910a61d30c72bc6d2bdb"
+    },
+    "es/ingenuity/p07-c1": {
+      "src": "/audio/es/ingenuity/p07-c1.mp3",
+      "hash": "b3c3abed26af78b75880130eb589eea21e07a25f"
+    },
+    "es/ingenuity/p07-s1": {
+      "src": "/audio/es/ingenuity/p07-s1.mp3",
+      "hash": "0bd642759c28be2020ef97d7e6034832c055c6e4"
+    },
+    "es/ingenuity/p08-c1": {
+      "src": "/audio/es/ingenuity/p08-c1.mp3",
+      "hash": "f62f448dd31be65c9bcae587e2d1eb0d341f9028"
+    },
+    "es/ingenuity/p08-s1": {
+      "src": "/audio/es/ingenuity/p08-s1.mp3",
+      "hash": "fed377286f6b54c7edcc641107d041da6108bd15"
+    },
+    "es/ingenuity/p09-c1": {
+      "src": "/audio/es/ingenuity/p09-c1.mp3",
+      "hash": "3ce896c1944e508a8b69cdcc922d8aa3b44802f2"
+    },
+    "es/ingenuity/p09-s1": {
+      "src": "/audio/es/ingenuity/p09-s1.mp3",
+      "hash": "955fcda8c733d079057adeb585d08597dd149e75"
+    },
+    "es/ingenuity/p10-c1": {
+      "src": "/audio/es/ingenuity/p10-c1.mp3",
+      "hash": "2845e5d7fe0b66f820340307b88447e9bdfab394"
+    },
+    "es/ingenuity/p10-s1": {
+      "src": "/audio/es/ingenuity/p10-s1.mp3",
+      "hash": "0273c5ed9ef6a9491fe45b3f129e92ab6b0cb5e8"
+    },
+    "es/ingenuity/p11-c1": {
+      "src": "/audio/es/ingenuity/p11-c1.mp3",
+      "hash": "f0e4f9cebe6175f92608b332e435b72d47c25887"
+    },
+    "es/ingenuity/p11-c2": {
+      "src": "/audio/es/ingenuity/p11-c2.mp3",
+      "hash": "ac47a38353543028ac74d9e1bd434216b4bc71f5"
+    },
+    "es/ingenuity/p11-c3": {
+      "src": "/audio/es/ingenuity/p11-c3.mp3",
+      "hash": "252566265d81cb4aae1bb62de87d13b54dfbec1c"
+    },
+    "fr/opportunity/p01-c1": {
+      "src": "/audio/fr/opportunity/p01-c1.mp3",
+      "hash": "f5dcfce5698ff41f243150f18725e442129732ee"
+    },
+    "fr/opportunity/p01-s1": {
+      "src": "/audio/fr/opportunity/p01-s1.mp3",
+      "hash": "491af33d7cd422743a095e0a8f047ea7a935bea1"
+    },
+    "fr/opportunity/p02-c1": {
+      "src": "/audio/fr/opportunity/p02-c1.mp3",
+      "hash": "dd6079035f74d6156996a454029b53a23cbc9ed3"
+    },
+    "fr/opportunity/p02-s1": {
+      "src": "/audio/fr/opportunity/p02-s1.mp3",
+      "hash": "16be442f1bcddf570a918df5e7333aa7e79b1329"
+    },
+    "fr/opportunity/p03-c1": {
+      "src": "/audio/fr/opportunity/p03-c1.mp3",
+      "hash": "8972d35b9eb69a7b7b2ce2a55aad933306db3b38"
+    },
+    "fr/opportunity/p03-s1": {
+      "src": "/audio/fr/opportunity/p03-s1.mp3",
+      "hash": "b40c34ba233e09a111c5c0985acb3dbb004d6251"
+    },
+    "fr/opportunity/p04-c1": {
+      "src": "/audio/fr/opportunity/p04-c1.mp3",
+      "hash": "90fdfd6c55e9e821f1c3868d667c8190b24f331d"
+    },
+    "fr/opportunity/p04-s1": {
+      "src": "/audio/fr/opportunity/p04-s1.mp3",
+      "hash": "fee4eece9ac1ce930de641bd1415d76af32cc9ab"
+    },
+    "fr/opportunity/p05-c1": {
+      "src": "/audio/fr/opportunity/p05-c1.mp3",
+      "hash": "8a9f2fb727a4a3bafc01c46633bb0f3ca3594c74"
+    },
+    "fr/opportunity/p05-s1": {
+      "src": "/audio/fr/opportunity/p05-s1.mp3",
+      "hash": "db48df7df99b7fd9faee12b766a11032ea77bb61"
+    },
+    "fr/opportunity/p06-c1": {
+      "src": "/audio/fr/opportunity/p06-c1.mp3",
+      "hash": "09b219c5e721e27bae8ab8f3b9e036d565d8952e"
+    },
+    "fr/opportunity/p06-s1": {
+      "src": "/audio/fr/opportunity/p06-s1.mp3",
+      "hash": "0725d1e80b996e84ed811b8ed1ec018ecc51ee10"
+    },
+    "fr/opportunity/p07-c1": {
+      "src": "/audio/fr/opportunity/p07-c1.mp3",
+      "hash": "00c525d502e944db2f7b9c98d7be2af3a53cb7c5"
+    },
+    "fr/opportunity/p07-s1": {
+      "src": "/audio/fr/opportunity/p07-s1.mp3",
+      "hash": "d18255d54313437bde777988302941adda7267e2"
+    },
+    "fr/opportunity/p08-c1": {
+      "src": "/audio/fr/opportunity/p08-c1.mp3",
+      "hash": "22ffaed75521e5a3ce70fd0f83148822475c38f5"
+    },
+    "fr/opportunity/p08-s1": {
+      "src": "/audio/fr/opportunity/p08-s1.mp3",
+      "hash": "72b5f5ecff8201fb749bfc346c4c1dfacbf07bd9"
+    },
+    "fr/opportunity/p09-c1": {
+      "src": "/audio/fr/opportunity/p09-c1.mp3",
+      "hash": "90cb8971d6632b4b458c21c6356caf50fb0ea90d"
+    },
+    "fr/opportunity/p09-c2": {
+      "src": "/audio/fr/opportunity/p09-c2.mp3",
+      "hash": "356a3bb5d60d52563f7d3b0c5252afc3a4dfd2a4"
+    },
+    "fr/opportunity/p09-c3": {
+      "src": "/audio/fr/opportunity/p09-c3.mp3",
+      "hash": "2a739530cffd155f005c651958ec1d8427b4b15f"
+    },
+    "fr/apollo11/p01-c1": {
+      "src": "/audio/fr/apollo11/p01-c1.mp3",
+      "hash": "80bd52e34aafec910a750ff43c1d5b4135aa80a3"
+    },
+    "fr/apollo11/p01-s1": {
+      "src": "/audio/fr/apollo11/p01-s1.mp3",
+      "hash": "09726b13a00974a2a420e61c94e98ab498dba1b5"
+    },
+    "fr/apollo11/p02-c1": {
+      "src": "/audio/fr/apollo11/p02-c1.mp3",
+      "hash": "f8d6d35e638485413ec562e428362f6474862236"
+    },
+    "fr/apollo11/p02-s1": {
+      "src": "/audio/fr/apollo11/p02-s1.mp3",
+      "hash": "c400eac1a5b91d9aaf5662f2a08a8f2dcd509e35"
+    },
+    "fr/apollo11/p03-c1": {
+      "src": "/audio/fr/apollo11/p03-c1.mp3",
+      "hash": "5bc1d0d8f340b5919093546739ee0d5425466e39"
+    },
+    "fr/apollo11/p03-s1": {
+      "src": "/audio/fr/apollo11/p03-s1.mp3",
+      "hash": "3d9d1acfeac2fb510c9e63b3fd4f716c2d978114"
+    },
+    "fr/apollo11/p04-c1": {
+      "src": "/audio/fr/apollo11/p04-c1.mp3",
+      "hash": "db4bfd38d65bfc0026b0b34ccc380ae3ab1a1322"
+    },
+    "fr/apollo11/p04-s1": {
+      "src": "/audio/fr/apollo11/p04-s1.mp3",
+      "hash": "acaf0fbf1b8b4ccbc9bc37bb056a58b9cfb7e0cd"
+    },
+    "fr/apollo11/p05-c1": {
+      "src": "/audio/fr/apollo11/p05-c1.mp3",
+      "hash": "337d22095b3f5948d781c60b7bd144635e3d43b8"
+    },
+    "fr/apollo11/p05-s1": {
+      "src": "/audio/fr/apollo11/p05-s1.mp3",
+      "hash": "50904e717623b05c097a549fc184ab96ffc8df53"
+    },
+    "fr/apollo11/p06-c1": {
+      "src": "/audio/fr/apollo11/p06-c1.mp3",
+      "hash": "6d7ab6d5e8e5f174e11712c5482f4916662cedb6"
+    },
+    "fr/apollo11/p06-s1": {
+      "src": "/audio/fr/apollo11/p06-s1.mp3",
+      "hash": "5db93c838abff7c49c3bc0e4381d8eb94cf626cf"
+    },
+    "fr/apollo11/p07-c1": {
+      "src": "/audio/fr/apollo11/p07-c1.mp3",
+      "hash": "7aa0755a577d2d7eeeb889e103dda73b021fbfc3"
+    },
+    "fr/apollo11/p07-s1": {
+      "src": "/audio/fr/apollo11/p07-s1.mp3",
+      "hash": "b6daedfe3786a5a2931a4926f8eca1df994aa238"
+    },
+    "fr/apollo11/p08-c1": {
+      "src": "/audio/fr/apollo11/p08-c1.mp3",
+      "hash": "83029117f90bacb823e74a1a3c11930b83457507"
+    },
+    "fr/apollo11/p08-s1": {
+      "src": "/audio/fr/apollo11/p08-s1.mp3",
+      "hash": "aa5faca88185d7f7e30ff5ce5a2f40c9f8f374dc"
+    },
+    "fr/apollo11/p09-c1": {
+      "src": "/audio/fr/apollo11/p09-c1.mp3",
+      "hash": "4850a984ebc3b3a571355abacb785a6cbc4a74bf"
+    },
+    "fr/apollo11/p09-s1": {
+      "src": "/audio/fr/apollo11/p09-s1.mp3",
+      "hash": "481f6812824b64afbff18a3201b12853c79c7700"
+    },
+    "fr/apollo11/p10-c1": {
+      "src": "/audio/fr/apollo11/p10-c1.mp3",
+      "hash": "7ce42fbb1d2812d7d8b156a63adc1dc6920738ee"
+    },
+    "fr/apollo11/p10-s1": {
+      "src": "/audio/fr/apollo11/p10-s1.mp3",
+      "hash": "4f4cafe6659287cdf7a68152fc869e0e604f356a"
+    },
+    "fr/apollo11/p11-c1": {
+      "src": "/audio/fr/apollo11/p11-c1.mp3",
+      "hash": "6fc6e0494efa98ba72997e470607c17cdb2dd4fc"
+    },
+    "fr/apollo11/p11-c2": {
+      "src": "/audio/fr/apollo11/p11-c2.mp3",
+      "hash": "ca2c762049af501d5d42bad4e7ed1ba3f70ef1b1"
+    },
+    "fr/apollo11/p11-c3": {
+      "src": "/audio/fr/apollo11/p11-c3.mp3",
+      "hash": "71109dbbc70b82ab3a5a9240c4afe892b6b5afd0"
+    },
+    "fr/ingenuity/p01-c1": {
+      "src": "/audio/fr/ingenuity/p01-c1.mp3",
+      "hash": "f039828b827281b8716104cbde297421130ea10b"
+    },
+    "fr/ingenuity/p01-s1": {
+      "src": "/audio/fr/ingenuity/p01-s1.mp3",
+      "hash": "fcf3b084f9c81cca0574618960b9d4c0326fe54a"
+    },
+    "fr/ingenuity/p02-c1": {
+      "src": "/audio/fr/ingenuity/p02-c1.mp3",
+      "hash": "e9890bac7fb8ce4e7c6406afb19a4e07828765cf"
+    },
+    "fr/ingenuity/p02-s1": {
+      "src": "/audio/fr/ingenuity/p02-s1.mp3",
+      "hash": "707f7cfbc97b09927afc71f9c61b982efbf4857c"
+    },
+    "fr/ingenuity/p03-c1": {
+      "src": "/audio/fr/ingenuity/p03-c1.mp3",
+      "hash": "8c23b46dae886fa62a3919ddf22c4bc5ac853889"
+    },
+    "fr/ingenuity/p03-s1": {
+      "src": "/audio/fr/ingenuity/p03-s1.mp3",
+      "hash": "1ded8c776fc5bf5c0f582b50061a7fbf1c35acfd"
+    },
+    "fr/ingenuity/p04-c1": {
+      "src": "/audio/fr/ingenuity/p04-c1.mp3",
+      "hash": "5029fc811e401d9f1238d46096765056266086db"
+    },
+    "fr/ingenuity/p04-s1": {
+      "src": "/audio/fr/ingenuity/p04-s1.mp3",
+      "hash": "19f47c185f2d5f9bd00db3bd09b64c99d4dfde61"
+    },
+    "fr/ingenuity/p05-c1": {
+      "src": "/audio/fr/ingenuity/p05-c1.mp3",
+      "hash": "0808dccbe3abb28197a9cbc60674fe7049861cdd"
+    },
+    "fr/ingenuity/p05-s1": {
+      "src": "/audio/fr/ingenuity/p05-s1.mp3",
+      "hash": "d494330e18ac309d6a6cb02bd7d37e6624126792"
+    },
+    "fr/ingenuity/p06-c1": {
+      "src": "/audio/fr/ingenuity/p06-c1.mp3",
+      "hash": "f21434e7fd4cf2a582545b20afbadac7a3d914d3"
+    },
+    "fr/ingenuity/p06-s1": {
+      "src": "/audio/fr/ingenuity/p06-s1.mp3",
+      "hash": "28a21927f44853b9f0e81f52da4e3f9d9a900c40"
+    },
+    "fr/ingenuity/p07-c1": {
+      "src": "/audio/fr/ingenuity/p07-c1.mp3",
+      "hash": "604f53a6e840814d394aff3fe24ec829c1e6ade9"
+    },
+    "fr/ingenuity/p07-s1": {
+      "src": "/audio/fr/ingenuity/p07-s1.mp3",
+      "hash": "61a515cd28566570bda094e09e6bfabb5cdea77c"
+    },
+    "fr/ingenuity/p08-c1": {
+      "src": "/audio/fr/ingenuity/p08-c1.mp3",
+      "hash": "ba172459347f127679e7ef277791610ac3142481"
+    },
+    "fr/ingenuity/p08-s1": {
+      "src": "/audio/fr/ingenuity/p08-s1.mp3",
+      "hash": "f4f033d24afd4ac373693fc1eb94b176337d520a"
+    },
+    "fr/ingenuity/p09-c1": {
+      "src": "/audio/fr/ingenuity/p09-c1.mp3",
+      "hash": "354feb95588c2ec47dc4a0580a8470f7aa1f09ee"
+    },
+    "fr/ingenuity/p09-s1": {
+      "src": "/audio/fr/ingenuity/p09-s1.mp3",
+      "hash": "1caea65aa0d448a1d6b746c614a39394b0aca563"
+    },
+    "fr/ingenuity/p10-c1": {
+      "src": "/audio/fr/ingenuity/p10-c1.mp3",
+      "hash": "d973fc22c38384785371982492f2928216715279"
+    },
+    "fr/ingenuity/p10-s1": {
+      "src": "/audio/fr/ingenuity/p10-s1.mp3",
+      "hash": "e53e4d61cf22238f1de0ba9a67a82b626ab478e3"
+    },
+    "fr/ingenuity/p11-c1": {
+      "src": "/audio/fr/ingenuity/p11-c1.mp3",
+      "hash": "e1d2c294c838698f567a1988536274bfa64398fe"
+    },
+    "fr/ingenuity/p11-c2": {
+      "src": "/audio/fr/ingenuity/p11-c2.mp3",
+      "hash": "ccfb7039e54b0d08b57d713f4ea0ff7e517e1bba"
+    },
+    "fr/ingenuity/p11-c3": {
+      "src": "/audio/fr/ingenuity/p11-c3.mp3",
+      "hash": "58cc6479eb0abea5317cd880ce9ade33c1236791"
+    },
+    "hi/opportunity/p01-c1": {
+      "src": "/audio/hi/opportunity/p01-c1.mp3",
+      "hash": "95ed0de7a8322664c9a91943e47c563162aae46d"
+    },
+    "hi/opportunity/p01-s1": {
+      "src": "/audio/hi/opportunity/p01-s1.mp3",
+      "hash": "4b98f937fb384035a4419d6c9920e5a78fc53d1f"
+    },
+    "hi/opportunity/p02-c1": {
+      "src": "/audio/hi/opportunity/p02-c1.mp3",
+      "hash": "4d9ccb204a6f2bd3e3a825efede60ef4b9122967"
+    },
+    "hi/opportunity/p02-s1": {
+      "src": "/audio/hi/opportunity/p02-s1.mp3",
+      "hash": "5a1e38dea359e76619cec76b4656938ee2375162"
+    },
+    "hi/opportunity/p03-c1": {
+      "src": "/audio/hi/opportunity/p03-c1.mp3",
+      "hash": "bb31662c2d48a38b303d105369ceec5ba33b13a7"
+    },
+    "hi/opportunity/p03-s1": {
+      "src": "/audio/hi/opportunity/p03-s1.mp3",
+      "hash": "b7101cc40db293e1758cb43b22739c1ca2cee3bc"
+    },
+    "hi/opportunity/p04-c1": {
+      "src": "/audio/hi/opportunity/p04-c1.mp3",
+      "hash": "85e5378f92fc6f3a366aed24b289d0fb52e75864"
+    },
+    "hi/opportunity/p04-s1": {
+      "src": "/audio/hi/opportunity/p04-s1.mp3",
+      "hash": "a8ed9a50c1fc9c48adbb19adbc0d2f42c5b5d450"
+    },
+    "hi/opportunity/p05-c1": {
+      "src": "/audio/hi/opportunity/p05-c1.mp3",
+      "hash": "87b491c1b895047b02afa747413b297cfc072005"
+    },
+    "hi/opportunity/p05-s1": {
+      "src": "/audio/hi/opportunity/p05-s1.mp3",
+      "hash": "9f1ed79d3781a8494902444a6b0ed6076b573ee6"
+    },
+    "hi/opportunity/p06-c1": {
+      "src": "/audio/hi/opportunity/p06-c1.mp3",
+      "hash": "bb00a8ae66bde4ae5a84ba0a6a3116ff1ef3755e"
+    },
+    "hi/opportunity/p06-s1": {
+      "src": "/audio/hi/opportunity/p06-s1.mp3",
+      "hash": "383bc8a8ba5378b9f506f96aba8d471048665b62"
+    },
+    "hi/opportunity/p07-c1": {
+      "src": "/audio/hi/opportunity/p07-c1.mp3",
+      "hash": "ce0e2337fc6fdbba92ddc3785117953a91d736db"
+    },
+    "hi/opportunity/p07-s1": {
+      "src": "/audio/hi/opportunity/p07-s1.mp3",
+      "hash": "9adb93bc8bc141adcd7d7c976de6099a3bc2faf1"
+    },
+    "hi/opportunity/p08-c1": {
+      "src": "/audio/hi/opportunity/p08-c1.mp3",
+      "hash": "a7f35193a8b3ca1952737ed1bbf61a77a479a95e"
+    },
+    "hi/opportunity/p08-s1": {
+      "src": "/audio/hi/opportunity/p08-s1.mp3",
+      "hash": "6b39ed09b6387d648c6068ed5988a4040b6ddef7"
+    },
+    "hi/opportunity/p09-c1": {
+      "src": "/audio/hi/opportunity/p09-c1.mp3",
+      "hash": "e0b9c8c76d2c320e5e416b94fe8cd86de0b9711e"
+    },
+    "hi/opportunity/p09-c2": {
+      "src": "/audio/hi/opportunity/p09-c2.mp3",
+      "hash": "e13a702726f9792111673317e657ac537c45851d"
+    },
+    "hi/opportunity/p09-c3": {
+      "src": "/audio/hi/opportunity/p09-c3.mp3",
+      "hash": "d10038b040109d8885eb4ad69966f0039d271024"
+    },
+    "hi/apollo11/p01-c1": {
+      "src": "/audio/hi/apollo11/p01-c1.mp3",
+      "hash": "b4ffeaa13667837e9a1ce99e9368eea34fd5ba4c"
+    },
+    "hi/apollo11/p01-s1": {
+      "src": "/audio/hi/apollo11/p01-s1.mp3",
+      "hash": "d7035a746579686b6ca9ca3c9620b4f1bb979854"
+    },
+    "hi/apollo11/p02-c1": {
+      "src": "/audio/hi/apollo11/p02-c1.mp3",
+      "hash": "8b60477b98bbe3a6c4dda4eb7acbe10e266a45e7"
+    },
+    "hi/apollo11/p02-s1": {
+      "src": "/audio/hi/apollo11/p02-s1.mp3",
+      "hash": "24e00e77d2f92430d97f25311bf4ba6893fd6dee"
+    },
+    "hi/apollo11/p03-c1": {
+      "src": "/audio/hi/apollo11/p03-c1.mp3",
+      "hash": "13e4685b4195d42ce06e432b3a99ed4cb4861855"
+    },
+    "hi/apollo11/p03-s1": {
+      "src": "/audio/hi/apollo11/p03-s1.mp3",
+      "hash": "357913d1a5a3f532346bc3c31e03c6ceb83b75e1"
+    },
+    "hi/apollo11/p04-c1": {
+      "src": "/audio/hi/apollo11/p04-c1.mp3",
+      "hash": "cef0bbfebd16d566e273becbb36a77884b6ed5ab"
+    },
+    "hi/apollo11/p04-s1": {
+      "src": "/audio/hi/apollo11/p04-s1.mp3",
+      "hash": "916fbbdf45626315f7f3d8e5b507e1e4ad2bedde"
+    },
+    "hi/apollo11/p05-c1": {
+      "src": "/audio/hi/apollo11/p05-c1.mp3",
+      "hash": "ecd66f38b4686b27889afad95cec6675f56fa8da"
+    },
+    "hi/apollo11/p05-s1": {
+      "src": "/audio/hi/apollo11/p05-s1.mp3",
+      "hash": "f8672d30f409839afe530f28100747c709b001ce"
+    },
+    "hi/apollo11/p06-c1": {
+      "src": "/audio/hi/apollo11/p06-c1.mp3",
+      "hash": "bc04f99b38c94f7e61e328a9d0edb0f1d319c155"
+    },
+    "hi/apollo11/p06-s1": {
+      "src": "/audio/hi/apollo11/p06-s1.mp3",
+      "hash": "95a53b77e6ce5a11db04467691c7a334da54b050"
+    },
+    "hi/apollo11/p07-c1": {
+      "src": "/audio/hi/apollo11/p07-c1.mp3",
+      "hash": "056a645a3e6adfe25cdf0f306818a40970165bc1"
+    },
+    "hi/apollo11/p07-s1": {
+      "src": "/audio/hi/apollo11/p07-s1.mp3",
+      "hash": "05e59dcf7f4eedd233013cc1ffa50f9d3b8f4a8a"
+    },
+    "hi/apollo11/p08-c1": {
+      "src": "/audio/hi/apollo11/p08-c1.mp3",
+      "hash": "5b7af95190176bd72174c4ea838db5df7ff13124"
+    },
+    "hi/apollo11/p08-s1": {
+      "src": "/audio/hi/apollo11/p08-s1.mp3",
+      "hash": "2bfd6ab95eccf2a988c39923565e99949426322b"
+    },
+    "hi/apollo11/p09-c1": {
+      "src": "/audio/hi/apollo11/p09-c1.mp3",
+      "hash": "5f1101aa5423319f3e71cd427c01398762070300"
+    },
+    "hi/apollo11/p09-s1": {
+      "src": "/audio/hi/apollo11/p09-s1.mp3",
+      "hash": "90ed26f06e1854aa76cf77fdc22e7abb6cd3dbc7"
+    },
+    "hi/apollo11/p10-c1": {
+      "src": "/audio/hi/apollo11/p10-c1.mp3",
+      "hash": "bd471deb3cbfec1b304b99a1137539bd03097039"
+    },
+    "hi/apollo11/p10-s1": {
+      "src": "/audio/hi/apollo11/p10-s1.mp3",
+      "hash": "39210f7df95d4fbe841d44457a342c0b3f0b8982"
+    },
+    "hi/apollo11/p11-c1": {
+      "src": "/audio/hi/apollo11/p11-c1.mp3",
+      "hash": "850337185d50dd9c1e5259813f039e9a2860dcf2"
+    },
+    "hi/apollo11/p11-c2": {
+      "src": "/audio/hi/apollo11/p11-c2.mp3",
+      "hash": "9ed53969fb883647a0d16c0d954bbc3463863f9d"
+    },
+    "hi/apollo11/p11-c3": {
+      "src": "/audio/hi/apollo11/p11-c3.mp3",
+      "hash": "f3301b0d502d10fe6e728fe728a77a6a2c2b1f21"
+    },
+    "hi/ingenuity/p01-c1": {
+      "src": "/audio/hi/ingenuity/p01-c1.mp3",
+      "hash": "05d26638289f34600c8c03a3e5097215ac8f55b1"
+    },
+    "hi/ingenuity/p01-s1": {
+      "src": "/audio/hi/ingenuity/p01-s1.mp3",
+      "hash": "af7ec70f5a8d616b564dd967ac221f1d7d0f851f"
+    },
+    "hi/ingenuity/p02-c1": {
+      "src": "/audio/hi/ingenuity/p02-c1.mp3",
+      "hash": "07b9bb2d83599480e0089501c167c31e7878efc2"
+    },
+    "hi/ingenuity/p02-s1": {
+      "src": "/audio/hi/ingenuity/p02-s1.mp3",
+      "hash": "4886f6c04c29dd02b6854862b61bd710a4b5157f"
+    },
+    "hi/ingenuity/p03-c1": {
+      "src": "/audio/hi/ingenuity/p03-c1.mp3",
+      "hash": "9ef17caa366198dddb3f5561c3444fc8280e48ad"
+    },
+    "hi/ingenuity/p03-s1": {
+      "src": "/audio/hi/ingenuity/p03-s1.mp3",
+      "hash": "e7ee5664663f72f55127e83bfdc238253b7371de"
+    },
+    "hi/ingenuity/p04-c1": {
+      "src": "/audio/hi/ingenuity/p04-c1.mp3",
+      "hash": "b81646ac00687d2ab016f47514a2b9d4b8f030ed"
+    },
+    "hi/ingenuity/p04-s1": {
+      "src": "/audio/hi/ingenuity/p04-s1.mp3",
+      "hash": "c3d7f42e2d6f356ed5dfdb6846e05f1c4c9ce9e2"
+    },
+    "hi/ingenuity/p05-c1": {
+      "src": "/audio/hi/ingenuity/p05-c1.mp3",
+      "hash": "8bc84f401097a44afd99397c07d247936af852ae"
+    },
+    "hi/ingenuity/p05-s1": {
+      "src": "/audio/hi/ingenuity/p05-s1.mp3",
+      "hash": "1177f3e588ee7fcfb9725a22ce994ef14b8ea0a9"
+    },
+    "hi/ingenuity/p06-c1": {
+      "src": "/audio/hi/ingenuity/p06-c1.mp3",
+      "hash": "1f52e06ca07649f793ab71012ef55c4bf2546217"
+    },
+    "hi/ingenuity/p06-s1": {
+      "src": "/audio/hi/ingenuity/p06-s1.mp3",
+      "hash": "0ce2dce31e1f79a3704afc0c234e3bd6617f31bf"
+    },
+    "hi/ingenuity/p07-c1": {
+      "src": "/audio/hi/ingenuity/p07-c1.mp3",
+      "hash": "90daf65167904cb9bcfbcb3424ca9e14bffa5ff1"
+    },
+    "hi/ingenuity/p07-s1": {
+      "src": "/audio/hi/ingenuity/p07-s1.mp3",
+      "hash": "7f0e2a1244a3d7aed7ad17c2d93c71f4538beab6"
+    },
+    "hi/ingenuity/p08-c1": {
+      "src": "/audio/hi/ingenuity/p08-c1.mp3",
+      "hash": "45e1c0df62e9f9ee31044703291899c862c1f8b2"
+    },
+    "hi/ingenuity/p08-s1": {
+      "src": "/audio/hi/ingenuity/p08-s1.mp3",
+      "hash": "ec116cb2156d8eed0fce6bb1e3de141a6020d04a"
+    },
+    "hi/ingenuity/p09-c1": {
+      "src": "/audio/hi/ingenuity/p09-c1.mp3",
+      "hash": "c68faa61c5680786bb50995f65b6714c227389e0"
+    },
+    "hi/ingenuity/p09-s1": {
+      "src": "/audio/hi/ingenuity/p09-s1.mp3",
+      "hash": "4592fa3d8dfecc45d91c31aaa523ad0de67c3cae"
+    },
+    "hi/ingenuity/p10-c1": {
+      "src": "/audio/hi/ingenuity/p10-c1.mp3",
+      "hash": "30c11b14c39bef771992c433c772129314fa6731"
+    },
+    "hi/ingenuity/p10-s1": {
+      "src": "/audio/hi/ingenuity/p10-s1.mp3",
+      "hash": "cc1a16462fa567d5536de9f6e65779cf8d430a7d"
+    },
+    "hi/ingenuity/p11-c1": {
+      "src": "/audio/hi/ingenuity/p11-c1.mp3",
+      "hash": "bd760f27dfc0b092064ba9433303a3733264f3b1"
+    },
+    "hi/ingenuity/p11-c2": {
+      "src": "/audio/hi/ingenuity/p11-c2.mp3",
+      "hash": "5e34ad298293d1577525a2f895129c31c6e385e2"
+    },
+    "hi/ingenuity/p11-c3": {
+      "src": "/audio/hi/ingenuity/p11-c3.mp3",
+      "hash": "5d218c8e41f6724802148db97b69b6d9afa86dd6"
+    }
+  }
 }
