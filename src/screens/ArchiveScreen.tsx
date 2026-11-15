@@ -1,13 +1,12 @@
 import { lazy, Suspense, useState } from 'react';
 import { motion } from 'motion/react';
-import { useShallow } from 'zustand/react/shallow';
 import { missions, pad2, formatCoord } from '../lib/missions';
-import { useAppStore, selectBadges } from '../store/useAppStore';
+import { useAppStore } from '../store/useAppStore';
 import { hasWebGL } from '../lib/device';
 import { dur, ease, stagger } from '../lib/motion';
 import { useReducedMotion } from '../lib/useReducedMotion';
 import { ScreenFrame } from '../components/ui/Layout';
-import { IconArrowRight, IconLock, IconPlay, IconTrophy } from '../components/ui/Icons';
+import { IconArrowRight, IconPlay } from '../components/ui/Icons';
 import { blip } from '../lib/audio';
 
 const OrbitalGlobe = lazy(() => import('../components/three/OrbitalGlobe'));
@@ -54,25 +53,10 @@ export default function ArchiveScreen() {
   const focused = useAppStore((s) => s.focusedMissionId);
   const setFocused = useAppStore((s) => s.setFocused);
   const opened = useAppStore((s) => s.issuesOpened);
-  const artifacts = useAppStore((s) => s.artifacts);
-  const progress = useAppStore(
-    useShallow((s) => ({
-      issuesOpened: s.issuesOpened,
-      hotspotsSeen: s.hotspotsSeen,
-      gameResults: s.gameResults,
-      artifacts: s.artifacts,
-      transmissionsRead: s.transmissionsRead,
-      roverResult: s.roverResult,
-    })),
-  );
   const reduced = useReducedMotion();
   const [body, setBody] = useState<'mars' | 'moon'>('mars');
   const [flash, setFlash] = useState(false);
   const gl = hasWebGL();
-
-  const badges = selectBadges(progress);
-  const nextBadge = badges.find((b) => !b.earned);
-  const pct = Math.round(((opened.length + artifacts.length) / (missions.length * 2)) * 100);
 
   const select = (id: string) => {
     if (divingTo) return;
@@ -211,46 +195,6 @@ export default function ArchiveScreen() {
           Mars · 2 issues / Moon · 1 issue / not to scale
         </p>
 
-        <div className="archive-cards">
-          <div className="plate">
-            <p className="kicker">Field tests</p>
-            <h3 className="plate__title">Three 15-second trials</h3>
-            <p className="plate__text">Scan for hematite, bounce a laser off the Moon, spin rotors in thin air.</p>
-            <svg viewBox="0 0 260 60" className="plate__spark" aria-hidden="true">
-              <path
-                d="M0 50 L40 48 L55 30 L65 49 L110 47 L120 38 L128 49 L170 46 L182 6 L194 48 L230 47 L238 36 L246 49 L260 48"
-                fill="none"
-                stroke="var(--accent)"
-                strokeWidth="1.5"
-              />
-              <circle cx="182" cy="6" r="6" fill="none" stroke="var(--accent)" />
-            </svg>
-          </div>
-          <div className="plate flex items-center gap-5">
-            <div className="progress-ring" style={{ ['--p' as string]: pct }} role="img" aria-label={`Expedition ${pct}% complete`}>
-              <span>{pct}%</span>
-            </div>
-            <div>
-              <p className="kicker">Your expedition</p>
-              <p className="mt-2 text-[15px] text-fg-2">
-                Issues read <b className="font-pixel text-[16px] font-normal text-fg">{opened.length}/{missions.length}</b>
-              </p>
-              <p className="text-[15px] text-fg-2">
-                Artifacts recovered <b className="font-pixel text-[16px] font-normal text-fg">{artifacts.length}/{missions.length}</b>
-              </p>
-            </div>
-          </div>
-          <div className="plate plate--dashed flex items-center gap-5">
-            <span className="badge-orb" aria-hidden="true">
-              {nextBadge ? <IconLock size={22} /> : <IconTrophy size={22} />}
-            </span>
-            <div>
-              <p className="kicker">{nextBadge ? 'Next badge' : 'All badges earned'}</p>
-              <h3 className="plate__title">{nextBadge?.name ?? 'Archivist'}</h3>
-              <p className="plate__text">{nextBadge?.criteria ?? 'Every artifact is recovered.'}</p>
-            </div>
-          </div>
-        </div>
       </div>
     </ScreenFrame>
   );

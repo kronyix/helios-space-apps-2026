@@ -5,6 +5,6 @@
 **Remaining:**
 - Hindi falls back to Inter for Silkscreen/Luckiest roles (neither font has Devanagari).
 - Mobile tab labels are 10 px Luckiest Guy so "Hardware" fits in 6 columns.
-- Pre-existing: on Home the Jezero beacon label slides under the issue list, and globe labels overlap the title at 390 px.
+- Fixed in follow-up: Jezero label flips clear of the issue list; phone globe starts below the title; warm rust backdrop replaces flat black; Home stat cards removed.
 - Chapter timeline is still hidden below 900 px; the nav switch moved to 768 px, so 768–899 px shows the sidebar plus the stacked layout.
 - Comic panel SVGs name Silkscreen/Luckiest, but `<img>` SVGs can't load web fonts, so they still render with system fallbacks (unchanged look).
