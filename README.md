@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-  <!-- TODO: live demo URL --><strong>Live demo</strong> (link coming)
+  <https://helios-space-apps-2026.vercel.app/><strong>Live demo</strong>
   &nbsp;·&nbsp;
   <!-- TODO: demo video URL --><strong>Video</strong> (link coming)
   &nbsp;·&nbsp;
