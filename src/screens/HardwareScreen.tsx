@@ -58,7 +58,7 @@ function ModelProgress() {
   const { active, progress } = useProgress();
   if (!active) return null;
   return (
-    <div className="pointer-events-none absolute bottom-28 right-10 font-mono text-[11px] tracking-[0.2em] text-fg-2" role="status">
+    <div className="pointer-events-none absolute bottom-28 right-10 font-pixel text-[12px] text-fg-2" role="status">
       RECEIVING MODEL · {Math.round(progress)}%
     </div>
   );
@@ -136,10 +136,10 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <p className="font-mono text-[11px] tracking-[0.18em] text-[var(--accent)]">
+                    <p className="font-pixel text-[12px] text-[var(--accent)]">
                       {pad2(hIndex + 1)} · {h.designation}
                     </p>
-                    <h2 className="mt-1 font-display text-[24px] font-semibold leading-tight">{h.label}</h2>
+                    <h2 className="mt-1 font-pixel text-[24px] leading-tight">{h.label}</h2>
                   </div>
                   <button type="button" className="btn-icon shrink-0" onClick={() => setHotspot(null)} aria-label="Close hotspot">
                     <IconClose />
@@ -169,7 +169,7 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
           <div className="plate">
             <div className="flex items-center justify-between">
               <p className="kicker">Field test</p>
-              <span className="flex items-center gap-1.5 rounded-full border border-[var(--color-line-2)] px-2.5 py-1 font-mono text-[11px] text-fg-2">
+              <span className="flex items-center gap-1.5 rounded-full border border-[var(--color-line-2)] px-2.5 py-1 font-pixel text-[12px] text-fg-2">
                 <IconClock size={14} /> {g.durationSec ?? 15}s
               </span>
             </div>
@@ -179,7 +179,7 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
               <button type="button" className="btn-primary" onClick={() => setGamePhase('intro')}>
                 {result ? 'Play again' : 'Play now'} <IconPlay size={14} />
               </button>
-              {result && <span className="font-mono text-[12px] text-fg-3">Best {result.best}%</span>}
+              {result && <span className="font-pixel text-[12px] text-fg-3">Best {result.best}%</span>}
             </div>
           </div>
 
@@ -192,7 +192,7 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
                 <button type="button" className="btn-primary" onClick={() => openPlay('rover-drive')}>
                   {mission.extraGame.ctaLabel} <IconPlay size={14} />
                 </button>
-                {roverBest > 0 && <span className="font-mono text-[12px] text-fg-3">Best {roverBest}</span>}
+                {roverBest > 0 && <span className="font-pixel text-[12px] text-fg-3">Best {roverBest}</span>}
               </div>
             </div>
           )}
@@ -202,7 +202,7 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
               <p className="kicker flex items-center gap-2">
                 <IconTarget size={14} /> Inspect the hardware
               </p>
-              <span className="font-mono text-[11px] tracking-[0.12em] text-fg-3">
+              <span className="font-pixel text-[12px] text-fg-3">
                 {seen?.length ?? 0}/{mission.hotspots.length} SEEN
               </span>
             </div>
@@ -216,7 +216,7 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
                     data-seen={seen?.includes(x.id) || undefined}
                     onClick={() => setHotspot(active === x.id ? null : x.id)}
                   >
-                    <span className="font-mono text-[10.5px] text-[var(--accent)]">{pad2(i + 1)}</span>
+                    <span className="font-pixel text-[12px] text-[var(--accent)]">{pad2(i + 1)}</span>
                     <span className="text-[13px] leading-tight">{x.shortLabel ?? x.label}</span>
                   </button>
                 </li>

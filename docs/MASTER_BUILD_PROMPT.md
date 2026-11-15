@@ -73,7 +73,7 @@ Fields may be **added** but never renamed or removed. Additions used by this bui
 ## 8. Visual direction: "NASA Archival Futurism"
 
 - Deep-space near-black, with warm Helios amber as the accent. Archival grain, hairline rules, registration marks, mono technical annotation and mission-document typography.
-- **Space Grotesk** for display, **Inter** for body, **IBM Plex Mono** for metadata, coordinates and telemetry.
+- **Luckiest Guy** for the hero display only, **Silkscreen** for labels, headings, UI and data (12/16/24/32/40 px), **Inter** for body.
 - Each mission gets its own voice:
   - 01: rust and ochre, field-notebook feel.
   - 02: silver and black, 1969 technical manual, Kapton gold as the only accent.
