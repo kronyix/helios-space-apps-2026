@@ -67,7 +67,7 @@
   "credits.title": "Credits & sources",
   "credits.art": "Panel illustrations were created with AI image tools (Google Gemini) under Team Helios art direction, and are dramatizations. Archival photographs: NASA/JPL-Caltech and NASA, credited individually. 3D models: re-exported and art-directed by Team Helios; original model sources are being confirmed.",
   "credits.labels": "Every image is labelled ILLUSTRATION or ARCHIVAL. Speech balloons are fictionalized narration; caption boxes and hotspot facts are documented history. This project is not affiliated with or endorsed by NASA.",
-  "credits.narration": "Narration voices generated with Google Gemini TTS (AI-generated speech) and pre-rendered at build time ({provider}); translations machine-assisted and under review.",
+  "credits.narration": "Narration voices generated with {provider} (AI-generated speech) and pre-rendered at build time; translations machine-assisted and under review.",
   "credits.narrationDevice": "All narration audio is pre-rendered at build time and served as static files.",
   "credits.translation": "Hindi, Spanish, French and Portuguese (Brazil) translations are machine-assisted and under review. Names, numbers and hardware names are kept exactly as in the English source.",
   "credits.newTab": "(opens in a new tab)",

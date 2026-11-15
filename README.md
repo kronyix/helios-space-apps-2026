@@ -243,7 +243,7 @@ npm run preview    # http://localhost:4173
 | `review:capture` | `tsx scripts/review/capture.ts` | Playwright screenshots of every screen |
 | `review:metrics` | `tsx scripts/review/metrics.ts` | FPS, draw calls and bundle metrics |
 
-Running the app needs no environment variables. Only narration generation does: copy `.env.example` to `.env.local` and set `GEMINI_API_KEY` (or `FISH_API_KEY`). These keys are server-side only and never shipped to the client. Useful URL flags: `?nowebgl`, `?stage=hardware&mission=apollo11&hotspot=lrrr`, `?issue=2`, `?mode=archival`.
+Running the app needs no environment variables. Only narration generation does: copy `.env.example` to `.env.local` and set `FISH_API_KEY` (used first) or `GEMINI_API_KEY`. These keys are server-side only and never shipped to the client. Useful URL flags: `?nowebgl`, `?stage=hardware&mission=apollo11&hotspot=lrrr`, `?issue=2`, `?mode=archival`.
 
 ## Adding a new mission
 
@@ -325,7 +325,7 @@ All mission facts and images are sourced in `src/data/missions.json`, and the in
 |---|---|
 | **Google Gemini** (image generation) | Comic panel illustrations, generated from Team Helios prompts (`docs/ASSET_PROMPTS.md`), then art-directed, cropped and reviewed by the team. They are dramatizations, labeled **ILLUSTRATION** on the site. |
 | **Anthropic Claude** (Claude Code) | Code assistance (application code, 3D scenes, games, review tooling), drafting captions and hotspot copy, and help with the factual review against NASA/JPL/NSSDC sources. |
-| **AI text-to-speech** (Google Gemini TTS; the pipeline also supports Fish Audio) | Narration voices, pre-rendered at build time and credited in the app. |
+| **Fish Audio** text-to-speech (`fish-s2.1-pro-free`; the pipeline can also use Google Gemini TTS) | Narration voices, pre-rendered at build time and credited in the app. |
 | Machine-assisted translation | Hindi, Spanish, French and Portuguese (Brazil) UI and narration, under review. Names, numbers and hardware names are kept exactly as in the English source. |
 
 The team checks every fact, caption and archival image against the NASA sources listed in `missions.json`.

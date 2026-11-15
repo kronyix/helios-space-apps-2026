@@ -67,7 +67,7 @@
   "credits.title": "Créditos e fontes",
   "credits.art": "As ilustrações dos quadros foram criadas com ferramentas de imagem de IA (Google Gemini) sob direção de arte da Team Helios e são dramatizações. Fotografias de arquivo: NASA/JPL-Caltech e NASA, creditadas individualmente. Modelos 3D: reexportados e dirigidos pela Team Helios; as fontes originais estão sendo confirmadas.",
   "credits.labels": "Cada imagem é rotulada como ILUSTRAÇÃO ou ARQUIVO. Os balões de fala são narração ficcionalizada; as caixas de legenda e os fatos dos pontos-chave são história documentada. Este projeto não é afiliado nem endossado pela NASA.",
-  "credits.narration": "Vozes de narração geradas com Google Gemini TTS (fala gerada por IA) e pré-renderizadas no build; traduções assistidas por máquina e sob revisão.",
+  "credits.narration": "Vozes de narração geradas com {provider} (fala gerada por IA) e pré-renderizadas no build; traduções assistidas por máquina e sob revisão.",
   "credits.translation": "As traduções para hindi, espanhol, francês e português foram feitas com auxílio de IA e estão sob revisão. Nomes, números e nomes dos equipamentos são mantidos exatamente como no original em inglês.",
   "credits.newTab": "(abre em uma nova aba)",
   "progress.title": "Progresso",

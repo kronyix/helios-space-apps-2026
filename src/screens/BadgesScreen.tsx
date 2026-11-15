@@ -8,11 +8,11 @@ import { useT } from '../i18n/useT';
 import { HeliosWordmark } from '../components/ui/HeliosMark';
 import { narrator, useVoicesVersion } from '../narration/narrator';
 
-/** Names the voice source: pre-rendered Google Gemini TTS static audio files. */
+/** Names the voice source of the pre-rendered narration files (engine + model from the audio manifest). */
 function NarrationCredit() {
   const t = useT();
   useVoicesVersion();
-  const provider = narrator.files.providerName ?? 'Google Gemini TTS';
+  const provider = narrator.files.providerName ?? 'Fish Audio';
   return (
     <p className="mt-2 max-w-[70ch] text-[14px] leading-relaxed text-fg-2">
       {t('credits.narration', { provider })}

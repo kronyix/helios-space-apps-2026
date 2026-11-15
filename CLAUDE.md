@@ -7,7 +7,7 @@ Spec: `docs/MASTER_BUILD_PROMPT.md`. Process and review bar: `docs/KICKOFF_PROMP
 
 - `npm run dev` · `npm run build` (runs `tsc -b`, then `vite build`) · `npm run preview` (port 4173)
 - `npx tsc -b` must pass before every commit.
-- `npm run narration:plan` · `npm run narration:audition` · `npm run narration:generate` · `npm run narration:verify` — pre-generates and verifies static Gemini TTS narration MP3s in `public/audio/` using `GEMINI_API_KEY` from `.env.local`.
+- `npm run narration:plan` · `npm run narration:audition` · `npm run narration:generate` · `npm run narration:verify` — pre-generates and verifies static TTS narration MP3s (Fish Audio via `FISH_API_KEY`, else Gemini TTS) in `public/audio/` using `GEMINI_API_KEY` from `.env.local`.
 - `npx tsx scripts/verify-no-secrets.ts` verifies no API keys or `VITE_*` TTS secrets leak into `src/`, `public/`, or `dist/`.
 - `npx tsx scripts/gen-comics.ts` regenerates the SVG comic panels in `public/images/comics/`.
 - `npx tsx scripts/inspect-glb.ts public/models/*.glb` prints model bounds, meshes and materials.

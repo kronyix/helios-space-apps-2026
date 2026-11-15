@@ -3,7 +3,7 @@ import { FileVoiceProvider } from './FileVoiceProvider';
 import type { SpeakLine, SpeakOptions } from './VoiceProvider';
 
 /**
- * Coordinates comic voice playback using ONLY pre-generated Gemini TTS static files
+ * Coordinates comic voice playback using ONLY pre-generated TTS static files
  * (`FileVoiceProvider`). Browser Web Speech / runtime TTS calls are never made.
  */
 class Narrator {
