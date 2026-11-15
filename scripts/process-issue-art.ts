@@ -86,9 +86,9 @@ async function main() {
 
     for (const a of issue.art) {
       const src = path.join(COMICS, `${a.src}.jpg`);
-      await sharp(src).resize({ width: 1672, withoutEnlargement: true }).webp({ quality: 86 })
+      await sharp(src).keepExif().resize({ width: 1672, withoutEnlargement: true }).webp({ quality: 86 })
         .toFile(path.join(artOut, `${a.name}-1672.webp`));
-      await sharp(src).resize({ width: 836, withoutEnlargement: true }).webp({ quality: 84 })
+      await sharp(src).keepExif().resize({ width: 836, withoutEnlargement: true }).webp({ quality: 84 })
         .toFile(path.join(artOut, `${a.name}-836.webp`));
       console.log(`[art] ${issue.slug}/${a.name}`);
     }

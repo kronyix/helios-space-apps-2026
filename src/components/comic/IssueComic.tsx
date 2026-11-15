@@ -1,4 +1,3 @@
-import { AiMark } from './ComicPage';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, useMotionTemplate, useScroll, useTransform, type MotionValue } from 'motion/react';
@@ -615,7 +614,6 @@ function PanelSection({
                 }
               />
               <div className="issue-panel__art-vignette" aria-hidden="true" />
-              <AiMark />
             </div>
           )}
 

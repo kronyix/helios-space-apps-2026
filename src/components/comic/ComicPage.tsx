@@ -17,7 +17,10 @@ const FRAMES = [
   'polygon(0 0, 99% 1.5%, 100% 98.5%, 1% 100%)',
 ];
 
-/** Small corner mark required on every AI-generated illustration (not on archival photos). */
+/**
+ * Small corner mark for AI illustrations shown without an image label (backdrops, thumbnails).
+ * Sits bottom-left: the image files carry their own AI-GENERATED watermark bottom-right.
+ */
 export function AiMark({ className = '' }: { className?: string }) {
   return (
     <span className={`ai-mark ${className}`} role="img" aria-label="AI-generated illustration" title="AI-generated illustration">
@@ -27,7 +30,7 @@ export function AiMark({ className = '' }: { className?: string }) {
 }
 
 /**
- * The one image label used everywhere: ILLUSTRATION, or ARCHIVAL · <exact credit>
+ * The one image label used everywhere: AI ILLUSTRATION, or ARCHIVAL · <exact credit>
  * (linked to the source record). Rendered by the UI, never baked into the image.
  */
 export function ImageLabel({
@@ -41,7 +44,7 @@ export function ImageLabel({
   href?: string;
   extra?: string;
 }) {
-  const text = kind === 'archival' ? `ARCHIVAL · ${credit ?? 'NASA'}` : `ILLUSTRATION${extra ? ` · ${extra}` : ''}`;
+  const text = kind === 'archival' ? `ARCHIVAL · ${credit ?? 'NASA'}` : `AI ILLUSTRATION${extra ? ` · ${extra}` : ''}`;
   if (kind === 'archival' && href)
     return (
       <a className="image-label" data-kind={kind} href={href} target="_blank" rel="noreferrer noopener">
@@ -122,7 +125,6 @@ export function ComicPanel({
             />
           </motion.div>
         </AnimatePresence>
-        {!archival && <AiMark />}
 
         {!archival &&
           captions.map((line) => (

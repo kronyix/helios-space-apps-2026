@@ -13,6 +13,8 @@
     "narration:audition": "tsx scripts/generate-narration.ts --audition",
     "narration:generate": "tsx scripts/generate-narration.ts --generate",
     "narration:verify": "tsx scripts/generate-narration.ts --verify",
+    "art:watermark": "tsx scripts/watermark-ai-art.ts",
+    "art:check": "tsx scripts/watermark-ai-art.ts --check",
     "verify:no-secrets": "tsx scripts/verify-no-secrets.ts",
     "review:capture": "tsx scripts/review/capture.ts",
     "review:metrics": "tsx scripts/review/metrics.ts"

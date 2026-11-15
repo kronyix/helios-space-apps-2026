@@ -249,7 +249,7 @@ Running the app needs no environment variables. Only narration generation does: 
 
 1. **Add an entry** to `src/data/missions.json` that matches `MissionData`: copy, telemetry, coordinates, `sources` and a credit and source link for every archival image.
 2. **Drop in the model** at `public/models/<id>.glb`, Draco-compressed and under 3 MB. Check it with `npx tsx scripts/inspect-glb.ts public/models/<id>.glb`, then set `modelPath` and the `scene` camera and lighting.
-3. **Add the comic panels** to `public/images/` and list them in `comicPanels`. AI-assisted art carries a `comicCredit` saying it is not NASA imagery.
+3. **Add the comic panels** to `public/images/comics/` and list them in `comicPanels`. AI-assisted art carries a `comicCredit` saying it is not NASA imagery. Run `npm run art:watermark` to stamp the visible AI-GENERATED mark into new panels (`npm run art:check` fails if any panel is unmarked). Check that new panels show no NASA logos, flags or mission identifiers.
 4. **Define the hotspots**: a position on the model, a camera framing, an engineering fact and a science discovery.
 5. **Pick or create a mini-game**: reuse one of the three `MiniGameType`s with new `params`, or add a component in `src/components/games/` on top of `useGameLoop`.
 
@@ -323,7 +323,7 @@ All mission facts and images are sourced in `src/data/missions.json`, and the in
 
 | Tool | Used for |
 |---|---|
-| **Google Gemini** (image generation) | Comic panel illustrations, generated from Team Helios prompts (`docs/ASSET_PROMPTS.md`), then art-directed, cropped and reviewed by the team. They are dramatizations, labeled **ILLUSTRATION** on the site. |
+| **Google Gemini** (image generation) | Comic panel illustrations, generated from Team Helios prompts (`docs/ASSET_PROMPTS.md`), then art-directed, cropped and reviewed by the team. They are dramatizations, labeled **ILLUSTRATION** on the site, and every image file carries a visible **AI-GENERATED** watermark. None shows a NASA logo, flag or mission identifier. |
 | **Anthropic Claude** (Claude Code) | Code assistance (application code, 3D scenes, games, review tooling), drafting captions and hotspot copy, and help with the factual review against NASA/JPL/NSSDC sources. |
 | **Fish Audio** text-to-speech (`fish-s2.1-pro-free`; the pipeline can also use Google Gemini TTS) | Narration voices, pre-rendered at build time and credited in the app. |
 | Machine-assisted translation | Hindi, Spanish, French and Portuguese (Brazil) UI and narration, under review. Names, numbers and hardware names are kept exactly as in the English source. |

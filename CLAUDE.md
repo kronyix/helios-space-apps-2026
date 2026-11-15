@@ -27,9 +27,9 @@ Spec: `docs/MASTER_BUILD_PROMPT.md`. Process and review bar: `docs/KICKOFF_PROMP
 
 ## Rules
 
-- **Branding**: the Team Helios sun mark (`HeliosMark`) is the only logo. Never use the NASA insignia or logotype as branding (the Gemini mockups in `docs/reference/gemini/` show it, so don't copy that). "NASA" appears only in credits.
+- **Branding**: the Team Helios sun mark (`HeliosMark`) is the only logo. Never use the NASA insignia or logotype as branding. "NASA" appears only in credits.
 - **Content integrity**: the locked right-front wheel, Gusev Crater, Home Plate and the silica find belong to **Spirit**. The hematite "blueberries", Meridiani, Eagle and Endurance belong to **Opportunity**. Keep the blueprint values: 21.55 kg, ≈2.5 s, 2,537 RPM, 15 s games.
-- Every archival image needs a credit plus a source link. AI-generated panels carry `comicCredit` ("not NASA imagery"). Speech balloons are labeled as fictionalized narration.
+- Every archival image needs a credit plus a source link. AI-generated panels carry `comicCredit` ("not NASA imagery"), a baked-in AI-GENERATED watermark (`npm run art:watermark`, verify with `npm run art:check`), and no NASA logos, flags or mission identifiers (Space Apps rules). Speech balloons are labeled as fictionalized narration.
 - Touch targets are ≥44 px. Everything must be keyboard-completable. There must be zero console errors (the `THREE.Clock` deprecation warning comes from R3F internals).
 - Fallbacks: `?nowebgl` forces the no-WebGL path. Test reduced motion with the `prefers-reduced-motion` emulation.
 

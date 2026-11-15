@@ -3,7 +3,7 @@ import type { MissionData } from '../data/types';
 import { nextMission, pad2, panelsForStage } from '../lib/missions';
 import { useAppStore } from '../store/useAppStore';
 import { ScreenFrame } from '../components/ui/Layout';
-import { AiMark, ImageLabel } from '../components/comic/ComicPage';
+import { ImageLabel } from '../components/comic/ComicPage';
 import { ScrollComic } from '../components/comic/ScrollComic';
 import ArtifactCard from '../components/comic/ArtifactCard';
 import { IconExternal } from '../components/ui/Icons';
@@ -94,7 +94,6 @@ export default function RewardScreen({ mission }: { mission: MissionData }) {
                   loading="lazy"
                   decoding="async"
                 />
-                <AiMark />
               </div>
               <figcaption className="mt-3 text-[13.5px] leading-relaxed text-fg-2">
                 {mission.epilogue.caption}{' '}
