@@ -70,6 +70,8 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
   const seen = useAppStore((s) => s.hotspotsSeen[mission.id]);
   const result = useAppStore((s) => s.gameResults[mission.id]);
   const setGamePhase = useAppStore((s) => s.setGamePhase);
+  const openPlay = useAppStore((s) => s.openPlay);
+  const roverBest = useAppStore((s) => s.roverResult?.best ?? 0);
   const go = useAppStore((s) => s.go);
   const reduced = useReducedMotion();
   const gl = hasWebGL();
@@ -180,6 +182,20 @@ export default function HardwareScreen({ mission }: { mission: MissionData }) {
               {result && <span className="font-mono text-[12px] text-fg-3">Best {result.best}%</span>}
             </div>
           </div>
+
+          {mission.extraGame && (
+            <div className="plate">
+              <p className="kicker">{mission.extraGame.kicker}</p>
+              <h3 className="plate__title">{mission.extraGame.title}</h3>
+              <p className="plate__text">{mission.extraGame.tagline}</p>
+              <div className="mt-3 flex items-center gap-3">
+                <button type="button" className="btn-primary" onClick={() => openPlay('rover-drive')}>
+                  {mission.extraGame.ctaLabel} <IconPlay size={14} />
+                </button>
+                {roverBest > 0 && <span className="font-mono text-[12px] text-fg-3">Best {roverBest}</span>}
+              </div>
+            </div>
+          )}
 
           <div className="plate">
             <div className="flex items-center justify-between">

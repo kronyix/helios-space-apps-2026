@@ -193,6 +193,8 @@ export interface MissionData {
   /** ext: optional long-form story chapter. When present, the story book reads these instead of the State II panels. */
   longPanels?: ComicPanel[];
   miniGame: MiniGame;
+  /** ext: optional full-screen game launched from the hardware screen (e.g. Signal Delay). */
+  extraGame?: ExtraGame;
   /** ext */
   issueTitle: string;
   shortName: string;
@@ -203,4 +205,23 @@ export interface MissionData {
   sources: Source[];
   fieldArchive?: FieldArchive;
   epilogue?: Epilogue;
+}
+
+/** ext: full-screen game copy. Numbers in `rules` are gameplay tuning, labelled as such in the UI. */
+export interface ExtraGame {
+  id: 'rover_drive';
+  route: string;
+  title: string;
+  kicker: string;
+  tagline: string;
+  ctaLabel: string;
+  briefing: string[];
+  rulesTitle: string;
+  rulesNote: string;
+  rules: string[];
+  uplinkNote: string;
+  timeNote: string;
+  events: Record<'clean' | 'slip' | 'rock_stop' | 'turn_blocked' | 'tilt_stop' | 'tilt_warning' | 'edge_stop' | 'scan_range' | 'scan_ok', string>;
+  outcomes: Record<'won' | 'sand' | 'battery' | 'tipover' | 'sols', string>;
+  badge: { id: string; name: string; criteria: string };
 }

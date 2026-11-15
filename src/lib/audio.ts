@@ -112,3 +112,100 @@ export function pageTurnSound() {
   src.start(t, Math.random() * 0.1);
   src.stop(t + v.len + 0.05);
 }
+
+// ---------------------------------------------------------------------------
+// Signal Delay (rover drive) sounds. All respect the master mute.
+
+const audible = () => !!ctx && !!master && master.gain.value >= 0.01;
+
+function noiseBuffer(c: AudioContext) {
+  if (!noise) {
+    noise = c.createBuffer(1, c.sampleRate * 0.6, c.sampleRate);
+    const d = noise.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  }
+  return noise;
+}
+
+/** Crackly radio static for the uplink countdown. Returns a stop function. */
+export function uplinkStatic(): () => void {
+  if (!audible()) return () => {};
+  const c = ctx!;
+  const src = c.createBufferSource();
+  src.buffer = noiseBuffer(c);
+  src.loop = true;
+  const bp = c.createBiquadFilter();
+  bp.type = 'bandpass';
+  bp.frequency.value = 1800;
+  bp.Q.value = 0.8;
+  const g = c.createGain();
+  g.gain.value = 0.025;
+  const lfo = c.createOscillator();
+  const lg = c.createGain();
+  lfo.frequency.value = 7;
+  lg.gain.value = 0.015;
+  lfo.connect(lg).connect(g.gain);
+  src.connect(bp).connect(g).connect(master!);
+  src.start();
+  lfo.start();
+  return () => {
+    try {
+      g.gain.setTargetAtTime(0, c.currentTime, 0.05);
+      src.stop(c.currentTime + 0.3);
+      lfo.stop(c.currentTime + 0.3);
+    } catch {
+      /* already stopped */
+    }
+  };
+}
+
+/** Low electric motor hum while the rover drives. Returns a stop function. */
+export function motorHum(): () => void {
+  if (!audible()) return () => {};
+  const c = ctx!;
+  const o = c.createOscillator();
+  const o2 = c.createOscillator();
+  o.type = 'sawtooth';
+  o2.type = 'square';
+  o.frequency.value = 92;
+  o2.frequency.value = 138;
+  const lp = c.createBiquadFilter();
+  lp.type = 'lowpass';
+  lp.frequency.value = 380;
+  const g = c.createGain();
+  g.gain.setValueAtTime(0.0001, c.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.03, c.currentTime + 0.3);
+  o.connect(lp);
+  o2.connect(lp);
+  lp.connect(g).connect(master!);
+  o.start();
+  o2.start();
+  return () => {
+    try {
+      g.gain.setTargetAtTime(0.0001, c.currentTime, 0.12);
+      o.stop(c.currentTime + 0.6);
+      o2.stop(c.currentTime + 0.6);
+    } catch {
+      /* already stopped */
+    }
+  };
+}
+
+/** Rising three-note chime for a successful mission. */
+export function winChime() {
+  if (!audible()) return;
+  const c = ctx!;
+  [659.3, 830.6, 987.8].forEach((f, i) => {
+    const o = c.createOscillator();
+    const g = c.createGain();
+    const t = c.currentTime + i * 0.14;
+    o.type = 'sine';
+    o.frequency.value = f;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.12, t + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.9);
+    o.connect(g).connect(master!);
+    o.start(t);
+    o.stop(t + 1);
+  });
+}

@@ -1,13 +1,13 @@
 import { useAppStore, type Stage } from '../../store/useAppStore';
 import { getMission, missions } from '../../lib/missions';
 import { HeliosMark } from './HeliosMark';
-import { IconBook, IconCube, IconGamepad, IconGlobe, IconMute, IconSound, IconSpark, IconTrophy } from './Icons';
+import { IconBook, IconCube, IconGamepad, IconGlobe, IconMute, IconSignal, IconSound, IconSpark, IconTrophy } from './Icons';
 import { setSoundEnabled, blip } from '../../lib/audio';
 import type { ReactNode } from 'react';
 import { useT } from '../../i18n/useT';
 import { LANGUAGES } from '../../i18n/languages';
 
-type NavId = 'archive' | 'story' | 'hardware' | 'games' | 'badges';
+type NavId = 'archive' | 'story' | 'hardware' | 'games' | 'drive' | 'badges';
 
 /** `label` is a key in src/data/locales/<lang>/ui.json. */
 const NAV: { id: NavId; label: string; icon: ReactNode }[] = [
@@ -15,6 +15,7 @@ const NAV: { id: NavId; label: string; icon: ReactNode }[] = [
   { id: 'story', label: 'nav.story', icon: <IconBook size={22} /> },
   { id: 'hardware', label: 'nav.hardware', icon: <IconCube size={22} /> },
   { id: 'games', label: 'nav.games', icon: <IconGamepad size={22} /> },
+  { id: 'drive', label: 'nav.drive', icon: <IconSignal size={22} /> },
   { id: 'badges', label: 'nav.badges', icon: <IconTrophy size={22} /> },
 ];
 
@@ -29,6 +30,11 @@ function useNavActive(): NavId {
 export function navigate(id: NavId) {
   const s = useAppStore.getState();
   blip('tick');
+  if (id === 'drive') {
+    // Signal Delay: full-screen rover game over the current screen.
+    s.openPlay('rover-drive');
+    return;
+  }
   if (id === 'games') {
     // Open the field test of the current issue (or the first unfinished one).
     const target = s.missionId ?? missions.find((m) => !s.gameResults[m.id]?.passed)?.id ?? missions[0].id;

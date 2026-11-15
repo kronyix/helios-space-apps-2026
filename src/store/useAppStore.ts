@@ -13,7 +13,18 @@ export interface GameResult {
   attempts: number;
 }
 
+/** Full-screen game sessions (Signal Delay). Not a blueprint stage: it overlays whatever screen launched it. */
+export type PlayId = 'rover-drive';
+
+export interface RoverResult {
+  best: number;
+  stars: number;
+  wins: number;
+  attempts: number;
+}
+
 interface Progress {
+  roverResult: RoverResult | null;
   issuesOpened: string[];
   hotspotsSeen: Record<string, string[]>;
   gameResults: Record<string, GameResult>;
@@ -58,6 +69,8 @@ interface AppState extends Progress {
   focusedMissionId: string | null;
   /** Mission whose beacon the camera is currently diving into. */
   divingTo: string | null;
+  /** Active full-screen game, if any. Closing it reveals the launching screen unchanged. */
+  play: PlayId | null;
 
   go: (stage: Stage, missionId?: string | null) => void;
   openMission: (missionId: string) => void;
@@ -74,16 +87,22 @@ interface AppState extends Progress {
   setFocused: (id: string | null) => void;
   setDiving: (id: string | null) => void;
   resetProgress: () => void;
+  openPlay: (id: PlayId) => void;
+  closePlay: () => void;
+  recordRover: (points: number, stars: number, won: boolean) => void;
 }
 
 /**
  * Deep links: ?stage=hardware&mission=apollo11&hotspot=lrrr&game=intro&mode=archival
  * Read once at startup (sharing a chapter, review captures). Invalid values are ignored.
  */
-function initialFromUrl(): Partial<Pick<AppState, 'stage' | 'missionId' | 'activeHotspot' | 'gamePhase' | 'storyMode' | 'narrative'>> {
+type UrlState = Partial<Pick<AppState, 'stage' | 'missionId' | 'activeHotspot' | 'gamePhase' | 'storyMode' | 'narrative' | 'play'>>;
+function initialFromUrl(): UrlState {
   try {
     const q = new URLSearchParams(window.location.search);
-    const out: Partial<Pick<AppState, 'stage' | 'missionId' | 'activeHotspot' | 'gamePhase' | 'storyMode' | 'narrative'>> = {};
+    const out: UrlState = {};
+    // /play/rover-drive (or ?play=rover-drive) opens Signal Delay over the archive.
+    if (/\/play\/rover-drive\/?$/.test(window.location.pathname) || q.get('play') === 'rover-drive') out.play = 'rover-drive';
     const stage = q.get('stage') as Stage | null;
     if (stage && ['archive', 'story', 'hardware', 'reward', 'badges'].includes(stage)) out.stage = stage;
     const m = missions.find((x) => x.id === q.get('mission'));
@@ -113,6 +132,7 @@ function initialFromUrl(): Partial<Pick<AppState, 'stage' | 'missionId' | 'activ
 const fromUrl = typeof window !== 'undefined' ? initialFromUrl() : {};
 
 const emptyProgress: Progress = {
+  roverResult: null,
   issuesOpened: [],
   hotspotsSeen: {},
   gameResults: {},
@@ -158,6 +178,7 @@ export const useAppStore = create<AppState>()(
       currentLineId: null,
       focusedMissionId: null,
       divingTo: null,
+      play: null,
       narrative: { page: 0, turning: false },
       ...fromUrl,
 
@@ -224,6 +245,20 @@ export const useAppStore = create<AppState>()(
       setFocused: (focusedMissionId) => set({ focusedMissionId }),
       setDiving: (divingTo) => set({ divingTo }),
       resetProgress: () => set({ ...emptyProgress }),
+      openPlay: (play) => set({ play }),
+      closePlay: () => set({ play: null }),
+      recordRover: (points, stars, won) =>
+        set((s) => {
+          const p = s.roverResult;
+          return {
+            roverResult: {
+              best: Math.max(p?.best ?? 0, points),
+              stars: Math.max(p?.stars ?? 0, stars),
+              wins: (p?.wins ?? 0) + (won ? 1 : 0),
+              attempts: (p?.attempts ?? 0) + 1,
+            },
+          };
+        }),
     }),
     {
       name: 'helios-progress-v1',
@@ -235,6 +270,7 @@ export const useAppStore = create<AppState>()(
         gameResults: s.gameResults,
         artifacts: s.artifacts,
         transmissionsRead: s.transmissionsRead,
+        roverResult: s.roverResult,
         storyMode: s.storyMode,
         lang: s.lang,
         narrationOn: s.narrationOn,
@@ -266,6 +302,11 @@ export function selectBadges(s: Pick<AppState, keyof Progress>): Badge[] {
       criteria: m.artifact.badgeCriteria,
       earned: (s.gameResults[m.id]?.best ?? 0) >= (m.miniGame.badgeThreshold ?? 80),
     })),
+    ...missions.flatMap((m) =>
+      m.extraGame
+        ? [{ id: m.extraGame.badge.id, name: m.extraGame.badge.name, criteria: m.extraGame.badge.criteria, earned: (s.roverResult?.wins ?? 0) > 0 }]
+        : [],
+    ),
     {
       id: 'inspector',
       name: 'Hardware Inspector',
