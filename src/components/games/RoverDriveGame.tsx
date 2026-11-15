@@ -236,6 +236,24 @@ function Dock({ copy }: { copy: ExtraGame }) {
   const pred = usePrediction();
   const full = queue.length >= RULES.maxCommands;
   const battEnd = pred.end.battery;
+  const reduced = useReducedMotion();
+  // The queue scrolls past ~4 rows: keep the newest command in view and fade the clipped edges.
+  const list = useRef<HTMLOListElement>(null);
+  const prevLen = useRef(queue.length);
+  const [edges, setEdges] = useState({ up: false, down: false });
+  const syncEdges = useCallback(() => {
+    const el = list.current;
+    if (!el) return;
+    const up = el.scrollTop > 2;
+    const down = el.scrollTop + el.clientHeight < el.scrollHeight - 2;
+    setEdges((e) => (e.up === up && e.down === down ? e : { up, down }));
+  }, []);
+  useEffect(() => {
+    const el = list.current;
+    if (el && queue.length > prevLen.current) el.lastElementChild?.scrollIntoView({ block: 'nearest', behavior: reduced ? 'auto' : 'smooth' });
+    prevLen.current = queue.length;
+    syncEdges();
+  }, [queue.length, reduced, syncEdges]);
   const warn =
     pred.end.status === 'lost'
       ? pred.end.loseReason === 'tipover'
@@ -315,7 +333,7 @@ function Dock({ copy }: { copy: ExtraGame }) {
         {queue.length === 0 ? (
           <p className="rd-empty">Add up to {RULES.maxCommands} commands. The dashed ghost path shows the predicted route.</p>
         ) : (
-          <ol className="rd-queue" aria-label="Command queue">
+          <ol ref={list} className="rd-queue" aria-label="Command queue" onScroll={syncEdges} data-more-up={edges.up || undefined} data-more-down={edges.down || undefined}>
             {queue.map((c, i) => (
               <li key={i} className="rd-queue__item" data-bad={pred.haltedAt === i || undefined}>
                 <span className="rd-queue__n">{i + 1}</span>
@@ -717,14 +735,14 @@ export default function RoverDriveGame({ copy, onExit, exitLabel }: { copy: Extr
       <div className="rd-corner" role="toolbar" aria-label="Game controls">
         {phase !== 'briefing' && gl && (
           <button type="button" className="rd-icon" onClick={() => useRoverStore.getState().setView(view === '3d' ? '2d' : '3d')} aria-label={view === '3d' ? 'Switch to 2D map' : 'Switch to 3D view'}>
-            <span className="rd-l-full">{view === '3d' ? '2D map' : '3D view'}</span>
+            <span className="rd-l-full">{view === '3d' ? '2D view' : '3D view'}</span>
             <span className="rd-l-short" aria-hidden="true">{view === '3d' ? '2D' : '3D'}</span>
           </button>
         )}
         {phase !== 'briefing' && use3d && (
-          <button type="button" className="rd-icon" onClick={() => useRoverStore.getState().cycleCam()} aria-keyshortcuts="C" aria-label={`Camera: ${cam}. Switch camera`}>
-            <span className="rd-l-full">{cam === 'chase' ? 'Chase' : cam === 'hazcam' ? 'Hazcam' : 'Map'}</span>
-            <span className="rd-l-short" aria-hidden="true">{cam === 'chase' ? 'Chs' : cam === 'hazcam' ? 'Haz' : 'Map'}</span>
+          <button type="button" className="rd-icon" onClick={() => useRoverStore.getState().cycleCam()} aria-keyshortcuts="C" aria-label={`Camera: ${cam === 'map' ? 'overhead' : cam}. Switch camera`}>
+            <span className="rd-l-full"><span className="rd-icon__k">Cam</span>{cam === 'chase' ? 'Chase' : cam === 'hazcam' ? 'Hazcam' : 'Overhead'}</span>
+            <span className="rd-l-short" aria-hidden="true">{cam === 'chase' ? 'Chs' : cam === 'hazcam' ? 'Haz' : 'Top'}</span>
           </button>
         )}
         {phase !== 'briefing' && (
